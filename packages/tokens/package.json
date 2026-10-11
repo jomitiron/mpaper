@@ -1,0 +1,24 @@
+{
+  "name": "@motopapers/tokens",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./tokens.ts",
+    "./tokens.css": "./tokens.css",
+    "./fonts.css": "./fonts.css"
+  },
+  "sideEffects": [
+    "*.css"
+  ],
+  "scripts": {
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.43",
+    "typescript": "~5.9.3",
+    "vitest": "^3.2.7"
+  }
+}

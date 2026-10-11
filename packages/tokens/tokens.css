@@ -1,0 +1,91 @@
+/*
+ * MotoPapers design tokens, ported from design/motopapers-site.html (Direction C).
+ * Keep in sync with tokens.ts (a test checks this).
+ *
+ * Paper colours: sky = vehicle licence, mint = insurance, butter = roadworthiness.
+ * Rose/coral alerts are for expired papers only.
+ */
+:root {
+  /* Surfaces and ink */
+  --bg: #f4f3f9;
+  --card: #ffffff;
+  --ink: #1e1b33;
+  --ink-2: #45425c;
+  --muted: #6a6783;
+  --line: #e6e4ef;
+  --line-2: #d6d3e4;
+
+  /* Brand */
+  --coral: #ff5a3c;
+  --coral-d: #de3b22;
+  --coral-soft: #ffe6e0;
+
+  /* Expired (alert) */
+  --rose: #ffe2dc;
+  --rose-i: #c02b15;
+
+  /* Vehicle licence */
+  --sky: #e4edff;
+  --sky-i: #2453cf;
+  --sky-b: #7fa2f5;
+
+  /* Insurance */
+  --mint: #dcf5e9;
+  --mint-i: #0a7647;
+  --mint-b: #45bf88;
+
+  /* Roadworthiness */
+  --butter: #ffefc4;
+  --butter-i: #7f5300;
+  --butter-b: #f2c14e;
+
+  /* Accents */
+  --lilac: #ece7ff;
+  --lilac-i: #5a3fcc;
+
+  /* Due soon */
+  --due: #ffe6c7;
+  --due-i: #9a4500;
+
+  /* Not tracked / neutral */
+  --idle: #efeef4;
+  --idle-i: #5f5c78;
+
+  /* Night (wallet, dark buttons, toast) */
+  --night: #1e1b33;
+  --night-2: #2c2847;
+  --night-mute: #b9b5d3;
+
+  --focus: #2453cf;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(30, 27, 51, 0.06);
+  --shadow: 0 2px 6px rgba(30, 27, 51, 0.05), 0 26px 50px -26px rgba(30, 27, 51, 0.32);
+  --shadow-coral: 0 10px 22px -12px rgba(255, 90, 60, 0.8);
+  --ring-focus: 0 0 0 4px rgba(36, 83, 207, 0.14);
+  --ring-coral: 0 0 0 3px rgba(255, 90, 60, 0.14);
+  --scrim: rgba(30, 27, 51, 0.45);
+
+  /* Type */
+  --f-head: 'Gabarito', 'Figtree', system-ui, sans-serif;
+  --f-body: 'Figtree', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --f-mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+
+  /* Radii */
+  --radius-xs: 8px; /* focus outline, small tags */
+  --radius-plate: 9px; /* number plates */
+  --radius-sm: 12px; /* small buttons, icon buttons */
+  --radius-md: 14px; /* buttons, inputs, nav items */
+  --radius-lg: 16px; /* large buttons, toast, paper minis */
+  --radius-xl: 20px; /* help card, scan box */
+  --radius-2xl: 24px; /* cards, tiles */
+  --radius-3xl: 30px; /* modal, alert card, wallet, wizard card */
+  --radius-4xl: 36px; /* landing hero */
+  --radius-pill: 999px;
+
+  /* Layout */
+  --sidebar-w: 250px;
+  --tabbar-h: 72px;
+
+  color-scheme: light;
+}

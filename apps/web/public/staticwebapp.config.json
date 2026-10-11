@@ -1,0 +1,27 @@
+{
+  "navigationFallback": {
+    "rewrite": "/index.html",
+    "exclude": ["/assets/*", "/*.{js,css,svg,png,jpg,webp,ico,json,txt,map,woff2}"]
+  },
+  "routes": [
+    { "route": "/home", "redirect": "/", "statusCode": 301 },
+    { "route": "/vehicles", "redirect": "/cars", "statusCode": 301 },
+    { "route": "/transactions", "redirect": "/payments", "statusCode": 301 },
+    { "route": "/login", "redirect": "/sign-in", "statusCode": 301 },
+    { "route": "/signup", "redirect": "/sign-up", "statusCode": 301 },
+    {
+      "route": "/assets/*",
+      "headers": { "Cache-Control": "public, max-age=31536000, immutable" }
+    },
+    { "route": "/index.html", "headers": { "Cache-Control": "no-cache" } },
+    { "route": "/mockServiceWorker.js", "headers": { "Cache-Control": "no-cache" } }
+  ],
+  "globalHeaders": {
+    "X-Content-Type-Options": "nosniff",
+    "Referrer-Policy": "strict-origin-when-cross-origin",
+    "X-Frame-Options": "DENY"
+  },
+  "mimeTypes": {
+    ".webmanifest": "application/manifest+json"
+  }
+}

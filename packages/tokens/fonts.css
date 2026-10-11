@@ -1,0 +1,3 @@
+/* Gabarito for headings, Figtree for body copy. Prefer the <link> tags (see GOOGLE_FONTS_URL in
+   tokens.ts) in an HTML head; import this file only where a link tag isn't possible. */
+@import url('https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Gabarito:wght@600;700;800;900&display=swap');

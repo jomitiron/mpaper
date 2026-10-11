@@ -7,6 +7,7 @@ test-results/
 .env
 .env.*
 !.env.example
+!.env.development
 .DS_Store
 *.log
 .claude/settings.local.json

@@ -1,0 +1,10 @@
+packages:
+  - apps/*
+  - packages/*
+allowBuilds:
+  esbuild: true
+  msw: false
+  sharp: false
+  vue-demi: true
+minimumReleaseAgeExclude:
+  - zod@4.6.6

@@ -1,0 +1,13 @@
+# Generated
+**/dist/
+**/.astro/
+**/coverage/
+pnpm-lock.yaml
+apps/web/public/mockServiceWorker.js
+
+# Hand-written documents and the approved prototype: keep them exactly as they are
+design/
+docs/
+emails/
+progress/
+*.md

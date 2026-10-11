@@ -1,0 +1,179 @@
+name: Deploy web app
+
+# Azure Static Web Apps, one resource for the app:
+#   pull request → its own preview URL (API: ijanla-dev)
+#   main         → the "staging" environment (API: ijanla-stage)
+#   then         → production (API: ijanla), after a reviewer approves the "production" environment
+# Skipped until the AZURE_STATIC_WEB_APPS_API_TOKEN_WEB secret exists. Setup: docs/setup.md.
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+    paths:
+      - apps/web/**
+      - packages/**
+      - pnpm-lock.yaml
+      - .github/workflows/deploy-web.yml
+  push:
+    branches: [main]
+    paths:
+      - apps/web/**
+      - packages/**
+      - pnpm-lock.yaml
+      - .github/workflows/deploy-web.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write # the deploy action comments the preview URL on the PR
+
+jobs:
+  check:
+    name: Check for the deploy token
+    runs-on: ubuntu-latest
+    outputs:
+      enabled: ${{ steps.token.outputs.enabled }}
+    steps:
+      - id: token
+        env:
+          TOKEN: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_WEB }}
+        run: |
+          if [ -n "$TOKEN" ]; then
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::AZURE_STATIC_WEB_APPS_API_TOKEN_WEB isn't set, so the web app isn't deployed. See docs/setup.md."
+          fi
+
+  preview:
+    name: Preview
+    needs: check
+    if: needs.check.outputs.enabled == 'true' && github.event_name == 'pull_request' && github.event.action != 'closed'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    concurrency:
+      group: deploy-web-pr-${{ github.event.pull_request.number }}
+      cancel-in-progress: true
+    environment:
+      name: preview
+      url: ${{ steps.deploy.outputs.static_web_app_url }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: ./.github/actions/setup
+      - name: Build
+        run: pnpm --filter web build
+        env:
+          VITE_API_BASE_URL: ${{ vars.VITE_API_BASE_URL || 'https://ijanla-dev.azurewebsites.net' }}
+          VITE_DOC_PARSER_URL: ${{ vars.VITE_DOC_PARSER_URL }}
+          VITE_APP_URL: ${{ vars.VITE_APP_URL }}
+          VITE_SITE_URL: ${{ vars.VITE_SITE_URL }}
+          VITE_USE_MOCKS: ${{ vars.VITE_USE_MOCKS || 'false' }}
+          VITE_SENTRY_DSN: ${{ vars.VITE_SENTRY_DSN }}
+          VITE_FLAG_RENEWALS: ${{ vars.VITE_FLAG_RENEWALS || 'false' }}
+          VITE_FLAG_REMINDER_SETTINGS: ${{ vars.VITE_FLAG_REMINDER_SETTINGS || 'false' }}
+          VITE_FLAG_TX_LABELS: ${{ vars.VITE_FLAG_TX_LABELS || 'false' }}
+          VITE_FLAG_WALLET_PAY: ${{ vars.VITE_FLAG_WALLET_PAY || 'false' }}
+          VITE_FLAG_VERIFY_PAYMENT: ${{ vars.VITE_FLAG_VERIFY_PAYMENT || 'false' }}
+      - name: Deploy preview
+        id: deploy
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_WEB }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          action: upload
+          app_location: apps/web/dist
+          skip_app_build: true
+          skip_api_build: true
+
+  close-preview:
+    name: Close preview
+    needs: check
+    if: needs.check.outputs.enabled == 'true' && github.event_name == 'pull_request' && github.event.action == 'closed'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_WEB }}
+          action: close
+          app_location: apps/web/dist
+
+  staging:
+    name: Staging
+    needs: check
+    if: needs.check.outputs.enabled == 'true' && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    concurrency:
+      group: deploy-web-staging
+      cancel-in-progress: false
+    environment:
+      name: staging
+      url: ${{ steps.deploy.outputs.static_web_app_url }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: ./.github/actions/setup
+      - name: Build
+        run: pnpm --filter web build
+        env:
+          VITE_API_BASE_URL: ${{ vars.VITE_API_BASE_URL || 'https://ijanla-stage.azurewebsites.net' }}
+          VITE_DOC_PARSER_URL: ${{ vars.VITE_DOC_PARSER_URL }}
+          VITE_APP_URL: ${{ vars.VITE_APP_URL }}
+          VITE_SITE_URL: ${{ vars.VITE_SITE_URL }}
+          VITE_USE_MOCKS: ${{ vars.VITE_USE_MOCKS || 'false' }}
+          VITE_SENTRY_DSN: ${{ vars.VITE_SENTRY_DSN }}
+          VITE_FLAG_RENEWALS: ${{ vars.VITE_FLAG_RENEWALS || 'false' }}
+          VITE_FLAG_REMINDER_SETTINGS: ${{ vars.VITE_FLAG_REMINDER_SETTINGS || 'false' }}
+          VITE_FLAG_TX_LABELS: ${{ vars.VITE_FLAG_TX_LABELS || 'false' }}
+          VITE_FLAG_WALLET_PAY: ${{ vars.VITE_FLAG_WALLET_PAY || 'false' }}
+          VITE_FLAG_VERIFY_PAYMENT: ${{ vars.VITE_FLAG_VERIFY_PAYMENT || 'false' }}
+      - name: Deploy to staging
+        id: deploy
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_WEB }}
+          action: upload
+          app_location: apps/web/dist
+          skip_app_build: true
+          skip_api_build: true
+          deployment_environment: staging
+
+  production:
+    name: Production
+    needs: [check, staging]
+    if: needs.check.outputs.enabled == 'true' && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    concurrency:
+      group: deploy-web-production
+      cancel-in-progress: false
+    # Add required reviewers to this environment in GitHub so nothing ships without approval.
+    environment:
+      name: production
+      url: ${{ steps.deploy.outputs.static_web_app_url }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: ./.github/actions/setup
+      - name: Build
+        run: pnpm --filter web build
+        env:
+          VITE_API_BASE_URL: ${{ vars.VITE_API_BASE_URL || 'https://ijanla.azurewebsites.net' }}
+          VITE_DOC_PARSER_URL: ${{ vars.VITE_DOC_PARSER_URL }}
+          VITE_APP_URL: ${{ vars.VITE_APP_URL }}
+          VITE_SITE_URL: ${{ vars.VITE_SITE_URL }}
+          # Never mock in production.
+          VITE_USE_MOCKS: 'false'
+          VITE_SENTRY_DSN: ${{ vars.VITE_SENTRY_DSN }}
+          VITE_FLAG_RENEWALS: ${{ vars.VITE_FLAG_RENEWALS || 'false' }}
+          VITE_FLAG_REMINDER_SETTINGS: ${{ vars.VITE_FLAG_REMINDER_SETTINGS || 'false' }}
+          VITE_FLAG_TX_LABELS: ${{ vars.VITE_FLAG_TX_LABELS || 'false' }}
+          VITE_FLAG_WALLET_PAY: ${{ vars.VITE_FLAG_WALLET_PAY || 'false' }}
+          VITE_FLAG_VERIFY_PAYMENT: ${{ vars.VITE_FLAG_VERIFY_PAYMENT || 'false' }}
+      - name: Deploy to production
+        id: deploy
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_WEB }}
+          action: upload
+          app_location: apps/web/dist
+          skip_app_build: true
+          skip_api_build: true
