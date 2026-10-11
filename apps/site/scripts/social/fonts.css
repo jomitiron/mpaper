@@ -1,0 +1,11 @@
+/* The site's self-hosted fonts, for the social card. */
+@font-face {
+  font-family: 'Gabarito';
+  font-weight: 400 900;
+  src: url('../../src/fonts/gabarito-latin.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Figtree';
+  font-weight: 300 900;
+  src: url('../../src/fonts/figtree-latin.woff2') format('woff2');
+}

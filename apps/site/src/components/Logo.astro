@@ -1,0 +1,13 @@
+---
+import Icon from './Icon.astro';
+
+interface Props {
+  /** Link the logo to the home page. */
+  href?: string;
+}
+
+const { href } = Astro.props;
+const Tag = href ? 'a' : 'span';
+---
+
+<Tag class="logo" href={href}><i><Icon name="doc" /></i>MotoPapers</Tag>

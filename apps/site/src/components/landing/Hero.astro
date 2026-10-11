@@ -1,0 +1,81 @@
+---
+import Icon from '../Icon.astro';
+import Logo from '../Logo.astro';
+import PhoneMock from './PhoneMock.astro';
+import { SECTIONS, appLink } from '../../config';
+---
+
+<div class="lp-shell">
+  <section class="hero" aria-labelledby="hero-title">
+    <header class="lp-nav">
+      <Logo href="/" />
+      <nav class="lp-links" aria-label="Page sections">
+        {SECTIONS.map((section) => <a href={`#${section.id}`}>{section.label}</a>)}
+      </nav>
+      <div class="acts">
+        <a class="btn btn-white" href={appLink('/sign-in')}>Sign in</a>
+        <a class="btn btn-coral" href={appLink('/sign-up')}>Get started</a>
+      </div>
+    </header>
+
+    <div class="hero-copy" id="content">
+      <p class="announce"><b>New</b>Renew your vehicle licence straight from your wallet</p>
+      <h1 id="hero-title">Never drive with <span class="hl">expired papers</span> again.</h1>
+      <p class="lede">
+        MotoPapers keeps your vehicle licence, insurance and roadworthiness in one place, reminds
+        you weeks before each one runs out, and renews them for you.
+      </p>
+      <div class="cta-row">
+        <a class="btn btn-coral btn-lg" href={appLink('/sign-up')}
+          >Get started <Icon name="arrow" /></a
+        >
+        <a class="btn btn-white btn-lg" href="#how-it-works">See how it works</a>
+      </div>
+      <ul class="ticks">
+        <li><Icon name="check" />Reminders by SMS and email</li>
+        <li><Icon name="check" />Pay by card, transfer or wallet</li>
+        <li><Icon name="check" />New papers delivered to you</li>
+      </ul>
+    </div>
+
+    <figure class="stage" aria-label="Example: the MotoPapers app showing a car’s three papers">
+      <svg class="lines" viewBox="0 0 1100 560" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M840 120 C 760 130, 700 150, 640 190"></path><circle cx="640" cy="190" r="5"
+        ></circle>
+        <path d="M290 130 C 360 150, 410 170, 460 210"></path><circle cx="460" cy="210" r="5"
+        ></circle>
+      </svg>
+      <div class="float float-2">
+        <span class="fi d-insurance"><Icon name="check" /></span>
+        <div><b>Licence renewed</b><span>EKY 219 GD · ₦18,500 paid from wallet</span></div>
+      </div>
+      <div class="float float-1">
+        <span class="fi fi-alert"><Icon name="bell" /></span>
+        <div><b>Insurance due in 9 days</b><span>KJA 731 AE · Tap to renew now</span></div>
+      </div>
+      <div class="fan fan-1 d-licence">
+        <span class="k"><Icon name="licence" class="ic-sm" />Vehicle licence</span>
+        <span class="n">154<small>days</small></span>
+        <span class="s">Valid until 14 Mar 2027</span>
+        <span class="who"><span class="plate plate-w">KJA 731 AE</span></span>
+      </div>
+      <div class="fan fan-2 d-road">
+        <span class="k"><Icon name="gauge" class="ic-sm" />Roadworthiness</span>
+        <span class="n">114<small>days</small></span>
+        <span class="s">Valid until 2 Feb 2027</span>
+      </div>
+      <div class="fan fan-3 d-insurance">
+        <span class="k"><Icon name="shield" class="ic-sm" />Insurance</span>
+        <span class="n">9<small>days</small></span>
+        <span class="s">Third party · 20 Oct 2026</span>
+        <span class="who"><span class="plate plate-w">KJA 731 AE</span></span>
+      </div>
+      <PhoneMock />
+    </figure>
+  </section>
+
+  <div class="paystrip">
+    <span>Secure payments with</span><span>Paystack</span><span>Visa</span><span>Mastercard</span
+    ><span>Verve</span><span>Bank transfer</span>
+  </div>
+</div>

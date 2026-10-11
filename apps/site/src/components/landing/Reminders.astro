@@ -1,0 +1,59 @@
+---
+import Icon from '../Icon.astro';
+import { appLink } from '../../config';
+---
+
+<section class="sec" aria-labelledby="quiz-title">
+  <div class="quiz">
+    <div class="quiz-copy">
+      <span class="tag">Quick question</span>
+      <h2 id="quiz-title">When does your car insurance expire?</h2>
+      <p>
+        Most drivers can't say without digging through the glovebox. They find out at a checkpoint,
+        or when a claim gets turned down. MotoPapers keeps every date in one place and tells you
+        early.
+      </p>
+      <ul class="qs">
+        <li><i class="d-licence" aria-hidden="true">?</i>When is your vehicle licence due?</li>
+        <li><i class="d-insurance" aria-hidden="true">?</i>Is your insurance still active?</li>
+        <li><i class="d-road" aria-hidden="true">?</i>Has your roadworthiness lapsed?</li>
+      </ul>
+      <a class="btn btn-coral btn-lg" href={appLink('/sign-up')}>Add your first car</a>
+    </div>
+
+    <figure class="listcard" aria-label="Example reminders list">
+      <div class="listcard-h">
+        <b>Your reminders</b><span class="st st-bad">1 needs action</span>
+      </div>
+      <div class="grp">
+        <span class="grp-l">Act now</span>
+        <div class="lrow">
+          <span class="di di-bad"><Icon name="licence" /></span>
+          <div><b>Vehicle licence</b><span>EKY 219 GD · Ford Edge</span></div>
+          <span class="rt">13<small>days ago</small></span>
+        </div>
+      </div>
+      <div class="grp">
+        <span class="grp-l">This month</span>
+        <div class="lrow">
+          <span class="di d-insurance"><Icon name="shield" /></span>
+          <div><b>Insurance</b><span>KJA 731 AE · Toyota Camry</span></div>
+          <span class="rt">9<small>days left</small></span>
+        </div>
+        <div class="lrow">
+          <span class="di d-road"><Icon name="gauge" /></span>
+          <div><b>Roadworthiness</b><span>EKY 219 GD · Ford Edge</span></div>
+          <span class="rt">23<small>days left</small></span>
+        </div>
+      </div>
+      <div class="grp">
+        <span class="grp-l">Later</span>
+        <div class="lrow">
+          <span class="di d-licence"><Icon name="licence" /></span>
+          <div><b>Vehicle licence</b><span>APP 105 BC · Lexus RX 350</span></div>
+          <span class="rt">80<small>days left</small></span>
+        </div>
+      </div>
+    </figure>
+  </div>
+</section>

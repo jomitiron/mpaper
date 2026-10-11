@@ -1,0 +1,164 @@
+<!doctype html>
+<!-- Social preview card (1200×630). Rendered to public/og.png by scripts/social-images.mjs. -->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="../../../../packages/tokens/tokens.css" />
+    <link rel="stylesheet" href="fonts.css" />
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        width: 1200px;
+        height: 630px;
+        overflow: hidden;
+      }
+      body {
+        position: relative;
+        font-family: var(--f-body);
+        color: var(--ink);
+        background:
+          radial-gradient(55% 65% at 6% 0%, #ffe1d8 0%, rgba(255, 225, 216, 0) 70%),
+          radial-gradient(45% 55% at 96% 6%, #dfe9ff 0%, rgba(223, 233, 255, 0) 70%),
+          radial-gradient(55% 60% at 70% 100%, #d9f4e7 0%, rgba(217, 244, 231, 0) 70%), #fbfafe;
+        -webkit-font-smoothing: antialiased;
+      }
+      .copy {
+        position: absolute;
+        left: 72px;
+        top: 64px;
+        width: 640px;
+        display: grid;
+        gap: 28px;
+      }
+      .logo {
+        display: inline-flex;
+        align-items: center;
+        gap: 14px;
+        font-family: var(--f-head);
+        font-weight: 800;
+        font-size: 30px;
+        letter-spacing: -0.02em;
+      }
+      .logo i {
+        width: 50px;
+        height: 50px;
+        border-radius: 16px;
+        background: var(--coral);
+        display: grid;
+        place-items: center;
+        color: #fff;
+      }
+      svg {
+        width: 28px;
+        height: 28px;
+        stroke: currentColor;
+        fill: none;
+        stroke-width: 1.9;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+      h1 {
+        margin: 18px 0 0;
+        font-family: var(--f-head);
+        font-weight: 900;
+        font-size: 84px;
+        line-height: 0.96;
+        letter-spacing: -0.045em;
+      }
+      h1 span {
+        color: var(--coral);
+      }
+      p {
+        margin: 0;
+        font-size: 27px;
+        line-height: 1.35;
+        color: var(--ink-2);
+        max-width: 22em;
+      }
+      .fan {
+        position: absolute;
+        width: 280px;
+        border-radius: 28px;
+        padding: 24px;
+        display: grid;
+        gap: 4px;
+        box-shadow:
+          0 2px 6px rgba(30, 27, 51, 0.05),
+          0 26px 50px -26px rgba(30, 27, 51, 0.32);
+        transform: rotate(var(--r));
+      }
+      .fan .k {
+        font-size: 17px;
+        font-weight: 800;
+      }
+      .fan .n {
+        font-family: var(--f-head);
+        font-weight: 900;
+        font-size: 72px;
+        line-height: 1;
+        letter-spacing: -0.04em;
+        margin-top: 10px;
+      }
+      .fan .n small {
+        font-size: 22px;
+        letter-spacing: 0;
+        margin-left: 5px;
+        font-weight: 800;
+      }
+      .fan .s {
+        font-size: 17px;
+        font-weight: 600;
+      }
+      .licence {
+        background: var(--sky);
+        color: var(--sky-i);
+        right: 250px;
+        top: 70px;
+        --r: -9deg;
+      }
+      .road {
+        background: var(--butter);
+        color: var(--butter-i);
+        right: 200px;
+        top: 330px;
+        --r: -2deg;
+      }
+      .insurance {
+        background: var(--mint);
+        color: var(--mint-i);
+        right: 40px;
+        top: 190px;
+        --r: 8deg;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="copy">
+      <span class="logo"
+        ><i
+          ><svg viewBox="0 0 24 24">
+            <path d="M7 3.5h7l4 4v13H7z" />
+            <path d="M14 3.5v4h4M10 12h5M10 15.5h3" /></svg></i
+        >MotoPapers</span
+      >
+      <h1>Never drive with <span>expired papers</span> again.</h1>
+      <p>Vehicle licence, insurance and roadworthiness, tracked and renewed.</p>
+    </div>
+    <div class="fan licence">
+      <span class="k">Vehicle licence</span><span class="n">154<small>days</small></span
+      ><span class="s">Valid until 14 Mar 2027</span>
+    </div>
+    <div class="fan road">
+      <span class="k">Roadworthiness</span><span class="n">114<small>days</small></span
+      ><span class="s">Valid until 2 Feb 2027</span>
+    </div>
+    <div class="fan insurance">
+      <span class="k">Insurance</span><span class="n">9<small>days</small></span
+      ><span class="s">Third party · 20 Oct 2026</span>
+    </div>
+  </body>
+</html>

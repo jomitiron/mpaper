@@ -1,0 +1,13 @@
+---
+import { ICONS } from './icons';
+
+// Every icon as a <symbol>, once per page. <Icon> points at them.
+---
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  {
+    Object.entries(ICONS).map(([name, paths]) => (
+      <symbol id={`i-${name}`} viewBox="0 0 24 24" set:html={paths} />
+    ))
+  }
+</svg>

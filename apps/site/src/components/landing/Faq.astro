@@ -1,0 +1,48 @@
+---
+import Icon from '../Icon.astro';
+
+const QUESTIONS = [
+  {
+    q: 'Which papers can MotoPapers renew?',
+    a: 'Your vehicle licence, your insurance (third party or comprehensive) and your roadworthiness certificate. You can track all three for every car on your account.',
+  },
+  {
+    q: 'How do the reminders work?',
+    a: "Once a paper's expiry date is on file, we send reminders by SMS and email in the weeks before it runs out, so you have time to renew without rushing.",
+  },
+  {
+    q: 'How do I pay for a renewal?',
+    a: 'Top up your MotoPapers wallet by card or bank transfer through Paystack, then pay for renewals from your wallet. You can also pay by card at checkout.',
+  },
+  {
+    q: "Do I have to type in all my car's details?",
+    a: 'No. Upload a photo or PDF of your vehicle licence and we fill in the plate number, make, model, colour, engine and chassis numbers. You just check them.',
+  },
+  {
+    q: 'How do I get my new papers?',
+    a: 'We process the renewal and deliver the new papers to the address on your account. You can follow progress in the app.',
+  },
+];
+---
+
+<section class="sec" id="faq" aria-labelledby="faq-title">
+  <div class="sec-head">
+    <span class="tag">FAQ</span>
+    <h2 id="faq-title">Questions drivers ask</h2>
+  </div>
+  <div class="faq">
+    {
+      QUESTIONS.map(({ q, a }, i) => (
+        <details open={i === 0}>
+          <summary>
+            {q}
+            <span class="pl" aria-hidden="true">
+              <Icon name="plus" class="ic-sm" />
+            </span>
+          </summary>
+          <p>{a}</p>
+        </details>
+      ))
+    }
+  </div>
+</section>

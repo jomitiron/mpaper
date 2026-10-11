@@ -1,0 +1,43 @@
+<!doctype html>
+<!-- Square app icon (logo.png, apple-touch-icon.png). Full bleed: iOS rounds the corners itself.
+     ?size=<px> sets the size, since Chrome's window can't be made as small as 180px. -->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script>
+      const size = Number(new URLSearchParams(location.search).get('size')) || 512;
+      document.documentElement.style.setProperty('--size', `${size}px`);
+    </script>
+    <style>
+      html,
+      body {
+        margin: 0;
+        overflow: hidden;
+      }
+      .icon {
+        width: var(--size);
+        height: var(--size);
+        background: #ff5a3c;
+        display: grid;
+        place-items: center;
+      }
+      svg {
+        width: calc(var(--size) * 0.62);
+        height: calc(var(--size) * 0.62);
+        stroke: #fff;
+        fill: none;
+        stroke-width: 1.9;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="icon">
+      <svg viewBox="0 0 24 24">
+        <path d="M7 3.5h7l4 4v13H7z" />
+        <path d="M14 3.5v4h4M10 12h5M10 15.5h3" />
+      </svg>
+    </div>
+  </body>
+</html>

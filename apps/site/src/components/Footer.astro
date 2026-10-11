@@ -1,0 +1,109 @@
+---
+import Logo from './Logo.astro';
+import { COMPANY, COMPANY_ADDRESS, SECTIONS } from '../config';
+
+const productLinks = SECTIONS.filter((section) => section.id !== 'why-motopapers').map(
+  (section) => ({ href: `/#${section.id}`, label: section.label }),
+);
+const year = new Date().getFullYear();
+---
+
+<footer class="lp-foot">
+  <div>
+    <Logo href="/" />
+    <p class="foot-tagline">{COMPANY.tagline}</p>
+  </div>
+  <nav aria-labelledby="foot-product">
+    <h2 id="foot-product">Product</h2>
+    <ul>
+      {
+        productLinks.map((link) => (
+          <li>
+            <a href={link.href}>{link.label}</a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+  <nav aria-labelledby="foot-company">
+    <h2 id="foot-company">Company</h2>
+    <ul>
+      <li><a href="/#why-motopapers">About</a></li>
+      <li><a href="/privacy/">Privacy</a></li>
+      <li><a href="/terms/">Terms</a></li>
+    </ul>
+  </nav>
+  <div>
+    <h2>Contact</h2>
+    <address>
+      <ul>
+        <li>{COMPANY_ADDRESS}</li>
+        <li class="num"><a href={`tel:${COMPANY.phone.tel}`}>{COMPANY.phone.display}</a></li>
+      </ul>
+    </address>
+  </div>
+  <div class="legal">
+    <span>© {year} MotoPapers</span><span>Payments processed by Paystack</span>
+  </div>
+</footer>
+
+<style>
+  .lp-foot {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 56px 24px 48px;
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr 1.2fr;
+    gap: 28px;
+    font-size: 14px;
+    color: var(--ink-2);
+  }
+  h2 {
+    font-family: var(--f-body);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+  li {
+    margin-bottom: 6px;
+  }
+  a:not(.logo) {
+    text-decoration: none;
+  }
+  a:not(.logo):hover {
+    color: var(--ink);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  address {
+    font-style: normal;
+  }
+  .foot-tagline {
+    margin-top: 12px;
+    max-width: 30ch;
+  }
+  .legal {
+    grid-column: 1/-1;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+    color: var(--muted);
+    font-size: 13px;
+  }
+  @media (max-width: 900px) {
+    .lp-foot {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (max-width: 560px) {
+    .lp-foot {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
