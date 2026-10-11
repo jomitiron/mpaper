@@ -11,7 +11,7 @@ import Faq from '../components/landing/Faq.astro';
 import FinalCta from '../components/landing/FinalCta.astro';
 import { COMPANY, DEFAULT_DESCRIPTION } from '../config';
 
-const site = Astro.site!;
+const site = Astro.site ?? Astro.url;
 const organization = {
   '@context': 'https://schema.org',
   '@type': 'Organization',

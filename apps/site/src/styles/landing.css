@@ -98,10 +98,10 @@
   letter-spacing: 0;
   margin-left: 3px;
 }
+/* site: full opacity, as on the fanned cards */
 .ph-tile .s {
   font-size: 12px;
   font-weight: 600;
-  opacity: 0.85;
 }
 .ph-tile .pill {
   justify-self: start;

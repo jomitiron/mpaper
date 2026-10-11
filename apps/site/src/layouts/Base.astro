@@ -16,8 +16,9 @@ interface Props {
 
 const { title, description = DEFAULT_DESCRIPTION, jsonLd, noindex = false } = Astro.props;
 const indexable = !noindex && !NOINDEX;
-const canonical = new URL(Astro.url.pathname, Astro.site).href;
-const ogImage = new URL('/og.png', Astro.site).href;
+const site = Astro.site ?? Astro.url;
+const canonical = new URL(Astro.url.pathname, site).href;
+const ogImage = new URL('/og.png', site).href;
 const ogImageAlt =
   'MotoPapers: never drive with expired papers again. Cards showing the days left on a car’s licence, insurance and roadworthiness.';
 ---
