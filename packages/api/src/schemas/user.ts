@@ -39,9 +39,13 @@ export const signUpBodySchema = z.object({
 });
 export type SignUpBody = z.infer<typeof signUpBodySchema>;
 
+/**
+ * Sign in or sign up with the code Google (or Facebook) sent back. The docs call the platform
+ * `oauth_platform`, but the API rejects that and asks for `oauth_type` (checked on ijanla-dev).
+ */
 export interface OAuthBody {
   oauth_code: string;
-  oauth_platform: OAuthPlatform;
+  oauth_type: OAuthPlatform;
 }
 
 export interface SignInBody {

@@ -113,6 +113,8 @@ export function createHandlers(options: MockHandlerOptions): HttpHandler[] {
       open(async ({ request }) => {
         const body = await readJson(request);
         if (typeof body.oauth_code === 'string') {
+          const typeError = checkOAuthType(body);
+          if (typeError) return typeError;
           const account = db.accountByEmail(SAMPLE_EMAIL);
           if (body.oauth_code !== MOCK_OAUTH_CODE || !account) {
             return error(401, 'Invalid credentials');
@@ -158,6 +160,8 @@ export function createHandlers(options: MockHandlerOptions): HttpHandler[] {
       open(async ({ request }) => {
         const body = await readJson(request);
         if (typeof body.oauth_code === 'string') {
+          const typeError = checkOAuthType(body);
+          if (typeError) return typeError;
           const account = db.accountByEmail(SAMPLE_EMAIL);
           if (body.oauth_code !== MOCK_OAUTH_CODE || !account) {
             return error(401, 'Invalid credentials');
@@ -168,6 +172,8 @@ export function createHandlers(options: MockHandlerOptions): HttpHandler[] {
         if (!account || account.password !== body.password) {
           return error(401, 'Invalid credentials');
         }
+        // Seen on ijanla-dev: the right password for an unverified email gets a bare 500.
+        if (!account.user.email_verified) return error(500, 'Something went wrong');
         return ok(session(account), 'Login successful');
       }),
     ],
@@ -190,19 +196,20 @@ export function createHandlers(options: MockHandlerOptions): HttpHandler[] {
       '/users/oauth-url',
       open(({ request }) => {
         const url = new URL(request.url);
-        const platform = url.searchParams.get('platform');
+        const type = url.searchParams.get('type');
         const action = url.searchParams.get('action');
         if (
-          !['google', 'facebook'].includes(platform ?? '') ||
+          !['google', 'facebook'].includes(type ?? '') ||
           !['signin', 'signup'].includes(action ?? '')
         ) {
           return failFields({
-            platform: 'platform must be google or facebook, action signin or signup',
+            type: 'type must be google or facebook, action signin or signup',
           });
         }
-        // The real URL goes to Google or Facebook; the mock comes straight back to the app.
+        // The real URL goes to Google or Facebook, which comes back with `action` and `code`; the
+        // mock comes straight back to the app.
         return ok(
-          `${appOrigin}/auth/callback?code=${MOCK_OAUTH_CODE}&state=moto`,
+          `${appOrigin}/auth/callback?action=${action}&code=${MOCK_OAUTH_CODE}&state=moto`,
           'Oauth URL retrieved successfully',
         );
       }),
@@ -842,6 +849,11 @@ function missing(body: Record<string, unknown>, keys: string[]): Record<string, 
     if (typeof value !== 'string' || !value.trim()) fields[key] = `${key} is required`;
   }
   return fields;
+}
+
+function checkOAuthType(body: Record<string, unknown>): Response | null {
+  if (body.oauth_type === 'google' || body.oauth_type === 'facebook') return null;
+  return failFields({ oauth_type: 'oauth_type must be one of [facebook, google]' });
 }
 
 function checkOtp(otp: unknown): Response | null {

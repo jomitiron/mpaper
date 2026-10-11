@@ -80,13 +80,16 @@ export async function signOut(options: Options = {}): Promise<void> {
   await request('/users/sign-out', { method: 'POST', schema: messageEnvelope, ...options });
 }
 
-/** `GET /users/oauth-url`. Returns the provider URL to send the driver to. */
+/**
+ * `GET /users/oauth-url`. Returns the provider URL to send the driver to. The docs call the query
+ * parameter `platform`, but the API asks for `type` (checked on ijanla-dev).
+ */
 export async function getOAuthUrl(
   params: { platform: OAuthPlatform; action: OAuthAction },
   options: Options = {},
 ): Promise<string> {
   const res = await request('/users/oauth-url', {
-    query: { ...params },
+    query: { type: params.platform, action: params.action },
     auth: false,
     schema: envelope(z.string()),
     ...options,
