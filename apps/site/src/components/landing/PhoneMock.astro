@@ -1,0 +1,46 @@
+---
+import Icon from '../Icon.astro';
+
+// The app's car panel on a phone, drawn in HTML/CSS like the design. Decorative: the fanned cards
+// beside it carry the same information as text.
+---
+
+<div class="phone" aria-hidden="true">
+  <div class="ph-screen">
+    <div class="ph-hero">
+      <div class="ph-pt">
+        <span><Icon name="chevl" class="ic-sm" /></span><span
+          ><Icon name="more" class="ic-sm" /></span
+        >
+      </div>
+      <span class="plate plate-w">KJA 731 AE</span>
+      <p class="ph-car">Toyota Camry</p>
+      <p class="ph-meta">2018 · Silver · 2,494 cc</p>
+    </div>
+    <div class="ph-body">
+      <div class="ph-tile wide d-insurance">
+        <span class="k"><Icon name="shield" class="ic-sm" />Insurance · Third party</span>
+        <span class="n">9<small>days left</small></span>
+        <span class="s">Expires 20 Oct 2026</span>
+        <span class="pill">Renew soon</span>
+      </div>
+      <div class="ph-tile d-licence">
+        <span class="k"><Icon name="licence" class="ic-sm" />Licence</span>
+        <span class="n">154<small>d</small></span>
+        <span class="s">14 Mar 2027</span>
+      </div>
+      <div class="ph-tile d-road">
+        <span class="k"><Icon name="gauge" class="ic-sm" />Road</span>
+        <span class="n">114<small>d</small></span>
+        <span class="s">2 Feb 2027</span>
+      </div>
+      <span class="btn btn-coral">Renew insurance</span>
+    </div>
+    <div class="ph-tabs">
+      <span><Icon name="home" class="ic-sm" />Home</span>
+      <span class="on"><Icon name="car" class="ic-sm" />My cars</span>
+      <span><Icon name="receipt" class="ic-sm" />Payments</span>
+      <span><Icon name="sliders" class="ic-sm" />Settings</span>
+    </div>
+  </div>
+</div>

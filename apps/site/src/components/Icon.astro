@@ -1,0 +1,15 @@
+---
+import type { IconName } from './icons';
+
+interface Props {
+  name: IconName;
+  class?: string;
+  style?: string;
+}
+
+const { name, class: className, style } = Astro.props;
+---
+
+<svg class:list={['ic', className]} style={style} aria-hidden="true" focusable="false"
+  ><use href={`#i-${name}`}></use></svg
+>

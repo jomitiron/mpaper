@@ -1,0 +1,41 @@
+---
+import Icon from '../Icon.astro';
+---
+
+<section class="sec" id="what-we-track" aria-labelledby="track-title">
+  <div class="sec-head">
+    <span class="tag">What we track</span>
+    <h2 id="track-title">Three papers. Three colours.</h2>
+    <p>
+      Every paper has its own colour, on this page and in the app, so you can tell them apart at a
+      glance.
+    </p>
+  </div>
+  <ul class="track">
+    <li class="tcard d-licence">
+      <span class="ti"><Icon name="licence" /></span>
+      <span class="cad">Renewed every year</span>
+      <h3>Vehicle licence</h3>
+      <p>Upload it once. Its details set up your car, and we track the expiry date from there.</p>
+      <div class="eg"><span>Valid until 14 Mar 2027</span><b>154 days</b></div>
+    </li>
+    <li class="tcard d-insurance">
+      <span class="ti"><Icon name="shield" /></span>
+      <span class="cad">Third party or comprehensive</span>
+      <h3>Insurance</h3>
+      <p>
+        Tell us your cover type and expiry date. We remind you in good time and handle the renewal.
+      </p>
+      <div class="eg"><span>Expires 20 Oct 2026</span><b class="t-warn">9 days</b></div>
+    </li>
+    <li class="tcard d-road">
+      <span class="ti"><Icon name="gauge" /></span>
+      <span class="cad">Renewed every year</span>
+      <h3>Roadworthiness</h3>
+      <p>
+        Add your certificate's expiry date and we'll make sure it never lapses without you knowing.
+      </p>
+      <div class="eg"><span>Valid until 2 Feb 2027</span><b>114 days</b></div>
+    </li>
+  </ul>
+</section>

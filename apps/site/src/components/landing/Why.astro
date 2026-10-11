@@ -1,0 +1,66 @@
+---
+import Icon from '../Icon.astro';
+import { appLink } from '../../config';
+
+const REASONS = [
+  ['Reminders that reach you', 'SMS and email, weeks before every expiry date.'],
+  ['We read your licence', 'No typing long chassis and engine numbers.'],
+  ['One wallet for renewals', 'Top up once and pay for any paper from it.'],
+  ['Delivered to your door', 'We process the renewal and send you the new papers.'],
+  ['All your cars together', 'Family cars, work cars, one dashboard.'],
+  ['Secure payments', 'Card and bank transfer handled by Paystack.'],
+] as const;
+---
+
+<section class="sec" id="why-motopapers" aria-labelledby="why-title">
+  <div class="why">
+    <figure class="wallet-card" aria-label="Example wallet">
+      <div class="row">
+        <span class="l">MotoPapers wallet</span><span class="st st-ok">Auto-renew on</span>
+      </div>
+      <span class="v">₦8,500</span>
+      <div class="row">
+        <a class="btn btn-coral" href={appLink('/sign-up')}>Top up</a>
+        <span class="l auto"
+          >Renew automatically <span class="toggle" aria-hidden="true"></span></span
+        >
+      </div>
+      <ul class="wtx">
+        <li>
+          <i class="d-licence" aria-hidden="true"><Icon name="licence" /></i>
+          <span><b>Licence renewal</b><span>EKY 219 GD · 11 Oct</span></span>
+          <em>−₦18,500</em>
+        </li>
+        <li>
+          <i class="d-road" aria-hidden="true"><Icon name="gauge" /></i>
+          <span><b>Roadworthiness renewal</b><span>LSD 482 KJ · 2 Oct</span></span>
+          <em>−₦6,500</em>
+        </li>
+        <li>
+          <i class="d-insurance" aria-hidden="true"><Icon name="wallet" /></i>
+          <span><b>Wallet top-up</b><span>Card via Paystack · 8 Oct</span></span>
+          <em class="in">+₦20,000</em>
+        </li>
+      </ul>
+    </figure>
+    <div class="why-copy">
+      <span class="tag">Why MotoPapers</span>
+      <h2 id="why-title">Less paperwork. Fewer surprises.</h2>
+      <ul class="checks">
+        {
+          REASONS.map(([title, text]) => (
+            <li>
+              <i aria-hidden="true">
+                <Icon name="check" />
+              </i>
+              <div>
+                <b>{title}</b>
+                <span>{text}</span>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,15 @@
+---
+import Icon from '../Icon.astro';
+import { appLink } from '../../config';
+---
+
+<section class="final" aria-labelledby="final-title">
+  <span class="ghost-plate gp1" aria-hidden="true">KJA 731 AE</span>
+  <span class="ghost-plate gp2" aria-hidden="true">EKY 219 GD</span>
+  <h2 id="final-title">Set it once. Drive without the worry.</h2>
+  <p>Add your first car with one photo of your licence. We'll take it from there.</p>
+  <div class="cta-row">
+    <a class="btn btn-white btn-lg" href={appLink('/sign-up')}>Get started <Icon name="arrow" /></a>
+    <a class="btn btn-outline-w btn-lg" href={appLink('/sign-in')}>I have an account</a>
+  </div>
+</section>
