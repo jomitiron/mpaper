@@ -6,7 +6,11 @@ withDefaults(defineProps<{ message: string; tone?: 'error' | 'info' }>(), { tone
 </script>
 
 <template>
-  <div class="form-alert" :class="`form-alert-${tone}`" :role="tone === 'error' ? 'alert' : 'status'">
+  <div
+    class="form-alert"
+    :class="`form-alert-${tone}`"
+    :role="tone === 'error' ? 'alert' : 'status'"
+  >
     <CircleAlert v-if="tone === 'error'" class="ic" aria-hidden="true" />
     <CircleCheck v-else class="ic" aria-hidden="true" />
     <div class="form-alert-body">

@@ -80,7 +80,8 @@ async function resend() {
   <div class="intro">
     <h1 tabindex="-1">Check your email</h1>
     <p class="muted">
-      We sent a 6-digit code to <b class="ink">{{ email }}</b>. It expires in 10 minutes.
+      We sent a 6-digit code to <b class="ink">{{ email }}</b
+      >. It expires in 10 minutes.
     </p>
   </div>
   <form novalidate @submit.prevent="verify">

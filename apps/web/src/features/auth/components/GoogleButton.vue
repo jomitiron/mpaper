@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ApiError, errorMessage } from '@motopapers/api';
 import { Button, useToast } from '@motopapers/ui';
-import { ref } from 'vue';
+import { onBeforeUnmount, onMounted, ref } from 'vue';
 import type { OAuthState } from '../lib/handoff';
 import { continueWithGoogle } from '../lib/google';
 
@@ -15,6 +15,13 @@ const props = defineProps<{
 
 const toast = useToast();
 const loading = ref(false);
+
+// Coming back from Google with the Back button can restore this page as it was, spinner and all.
+const onPageShow = (event: PageTransitionEvent) => {
+  if (event.persisted) loading.value = false;
+};
+onMounted(() => window.addEventListener('pageshow', onPageShow));
+onBeforeUnmount(() => window.removeEventListener('pageshow', onPageShow));
 
 async function go() {
   loading.value = true;

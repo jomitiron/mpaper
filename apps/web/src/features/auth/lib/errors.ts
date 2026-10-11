@@ -52,7 +52,9 @@ export const CODE_MESSAGES: Record<CodeProblem, string> = {
 };
 
 export function isDuplicateEmail(error: unknown): boolean {
-  return isHttpError(error) && error.status < 500 && /already (exists|registered)/i.test(error.message);
+  return (
+    isHttpError(error) && error.status < 500 && /already (exists|registered)/i.test(error.message)
+  );
 }
 
 /** "email must be a valid email" → "Email must be a valid email." */

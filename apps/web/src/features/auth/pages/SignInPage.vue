@@ -74,7 +74,7 @@ async function verifyEmail() {
     unverified.value = false;
     problem.value =
       isHttpError(error) && /already been verified/i.test(error.message)
-        ? "Your email is already verified. Something went wrong on our side, so try signing in again in a moment."
+        ? 'Your email is already verified. Something went wrong on our side, so try signing in again in a moment.'
         : errorMessage(error);
   } finally {
     sending.value = false;

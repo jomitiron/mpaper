@@ -26,4 +26,13 @@ export default [
     component: () => import('./pages/ResetPasswordPage.vue'),
     meta: { public: true, layout: 'bare', title: 'Reset password' },
   },
+  {
+    // Google comes back here. The API redirects to the old app's /complete-onboard today, so
+    // that address works too until the backend points Google at /auth/callback.
+    path: '/auth/callback',
+    alias: '/complete-onboard',
+    name: 'auth-callback',
+    component: () => import('./pages/AuthCallbackPage.vue'),
+    meta: { public: true, layout: 'bare', title: 'Signing in' },
+  },
 ] satisfies RouteRecordRaw[];
