@@ -13,6 +13,8 @@ transactional emails and the plan for building them on the existing MotorPapers 
 | `design/motopapers-directions.html` | The three design directions that were compared. |
 | `emails/` | Nine transactional email templates (HTML with Handlebars placeholders) and a README for the backend. |
 
+To run the app and site locally, and to set up deploys, see [`docs/setup.md`](docs/setup.md).
+
 Code arrives phase by phase, following the plan:
 
 | Phase | Milestone | Weeks |
