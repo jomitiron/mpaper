@@ -8,18 +8,19 @@
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint .",
-    "typecheck": "vue-tsc --noEmit -p tsconfig.json && tsc --noEmit -p tsconfig.node.json",
+    "typecheck": "vue-tsc --noEmit -p tsconfig.app.json && tsc --noEmit -p tsconfig.node.json",
     "test": "vitest run"
   },
   "dependencies": {
+    "@lucide/vue": "^1.55.0",
     "@motopapers/api": "workspace:*",
     "@motopapers/tokens": "workspace:*",
     "@motopapers/ui": "workspace:*",
     "@tanstack/vue-query": "^5.104.1",
-    "@lucide/vue": "^1.55.0",
     "pinia": "^3.0.4",
     "vue": "^3.5.43",
-    "vue-router": "^4.6.4"
+    "vue-router": "^4.6.4",
+    "zod": "^4.6.6"
   },
   "devDependencies": {
     "@types/node": "^20.19.43",

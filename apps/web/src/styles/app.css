@@ -1,0 +1,303 @@
+/*
+ * App shell from design/motopapers-site.html: a white sidebar with pill nav items and a lavender
+ * canvas on desktop; a bottom tab bar with the coral + button on phones (below 900px).
+ * Component classes (.btn, .card, .tile…) come from @motopapers/ui/styles.css.
+ */
+
+.app {
+  display: grid;
+  grid-template-columns: var(--sidebar-w) minmax(0, 1fr);
+  align-items: start;
+  min-height: 100vh;
+}
+
+.skip-link {
+  position: absolute;
+  left: 12px;
+  top: -80px;
+  z-index: 200;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  background: var(--night);
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+}
+.skip-link:focus {
+  top: 12px;
+}
+
+/* ---------------------------------------------------------------- sidebar */
+.side {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100dvh;
+  background: #fff;
+  border-right: 1px solid var(--line);
+  padding: 22px 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  overflow-y: auto;
+}
+.side > .logo {
+  margin: 0 8px 20px;
+}
+.side-nav {
+  display: grid;
+  gap: 4px;
+}
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  color: var(--muted);
+  font-size: 15px;
+  width: 100%;
+  text-decoration: none;
+}
+.nav:hover {
+  background: var(--bg);
+  color: var(--ink);
+}
+.nav[aria-current='page'] {
+  background: var(--rose);
+  color: var(--coral-d);
+  font-weight: 700;
+}
+.side-help {
+  margin-top: auto;
+  padding: 16px;
+  border-radius: var(--radius-xl);
+  background: var(--sky);
+  display: grid;
+  gap: 4px;
+  font-size: 13px;
+  color: var(--ink-2);
+}
+.side-help b {
+  font-family: var(--f-head);
+  font-size: 16px;
+  color: var(--ink);
+}
+.side-help button {
+  justify-self: start;
+  color: var(--sky-i);
+  font-weight: 800;
+  margin-top: 4px;
+}
+.side-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 4px 0;
+  margin-top: 12px;
+  border-top: 1px solid var(--line);
+}
+.side-user .who {
+  flex: 1;
+  min-width: 0;
+}
+.side-user .who b {
+  display: block;
+  font-size: 14px;
+}
+.side-user .who span {
+  display: block;
+  font-size: 12px;
+  color: var(--muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ---------------------------------------------------------------- page */
+.main {
+  padding: 28px 32px 72px;
+  min-width: 0;
+  max-width: 1300px;
+  width: 100%;
+}
+.main:focus {
+  outline: none;
+}
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+.topbar h1 {
+  font-weight: 800;
+  font-size: 34px;
+  letter-spacing: -0.03em;
+}
+.topbar p {
+  color: var(--muted);
+  margin-top: 2px;
+}
+.topbar .acts {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--muted);
+  margin-bottom: 6px;
+  text-decoration: none;
+}
+.back:hover {
+  color: var(--ink);
+}
+.h-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  margin: 28px 0 14px;
+}
+.h-row h2 {
+  font-weight: 800;
+  font-size: 21px;
+}
+.h-row a,
+.h-row button {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--coral-d);
+  text-decoration: none;
+}
+
+/* ---------------------------------------------------------------- phone tab bar */
+.tabbar {
+  display: none;
+}
+.tab {
+  display: grid;
+  justify-items: center;
+  gap: 2px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--muted);
+  padding: 6px 8px;
+  min-width: 58px;
+  text-decoration: none;
+}
+.tab[aria-current='page'] {
+  color: var(--coral-d);
+}
+.tab-add .ic {
+  width: 44px;
+  height: 44px;
+  padding: 11px;
+  border-radius: 16px;
+  background: var(--coral);
+  color: #fff;
+  margin-top: -10px;
+  box-shadow: 0 10px 20px -10px rgba(255, 90, 60, 0.9);
+}
+
+@media (max-width: 900px) {
+  .app {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .side {
+    display: none;
+  }
+  .main {
+    padding: 20px 16px 110px;
+  }
+  .tabbar {
+    display: flex;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 40;
+    justify-content: space-around;
+    align-items: end;
+    padding: 8px 8px calc(8px + env(safe-area-inset-bottom, 0px));
+    background: #fff;
+    border-top: 1px solid var(--line);
+  }
+  .topbar h1 {
+    font-size: 28px;
+  }
+}
+
+/* ---------------------------------------------------------------- full-page layout (sign-in, 404) */
+.bare {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 32px 16px;
+}
+.bare:focus {
+  outline: none;
+}
+.bare-card {
+  width: 100%;
+  max-width: 440px;
+  display: grid;
+  gap: 18px;
+  padding: 32px;
+  border-radius: var(--radius-4xl);
+  background: #fff;
+}
+.bare-card h1 {
+  font-weight: 900;
+  font-size: 36px;
+  letter-spacing: -0.035em;
+}
+
+/* ---------------------------------------------------------------- placeholders (phase 0) */
+.coming {
+  padding: 22px;
+  display: grid;
+  gap: 14px;
+  justify-items: start;
+}
+.coming-list {
+  display: grid;
+  gap: 8px;
+  color: var(--ink-2);
+}
+.coming-list li {
+  display: flex;
+  gap: 10px;
+}
+.coming-list li::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  margin-top: 9px;
+  border-radius: 50%;
+  background: var(--coral);
+  flex: none;
+}
+.sheet-placeholder {
+  display: grid;
+  gap: 16px;
+  padding: 20px 16px;
+}
+.sheet-placeholder-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.sheet-placeholder-top h2 {
+  font-weight: 800;
+  font-size: 26px;
+}
