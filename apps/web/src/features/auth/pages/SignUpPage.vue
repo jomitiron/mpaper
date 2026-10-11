@@ -37,7 +37,7 @@ const session = useSessionStore();
 const route = useRoute();
 const router = useRouter();
 const card = useTemplateRef<HTMLElement>('card');
-const formEl = useTemplateRef<HTMLFormElement>('form');
+const formEl = useTemplateRef<HTMLFormElement>('formRoot');
 const verifyCooldown = useCooldown('verify-email');
 
 const form = reactive<SignUpValues>({
@@ -151,7 +151,7 @@ function changeEmail() {
         <GoogleButton label="Sign up with Google" :state="googleState" />
         <div class="or">or use your email</div>
 
-        <form ref="form" novalidate @submit.prevent="createAccount">
+        <form ref="formRoot" novalidate @submit.prevent="createAccount">
           <div class="two">
             <Field label="First name" :error="errors.first_name">
               <Input v-model="form.first_name" autocomplete="given-name" autocapitalize="words" />

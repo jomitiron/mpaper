@@ -13,7 +13,7 @@ import { checkEmail } from '../lib/validation';
 /** Asks for a reset code by email, then moves on to /reset-password. */
 
 const router = useRouter();
-const formEl = useTemplateRef<HTMLFormElement>('form');
+const formEl = useTemplateRef<HTMLFormElement>('formRoot');
 const cooldown = useCooldown('reset-password');
 
 const email = ref(authEmail.get());
@@ -49,7 +49,7 @@ async function send() {
       </p>
     </div>
 
-    <form ref="form" novalidate @submit.prevent="send">
+    <form ref="formRoot" novalidate @submit.prevent="send">
       <Field label="Email" :error="error">
         <Input
           v-model="email"

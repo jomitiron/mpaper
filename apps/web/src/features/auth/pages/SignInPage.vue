@@ -19,7 +19,7 @@ import { hasErrors, validateSignIn, type FormErrors, type SignInValues } from '.
 const session = useSessionStore();
 const route = useRoute();
 const router = useRouter();
-const formEl = useTemplateRef<HTMLFormElement>('form');
+const formEl = useTemplateRef<HTMLFormElement>('formRoot');
 const verifyCooldown = useCooldown('verify-email');
 
 const form = reactive<SignInValues>({ email: authEmail.get(), password: '' });
@@ -98,7 +98,7 @@ async function useSampleAccount() {
     <GoogleButton label="Continue with Google" :state="googleState" />
     <div class="or">or use your email</div>
 
-    <form ref="form" novalidate @submit.prevent="submit">
+    <form ref="formRoot" novalidate @submit.prevent="submit">
       <Field label="Email" :error="errors.email">
         <Input
           v-model="form.email"

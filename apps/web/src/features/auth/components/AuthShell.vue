@@ -60,10 +60,12 @@ withDefaults(defineProps<{ headline: string; art?: 'phone' | 'steps' }>(), { art
 /* The bare layout centres a card; the auth frame fills the screen instead. */
 .bare:has(> .auth) {
   display: block;
+  place-items: normal;
   padding: 0;
 }
 
 .auth {
+  width: 100%;
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 14px;

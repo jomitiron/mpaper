@@ -29,7 +29,7 @@ import {
 const route = useRoute();
 const router = useRouter();
 const toast = useToast();
-const formEl = useTemplateRef<HTMLFormElement>('form');
+const formEl = useTemplateRef<HTMLFormElement>('formRoot');
 const otp = useTemplateRef<InstanceType<typeof OtpInput>>('otp');
 const cooldown = useCooldown('reset-password');
 const codeErrorId = useId();
@@ -124,7 +124,7 @@ async function resend() {
       <p v-else class="muted">Enter your email, the 6-digit code we sent you and a new password.</p>
     </div>
 
-    <form ref="form" novalidate @submit.prevent="submit">
+    <form ref="formRoot" novalidate @submit.prevent="submit">
       <Field v-if="!knownEmail" label="Email" :error="errors.email">
         <Input
           v-model="form.email"
