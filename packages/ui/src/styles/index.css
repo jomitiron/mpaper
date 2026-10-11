@@ -1,0 +1,4 @@
+/* Everything an app needs: tokens, base styles and component classes. Import once at the root. */
+@import '@motopapers/tokens/tokens.css';
+@import './base.css';
+@import './components.css';
