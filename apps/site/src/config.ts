@@ -37,3 +37,12 @@ export const SECTIONS = [
   { id: 'why-motopapers', label: 'Why MotoPapers' },
   { id: 'faq', label: 'FAQ' },
 ] as const;
+
+/**
+ * The privacy and terms pages hold placeholder text until the owner replaces it. While this is
+ * true they carry noindex and stay out of the sitemap. Set it to false once the real text is in.
+ */
+export const LEGAL_IS_PLACEHOLDER = true;
+
+/** Pages listed in sitemap.xml. The legal pages join once their real text is in. */
+export const SITEMAP_PATHS = ['/', ...(LEGAL_IS_PLACEHOLDER ? [] : ['/privacy/', '/terms/'])];

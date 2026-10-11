@@ -1,0 +1,75 @@
+---
+import Legal from '../layouts/Legal.astro';
+import { COMPANY, COMPANY_ADDRESS } from '../config';
+
+// Placeholder for the owner to replace. See LEGAL_IS_PLACEHOLDER in src/config.ts.
+const todo = 'To be written';
+---
+
+<Legal
+  title="Privacy policy"
+  description="How MotoPapers collects, uses and protects your personal data."
+  updated="Last updated: to be added"
+>
+  <h2>Who we are</h2>
+  <p>
+    MotoPapers tracks and renews vehicle papers for drivers in Nigeria. You can reach us at
+    {COMPANY_ADDRESS} or on <a href={`tel:${COMPANY.phone.tel}`}>{COMPANY.phone.display}</a>.
+    <span class="todo">{todo}</span> the legal name of the company and its registration number.
+  </p>
+
+  <h2>What we collect</h2>
+  <p><span class="todo">{todo}</span> Confirm this list. Likely items:</p>
+  <ul>
+    <li>Your name, email address and phone number.</li>
+    <li>
+      Your cars: plate number, make, model, colour, engine and chassis numbers, and the photo of the
+      vehicle licence you upload.
+    </li>
+    <li>Your papers: expiry dates and insurance cover type.</li>
+    <li>Your delivery address.</li>
+    <li>
+      Payments and wallet activity. Card and bank details are handled by Paystack; MotoPapers
+      doesn't see or store card numbers.
+    </li>
+  </ul>
+
+  <h2>How we use it</h2>
+  <p>
+    <span class="todo">{todo}</span> For example: tracking expiry dates, sending reminders by SMS and
+    email, processing renewals and delivering papers, running your wallet, answering support requests
+    and keeping the service secure. State the lawful basis for each.
+  </p>
+
+  <h2>Who we share it with</h2>
+  <p>
+    <span class="todo">{todo}</span> Name each kind of partner and why: Paystack for payments, the agencies
+    and insurers that issue renewals, SMS and email providers, and delivery partners. Say that MotoPapers
+    doesn't sell personal data, if that's the case.
+  </p>
+
+  <h2>Cookies and analytics</h2>
+  <p>
+    <span class="todo">{todo}</span> This website sets no cookies. If analytics are switched on, they
+    use Plausible, which counts visits without cookies or personal data. Describe what the app stores
+    to keep you signed in.
+  </p>
+
+  <h2>How long we keep it</h2>
+  <p>
+    <span class="todo">{todo}</span> Retention periods for account, vehicle and payment records.
+  </p>
+
+  <h2>Your rights</h2>
+  <p>
+    <span class="todo">{todo}</span> Under the Nigeria Data Protection Act 2023 you can ask to see, correct
+    or delete your data, object to some uses, and complain to the Nigeria Data Protection Commission.
+    Explain how to make a request.
+  </p>
+
+  <h2>Contact</h2>
+  <p>
+    <span class="todo">{todo}</span> The email address for privacy requests and, if you have one, your
+    Data Protection Officer.
+  </p>
+</Legal>

@@ -1,0 +1,61 @@
+---
+import Legal from '../layouts/Legal.astro';
+import { COMPANY, COMPANY_ADDRESS } from '../config';
+
+// Placeholder for the owner to replace. See LEGAL_IS_PLACEHOLDER in src/config.ts.
+const todo = 'To be written';
+---
+
+<Legal
+  title="Terms of service"
+  description="The terms for using MotoPapers to track and renew your vehicle papers."
+  updated="Last updated: to be added"
+>
+  <h2>About these terms</h2>
+  <p>
+    <span class="todo">{todo}</span> Who the agreement is between, and that using MotoPapers means accepting
+    these terms.
+  </p>
+
+  <h2>Your account</h2>
+  <p>
+    <span class="todo">{todo}</span> Who can open an account, keeping sign-in details safe, and closing
+    an account.
+  </p>
+
+  <h2>Your cars and papers</h2>
+  <p>
+    <span class="todo">{todo}</span> You're responsible for the details you add, including those read
+    from your vehicle licence. Reminders help, but keeping your papers valid stays your responsibility.
+  </p>
+
+  <h2>Renewals and delivery</h2>
+  <p>
+    <span class="todo">{todo}</span> What happens when you order a renewal, how long it usually takes,
+    where papers are delivered, and what happens if a renewal can't be completed.
+  </p>
+
+  <h2>Wallet, payments and refunds</h2>
+  <p>
+    <span class="todo">{todo}</span> Topping up and paying from the wallet, card and bank transfer payments
+    through Paystack, fees, and when money is refunded.
+  </p>
+
+  <h2>Acceptable use</h2>
+  <p><span class="todo">{todo}</span> What you mustn't do with the service.</p>
+
+  <h2>Liability</h2>
+  <p><span class="todo">{todo}</span> Limits of liability, written with a lawyer.</p>
+
+  <h2>Changes to these terms</h2>
+  <p><span class="todo">{todo}</span> How you'll be told about changes.</p>
+
+  <h2>Governing law</h2>
+  <p><span class="todo">{todo}</span> Confirm: the laws of the Federal Republic of Nigeria.</p>
+
+  <h2>Contact</h2>
+  <p>
+    Questions about these terms: {COMPANY_ADDRESS}, or call
+    <a href={`tel:${COMPANY.phone.tel}`}>{COMPANY.phone.display}</a>.
+  </p>
+</Legal>

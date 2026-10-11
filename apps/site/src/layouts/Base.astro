@@ -10,15 +10,16 @@ interface Props {
   description?: string;
   /** Structured data for this page, rendered as JSON-LD. */
   jsonLd?: Record<string, unknown>;
-  /** Keep this page out of search results (the 404 page). */
+  /** Keep this page out of search results (the 404 page, placeholder legal pages). */
   noindex?: boolean;
 }
 
 const { title, description = DEFAULT_DESCRIPTION, jsonLd, noindex = false } = Astro.props;
+const indexable = !noindex && !NOINDEX;
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 const ogImage = new URL('/og.png', Astro.site).href;
 const ogImageAlt =
-  'MotoPapers: never drive with expired papers again. A phone showing a car’s licence, insurance and roadworthiness.';
+  'MotoPapers: never drive with expired papers again. Cards showing the days left on a car’s licence, insurance and roadworthiness.';
 ---
 
 <!doctype html>
@@ -28,8 +29,13 @@ const ogImageAlt =
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={canonical} />
-    {(noindex || NOINDEX) && <meta name="robots" content="noindex" />}
+    {
+      indexable ? (
+        <link rel="canonical" href={canonical} />
+      ) : (
+        <meta name="robots" content="noindex" />
+      )
+    }
     <meta name="theme-color" content="#f4f3f9" />
 
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />

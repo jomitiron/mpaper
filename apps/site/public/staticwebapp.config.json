@@ -1,4 +1,5 @@
 {
+  "trailingSlash": "auto",
   "responseOverrides": {
     "404": { "rewrite": "/404.html" }
   },
@@ -9,6 +10,7 @@
     }
   ],
   "globalHeaders": {
+    "Content-Security-Policy": "default-src 'self'; script-src 'self' https://plausible.io; connect-src 'self' https://plausible.io; img-src 'self' data:; style-src 'self' 'unsafe-inline'; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests",
     "X-Content-Type-Options": "nosniff",
     "Referrer-Policy": "strict-origin-when-cross-origin",
     "X-Frame-Options": "DENY"

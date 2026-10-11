@@ -8,7 +8,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "lint": "eslint .",
-    "typecheck": "astro check"
+    "typecheck": "astro check",
+    "social-images": "node scripts/social-images.mjs"
   },
   "dependencies": {
     "@motopapers/tokens": "workspace:*",
