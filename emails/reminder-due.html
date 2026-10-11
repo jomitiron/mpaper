@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="x-apple-disable-message-reformatting">
+<meta name="color-scheme" content="light">
+<meta name="supported-color-schemes" content="light">
+<title>Renewal reminder</title>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700&amp;family=Gabarito:wght@700;800;900&amp;display=swap" rel="stylesheet">
+<style>
+  body{margin:0;padding:0;background:#F4F3F9;-webkit-text-size-adjust:100%;}
+  table{border-collapse:collapse;}
+  a{color:#DE3B22;}
+  @media (max-width:620px){
+    .container{width:100%!important;}
+    .px{padding-left:22px!important;padding-right:22px!important;}
+    .h1{font-size:28px!important;line-height:32px!important;}
+    .big{font-size:46px!important;line-height:48px!important;}
+  }
+</style>
+</head>
+<body style="margin:0;padding:0;background:#F4F3F9;">
+<div style="display:none;max-height:0;overflow:hidden;opacity:0;mso-hide:all;">Renew now from your wallet and we'll deliver the new papers.&#8199;&#847;&#8199;&#847;&#8199;&#847;&#8199;&#847;&#8199;&#847;&#8199;&#847;</div>
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background:#F4F3F9;">
+<tr><td align="center" style="padding:32px 12px 40px;">
+  <table role="presentation" cellpadding="0" cellspacing="0" border="0" class="container" width="600" style="width:600px;max-width:600px;">
+    <tr><td style="padding:0 6px 18px;">
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
+        <td width="34" height="34" align="center" valign="middle" style="width:34px;height:34px;background:#FF5A3C;border-radius:11px;font-family:'Gabarito','Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:900;font-size:17px;line-height:34px;color:#FFFFFF;">M</td>
+        <td style="padding-left:10px;font-family:'Gabarito','Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:800;font-size:20px;line-height:24px;color:#1E1B33;letter-spacing:-0.3px;">MotoPapers</td>
+      </tr></table>
+    </td></tr>
+    <tr><td style="background:#FFFFFF;border-radius:28px;">
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"><tr><td class="px" style="background:#FFFFFF;padding:32px 36px 30px;border-radius:28px 28px 0 0;border-bottom:1px solid #E6E4EF;">
+    <span style="display:inline-block;padding:5px 12px;border-radius:999px;background:#FFE6C7;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:12px;line-height:16px;font-weight:700;color:#9A4500;">Renewal reminder</span>
+    <h1 class="h1" style="margin:14px 0 0;font-family:'Gabarito','Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:900;font-size:34px;line-height:38px;letter-spacing:-0.8px;color:#1E1B33;">Your {{document_name_lower}} is due soon</h1>
+    
+    
+  </td></tr></table>
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"><tr><td class="px" style="padding:28px 36px 20px;"><p style="margin:0 0 16px;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:16px;line-height:25px;color:#45425C;">Hi {{first_name}}, the {{document_name_lower}} for your {{vehicle_name}} expires on <b style="color:#1E1B33;">{{expiry_date}}</b>.</p><table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin:6px 0 22px;"><tr><td style="background:{{doc_tile_bg}};border-radius:22px;padding:20px 22px;">
+    <p style="margin:0;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:13px;line-height:18px;font-weight:700;color:{{doc_tile_color}};">{{document_label}}</p>
+    <p class="big" style="margin:8px 0 0;font-family:'Gabarito','Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:900;font-size:56px;line-height:58px;letter-spacing:-2px;color:{{doc_tile_color}};">{{days_left}}<span style="font-size:18px;letter-spacing:0;font-weight:800;"> days left</span></p>
+    <p style="margin:4px 0 0;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;font-weight:600;color:{{doc_tile_color}};">Expires {{expiry_date}}</p>
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin-top:14px;"><tr>
+    <td style="background:#FFFFFF;border-radius:9px;padding:6px 11px;font-family:'Gabarito','Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:800;font-size:13px;line-height:16px;letter-spacing:1.3px;color:#1E1B33;white-space:nowrap;">{{plate_number}}</td>
+    <td style="padding-left:10px;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;line-height:18px;font-weight:600;color:#1E1B33;">{{vehicle_name}}</td>
+  </tr></table>
+  </td></tr></table><table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:8px 0 20px;"><tr><td align="center" bgcolor="#FF5A3C" style="background:#FF5A3C;border-radius:14px;">
+    <a href="{{renew_url}}" target="_blank" style="display:inline-block;padding:15px 26px;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:16px;line-height:20px;font-weight:700;color:#FFFFFF;text-decoration:none;border-radius:14px;">Renew {{document_name_lower}}</a>
+  </td></tr></table><p style="margin:0 0 16px;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:16px;line-height:25px;color:#45425C;">Your wallet balance is <b style="color:#1E1B33;">{{wallet_balance}}</b>.</p><p style="margin:0 0 12px;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;line-height:21px;color:#6A6783;">Already renewed? <a href="{{update_url}}" style="color:#DE3B22;font-weight:700;text-decoration:underline;">Update the expiry date</a> so we stop reminding you.</p></td></tr></table>
+    </td></tr>
+    <tr><td class="px" style="padding:24px 28px 0;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:12.5px;line-height:19px;color:#6A6783;text-align:center;">
+      You're getting this because reminders are on for {{plate_number}}. <a href="{{settings_url}}" style="color:#DE3B22;font-weight:700;text-decoration:underline;">Manage reminders</a>.<br>MotoPapers · 8 Sunday Gbajobi Street, Millennium Estate, Gbagada, Lagos · +234 802 959 5069
+    </td></tr>
+  </table>
+</td></tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,722 @@
+<title>MotoPapers Directions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Chivo+Mono:wght@400;500;700&family=Chivo:wght@400;600;700;800;900&family=Figtree:wght@400;500;600;700;800&family=Gabarito:wght@600;700;800;900&display=swap">
+<style>
+/* Layout: a quiet comparison page; each direction = heading + spec, then a desktop frame beside a phone frame, then three notes */
+:root{
+  --bg:#F5F5F3; --card:#FFFFFF; --card-2:#EEEEEB; --fg:#17181B; --fg-2:#40434A; --muted:#696D76; --line:#DDDEDA;
+  --shadow:0 1px 2px rgba(0,0,0,.05),0 28px 56px -28px rgba(0,0,0,.32);
+  --font:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#111214; --card:#1A1B1E; --card-2:#232428; --fg:#EDEDEF; --fg-2:#C8C9CD; --muted:#8F9198; --line:#2D2E33;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 28px 56px -28px rgba(0,0,0,.85); color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#111214; --card:#1A1B1E; --card-2:#232428; --fg:#EDEDEF; --fg-2:#C8C9CD; --muted:#8F9198; --line:#2D2E33;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 28px 56px -28px rgba(0,0,0,.85); color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--fg);font-family:var(--font);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4,p{margin:0}
+ul,ol,dl,dd{margin:0;padding:0;list-style:none}
+button{font:inherit;cursor:default}
+.ic{width:18px;height:18px;flex:none;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.wrap{max-width:1260px;margin:0 auto;padding-inline:24px}
+.intro{padding-block:56px 40px;display:grid;gap:16px}
+.intro .tag{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.intro h1{font-size:clamp(34px,5vw,56px);font-weight:800;letter-spacing:-.035em;line-height:1.02;max-width:18ch;text-wrap:balance}
+.intro p{font-size:18px;color:var(--fg-2);max-width:62ch}
+.jump{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.jump a{display:inline-flex;align-items:center;gap:10px;padding:8px 14px 8px 8px;border-radius:999px;background:var(--card);border:1px solid var(--line);color:var(--fg);text-decoration:none;font-weight:600;font-size:14px}
+.jump a:hover{border-color:var(--muted)}
+.jump a:focus-visible,.frame:focus-visible{outline:2px solid #3B6FE0;outline-offset:2px}
+.jump b{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-size:13px;color:#fff}
+.dir{display:grid;gap:28px;padding-block:56px;border-top:1px solid var(--line);scroll-margin-top:12px}
+.dir-head{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:24px 40px;align-items:end}
+.dir-tag{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.dir-head h2{font-size:clamp(30px,4vw,46px);font-weight:800;letter-spacing:-.03em;line-height:1.05;margin-top:6px;text-wrap:balance}
+.dir-head p.idea{font-size:17px;color:var(--fg-2);margin-top:12px;max-width:54ch}
+.spec{display:grid;gap:14px;padding:18px;border-radius:16px;background:var(--card);border:1px solid var(--line)}
+.spec-l{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.swatches{display:flex;flex-wrap:wrap;gap:8px 14px}
+.sw{display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--fg-2)}
+.sw i{width:22px;height:22px;border-radius:7px;border:1px solid var(--line);flex:none}
+.type{display:grid;gap:4px}
+.type .t1{font-size:24px;line-height:1.1}
+.type .t2{font-size:13px;color:var(--muted)}
+.dir-body{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:28px;align-items:start}
+.frame{border-radius:14px;overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow);background:var(--card);min-width:0}
+.frame-bar{display:flex;align-items:center;gap:7px;height:34px;padding:0 12px;background:var(--card-2);border-bottom:1px solid var(--line)}
+.frame-bar i{width:10px;height:10px;border-radius:50%;background:var(--line)}
+.frame-bar span{margin-left:10px;font-size:12px;color:var(--muted);background:var(--card);padding:2px 12px;border-radius:6px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;min-width:0}
+.phone-col{display:grid;gap:12px;justify-items:center}
+.phone{width:300px;max-width:100%;height:620px;border-radius:42px;padding:9px;background:#0A0B0D;box-shadow:var(--shadow),0 0 0 1px var(--line)}
+.phone>.screen{height:100%;border-radius:34px;overflow:hidden;display:flex;flex-direction:column}
+.cap{font-size:12.5px;color:var(--muted);text-align:center}
+.notes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.note{padding:18px;border-radius:14px;background:var(--card);border:1px solid var(--line);display:grid;gap:6px;align-content:start}
+.note h3{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.note p{font-size:14.5px;color:var(--fg-2)}
+.compare{padding-block:56px 80px;border-top:1px solid var(--line);display:grid;gap:20px}
+.compare h2{font-size:clamp(26px,3vw,34px);font-weight:800;letter-spacing:-.025em}
+.compare p.lead{color:var(--fg-2);font-size:16px;max-width:62ch}
+.tbl{overflow-x:auto;border-radius:14px;border:1px solid var(--line);background:var(--card)}
+.tbl table{width:100%;border-collapse:collapse;min-width:680px;font-size:14px}
+.tbl th,.tbl td{padding:13px 16px;text-align:left;vertical-align:top;border-top:1px solid var(--line)}
+.tbl thead th{border-top:0;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.tbl tbody th{font-weight:600;color:var(--muted);width:150px}
+.tbl td{color:var(--fg-2)}
+.screen{container-type:inline-size;position:relative}
+@media (max-width:1040px){.dir-body{grid-template-columns:minmax(0,1fr)}.dir-head{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:720px){.notes{grid-template-columns:minmax(0,1fr)}.wrap{padding-inline:16px}.intro{padding-block:36px 28px}}
+
+/* =====================================================================
+   DIRECTION A — Instrument cluster (single dark world, explicit colours)
+   ===================================================================== */
+.A{--a-bg:#0D0F12;--a-rail:#090B0D;--a-panel:#15181D;--a-panel2:#1C2027;--a-line:#262B33;--a-text:#EDEFF3;--a-muted:#8B93A1;--a-amber:#FFB224;--a-red:#FF5442;--a-green:#38D996;--a-off:#343A44;
+  background:var(--a-bg);color:var(--a-text);font-family:"Archivo",system-ui,sans-serif;font-stretch:100%}
+.A .x{font-stretch:125%}
+.a-wrap{display:grid;grid-template-columns:64px minmax(0,1fr)}
+.a-rail{display:flex;flex-direction:column;align-items:center;gap:6px;padding:18px 0;border-right:1px solid var(--a-line);background:var(--a-rail)}
+.a-logo{width:36px;height:36px;border-radius:10px;background:var(--a-red);color:#fff;display:grid;place-items:center;font-weight:800;font-stretch:125%;font-size:12px;margin-bottom:14px}
+.a-rail .ri{width:40px;height:40px;border-radius:11px;display:grid;place-items:center;color:var(--a-muted)}
+.a-rail .ri.on{color:var(--a-amber);background:var(--a-panel2)}
+.a-av{margin-top:auto;width:34px;height:34px;border-radius:50%;background:var(--a-panel2);border:1px solid var(--a-line);display:grid;place-items:center;font-size:12px;font-weight:700;color:var(--a-muted)}
+.a-main{padding:24px 28px 28px;display:grid;gap:18px;min-width:0}
+.a-top{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.a-eyebrow{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--a-muted)}
+.a-h{font-stretch:125%;font-weight:800;font-size:26px;letter-spacing:-.01em;margin-top:3px}
+.a-lamps{display:flex;gap:12px}
+.lamp{display:grid;justify-items:center;gap:5px;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--a-muted)}
+.lamp>span{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:var(--a-panel2);border:1px solid var(--a-line);color:var(--a-off)}
+.lamp.red>span{color:var(--a-red);border-color:rgba(255,84,66,.55);box-shadow:0 0 18px rgba(255,84,66,.5),inset 0 0 10px rgba(255,84,66,.25)}
+.lamp.amber>span{color:var(--a-amber);border-color:rgba(255,178,36,.5);box-shadow:0 0 18px rgba(255,178,36,.42),inset 0 0 10px rgba(255,178,36,.22)}
+.lamp.green>span{color:var(--a-green);border-color:rgba(56,217,150,.45)}
+.a-cluster{display:grid;grid-template-columns:1fr 1.3fr 1fr;align-items:center;gap:8px;padding:18px 18px 10px;border-radius:24px;background:radial-gradient(120% 140% at 50% 0%,#1C222B 0%,var(--a-panel) 55%,#0F1216 100%);border:1px solid var(--a-line)}
+.a-dial{position:relative;aspect-ratio:1;justify-self:center;width:100%}
+.a-dial.sm{max-width:220px}
+.a-dial.lg{max-width:300px}
+.a-dial svg{width:100%;height:100%;display:block;overflow:visible}
+.a-read{position:absolute;inset:0;display:grid;place-content:center;justify-items:center;text-align:center;gap:2px}
+.a-read.low{inset:54% 0 0 0;place-content:start center}
+.a-lbl{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--a-muted)}
+.a-read b{font-stretch:125%;font-weight:800;font-size:22px;font-variant-numeric:tabular-nums}
+.a-read b.big{font-size:68px;line-height:.9;color:var(--a-amber);text-shadow:0 0 24px rgba(255,178,36,.35)}
+.a-unit{font-stretch:125%;font-weight:700;font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--a-amber)}
+.a-sub{font-size:11.5px;color:var(--a-muted)}
+.a-msg{display:flex;align-items:center;gap:14px;padding:12px 14px 12px 16px;border-radius:14px;background:linear-gradient(90deg,rgba(255,84,66,.17),rgba(255,84,66,.04));border:1px solid rgba(255,84,66,.35);flex-wrap:wrap}
+.a-msg.amber{background:linear-gradient(90deg,rgba(255,178,36,.17),rgba(255,178,36,.04));border-color:rgba(255,178,36,.35)}
+.a-msg p{flex:1;font-size:13.5px;min-width:180px}
+.a-msg p b{font-stretch:125%;letter-spacing:.08em;color:var(--a-red);margin-right:8px;font-weight:800}
+.a-msg.amber p b{color:var(--a-amber)}
+.a-btn{height:34px;padding:0 14px;border-radius:9px;font-weight:700;font-size:13px;background:var(--a-text);color:var(--a-bg);border:0;white-space:nowrap}
+.a-btn.red{background:var(--a-red);color:#fff}
+.a-btn.amber{background:var(--a-amber);color:#1A1204}
+.a-btn.ghost{background:transparent;color:var(--a-text);border:1px solid var(--a-line)}
+.a-cols{display:grid;grid-template-columns:1.5fr 1fr;gap:18px;align-items:start}
+.a-panel{background:var(--a-panel);border:1px solid var(--a-line);border-radius:18px;padding-bottom:4px}
+.a-ph{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--a-muted);padding:14px 18px 10px;font-weight:600}
+.a-row{display:grid;grid-template-columns:70px minmax(0,1fr) auto auto;gap:14px;align-items:center;padding:10px 18px;border-top:1px solid var(--a-line)}
+.a-days{display:grid;line-height:1}
+.a-days b{font-stretch:125%;font-weight:800;font-size:24px;font-variant-numeric:tabular-nums}
+.a-days small{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--a-muted);margin-top:4px}
+.c-red{color:var(--a-red)} .c-amber{color:var(--a-amber)} .c-green{color:var(--a-green)}
+.a-row .t{min-width:0}
+.a-row .t b{display:block;font-weight:600;font-size:14px}
+.a-row .t span{font-size:12px;color:var(--a-muted)}
+.a-date{font-size:11.5px;letter-spacing:.1em;color:var(--a-muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.a-car{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;padding:12px 18px;border-top:1px solid var(--a-line)}
+.a-plate{font-stretch:125%;font-weight:800;font-size:14px;letter-spacing:.08em}
+.a-car .m{display:block;font-size:12px;color:var(--a-muted)}
+.a-dots{display:flex;gap:10px}
+.a-dots span{display:grid;justify-items:center;gap:3px;font-size:8.5px;letter-spacing:.12em;color:var(--a-muted)}
+.a-dots i{width:10px;height:10px;border-radius:50%;background:var(--a-off)}
+.a-dots i.g{background:var(--a-green);box-shadow:0 0 8px rgba(56,217,150,.6)}
+.a-dots i.y{background:var(--a-amber);box-shadow:0 0 8px rgba(255,178,36,.65)}
+.a-dots i.r{background:var(--a-red);box-shadow:0 0 8px rgba(255,84,66,.7)}
+@container (max-width:860px){.a-wrap{grid-template-columns:minmax(0,1fr)}.a-rail{display:none}.a-cols{grid-template-columns:minmax(0,1fr)}}
+@container (max-width:560px){.a-cluster{grid-template-columns:1fr 1fr;padding:14px 10px 6px}.a-dial.lg{grid-column:1/-1;order:-1;max-width:240px}.a-main{padding:18px 14px}.a-row{grid-template-columns:56px minmax(0,1fr) auto}.a-date{display:none}.a-lamps{gap:8px}.a-read b.big{font-size:54px}}
+/* A phone */
+.a-phone .pt{display:flex;justify-content:space-between;align-items:center;padding:16px 18px 4px;color:var(--a-muted)}
+.a-phone .head{padding:8px 18px 14px;display:grid;gap:6px}
+.a-lcd{justify-self:start;font-stretch:125%;font-weight:800;font-size:22px;letter-spacing:.1em;padding:6px 12px;border-radius:10px;background:#0A0C0F;border:1px solid var(--a-line);color:var(--a-text);box-shadow:inset 0 0 14px rgba(255,255,255,.04)}
+.a-phone .head p{font-size:13px;color:var(--a-muted)}
+.a-trio{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;padding:6px 10px 10px;margin:0 10px;border-radius:18px;background:radial-gradient(120% 140% at 50% 0%,#1C222B 0%,var(--a-panel) 60%);border:1px solid var(--a-line)}
+.a-trio .a-dial{max-width:84px}
+.a-trio .a-read b{font-size:14px;font-stretch:100%}
+.a-trio .a-lbl{font-size:7.5px;letter-spacing:.14em}
+.a-phone .a-msg{margin:12px 10px 0;padding:10px 12px;gap:10px}
+.a-phone .a-msg p{font-size:12px;min-width:0}
+.a-phone .a-msg p b{display:block;margin:0 0 2px}
+.a-specs{margin:14px 18px 0;display:grid;gap:9px}
+.a-specs div{display:flex;justify-content:space-between;gap:10px;font-size:12px;border-bottom:1px solid var(--a-line);padding-bottom:8px}
+.a-specs dt{color:var(--a-muted);letter-spacing:.08em;text-transform:uppercase;font-size:10px}
+.a-specs dd{font-stretch:112%;font-weight:600;letter-spacing:.04em}
+.a-tabs{margin-top:auto;display:flex;justify-content:space-around;padding:12px 8px 16px;border-top:1px solid var(--a-line);background:var(--a-rail);color:var(--a-muted)}
+.a-tabs .on{color:var(--a-amber)}
+
+/* =====================================================================
+   DIRECTION B — Certificate (single paper world, explicit colours)
+   ===================================================================== */
+.B{--b-paper:#EDF1EA;--b-sheet:#FAFBF7;--b-ink:#13261B;--b-muted:#56665C;--b-line:#C6D1C7;--b-green:#0A7A4A;--b-green-d:#075C37;--b-green-soft:#DCEADF;--b-red:#C2362B;--b-amber:#9C610C;--b-grey:#75807A;
+  background:var(--b-paper);color:var(--b-ink);font-family:"Chivo",system-ui,sans-serif}
+.B .mono{font-family:"Chivo Mono",ui-monospace,Menlo,monospace}
+.b-mast{display:flex;align-items:center;gap:24px;padding:14px 28px;background:var(--b-sheet);border-bottom:1px solid var(--b-line);flex-wrap:wrap}
+.b-brand{display:flex;align-items:center;gap:12px}
+.b-crest{width:38px;height:42px;background:var(--b-green);color:#fff;clip-path:polygon(50% 0,100% 13%,100% 62%,50% 100%,0 62%,0 13%);display:grid;place-items:center;font-weight:900;font-size:12px;letter-spacing:.04em;padding-bottom:4px}
+.b-brand b{display:block;font-weight:900;letter-spacing:.18em;font-size:14px}
+.b-brand small{display:block;font-size:11px;color:var(--b-muted);letter-spacing:.03em}
+.b-nav{display:flex;gap:4px;margin-left:auto}
+.b-nav span{padding:8px 12px;font-size:13.5px;font-weight:600;color:var(--b-muted);border-bottom:3px double transparent}
+.b-nav span.on{color:var(--b-ink);border-bottom-color:var(--b-green)}
+.b-holder{display:grid;text-align:right;line-height:1.3}
+.b-holder small{font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--b-muted)}
+.b-holder b{font-size:14px}
+.b-holder span{font-size:11px;color:var(--b-muted)}
+.b-band{height:12px;background-color:var(--b-green);background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.2) 0 1px,transparent 1px 6px),repeating-linear-gradient(-45deg,rgba(255,255,255,.2) 0 1px,transparent 1px 6px)}
+.b-body{padding:28px;display:grid;gap:22px}
+.b-title{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap}
+.b-title h3{font-weight:900;font-size:34px;letter-spacing:-.025em;line-height:1}
+.b-title p{font-size:12px;color:var(--b-muted);margin-top:9px;letter-spacing:.02em}
+.b-sum{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.b-box{position:relative;background:var(--b-sheet);border:1px solid var(--b-line);outline:1px solid var(--b-line);outline-offset:-6px;padding:16px 20px 18px;display:grid;gap:3px;overflow:hidden}
+.b-box::after{content:"";position:absolute;right:-30px;top:-30px;width:120px;height:120px;background:repeating-radial-gradient(circle,transparent 0 5px,rgba(10,122,74,.12) 5px 6px);border-radius:50%;pointer-events:none}
+.b-box small{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--b-muted);font-weight:700}
+.b-box b{font-weight:900;font-size:30px;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.b-box b em{font-style:normal;font-size:16px;color:var(--b-muted);font-weight:700}
+.b-box span{font-size:12.5px;color:var(--b-muted)}
+.b-notice{display:flex;align-items:center;gap:22px;padding:16px 22px;background:var(--b-sheet);border:1.5px dashed var(--b-red);flex-wrap:wrap}
+.b-seal{width:86px;height:86px;border-radius:50%;border:3px double var(--b-red);color:var(--b-red);display:grid;place-content:center;text-align:center;font-weight:900;font-size:13px;letter-spacing:.12em;transform:rotate(-12deg);flex:none;opacity:.92;line-height:1.2}
+.b-seal small{font-family:"Chivo Mono",monospace;font-size:10px;letter-spacing:.04em;font-weight:500}
+.b-notice div{flex:1;min-width:220px}
+.b-notice b{font-size:16px}
+.b-notice p{font-size:13.5px;color:var(--b-muted);margin-top:3px}
+.b-btn{height:38px;padding:0 16px;background:var(--b-green);color:#fff;font-weight:700;font-size:13.5px;border:0;border-radius:3px;letter-spacing:.02em;white-space:nowrap}
+.b-btn.line{background:transparent;color:var(--b-green);border:1.5px solid var(--b-green)}
+.b-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:22px}
+.b-sheet{background:var(--b-sheet);border:1px solid var(--b-line)}
+.b-sh{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:14px 18px 12px;border-bottom:2px solid var(--b-ink)}
+.b-sh h4{font-weight:800;font-size:15px;letter-spacing:.01em}
+.b-sh span{font-size:11px;color:var(--b-muted)}
+table.b-ledger{width:100%;border-collapse:collapse;font-size:13px}
+.b-ledger th{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--b-muted);text-align:left;padding:10px 14px;border-bottom:1px solid var(--b-line);font-weight:700}
+.b-ledger td{padding:12px 14px;border-bottom:1px solid var(--b-line);vertical-align:middle}
+.b-ledger tr:last-child td{border-bottom:0}
+.b-ledger td.no{font-family:"Chivo Mono",monospace;color:var(--b-muted);font-size:12px;width:44px}
+.b-ledger td b{display:block;font-weight:700}
+.b-ledger td small{color:var(--b-muted);font-size:12px}
+.b-ledger td.date{font-family:"Chivo Mono",monospace;font-size:12px;white-space:nowrap}
+.b-ledger td.act{text-align:right}
+.b-ledger a{color:var(--b-green);font-weight:700;font-size:12.5px;text-decoration:underline;text-underline-offset:3px}
+.stampS{display:inline-block;padding:2px 7px;border:1.5px solid currentColor;border-radius:3px;font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;transform:rotate(-4deg);white-space:nowrap}
+.st-red{color:var(--b-red)} .st-amber{color:var(--b-amber)} .st-green{color:var(--b-green)} .st-grey{color:var(--b-grey)}
+.b-certs{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}
+.b-cert{background:var(--b-sheet);border:1px solid var(--b-line);position:relative;overflow:hidden}
+.b-cert-h{height:32px;background:repeating-radial-gradient(circle at 0 100%,transparent 0 5px,rgba(10,122,74,.16) 5px 6px),var(--b-green-soft);border-bottom:1px dashed var(--b-line);display:flex;align-items:center;padding:0 12px;font-family:"Chivo Mono",monospace;font-size:10.5px;letter-spacing:.06em;color:var(--b-green-d)}
+.b-cert-b{padding:12px 12px 14px;display:grid;gap:3px}
+.b-cert-b .pl{font-weight:900;font-size:17px;letter-spacing:.06em}
+.b-cert-b .md{font-size:12px;color:var(--b-muted)}
+.b-checks{display:grid;gap:4px;font-size:12px;margin-top:8px}
+.b-checks span{display:flex;justify-content:space-between;gap:8px}
+.b-checks em{font-style:normal;font-family:"Chivo Mono",monospace;font-size:11px}
+.stampL{position:absolute;right:8px;top:5px;text-transform:uppercase;transform:rotate(-6deg);border:2px solid currentColor;outline:1px solid currentColor;outline-offset:2px;padding:3px 8px;font-weight:900;font-size:10.5px;letter-spacing:.14em;opacity:.88;border-radius:3px;background:rgba(250,251,247,.6)}
+@container (max-width:860px){.b-nav{display:none}}
+@container (max-width:600px){.b-sum{grid-template-columns:minmax(0,1fr)}.b-body{padding:18px 14px}.b-ledger .hide-s,.b-ledger .no{display:none}.b-ledger td,.b-ledger th{padding:10px}.b-holder{display:none}.b-mast{padding:12px 14px}.b-title h3{font-size:28px}}
+/* B phone */
+.b-phone .pt{display:flex;justify-content:space-between;align-items:center;padding:16px 18px 10px;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--b-muted);background:var(--b-sheet)}
+.b-phone .head{padding:16px 18px 10px;display:grid;gap:2px}
+.b-phone .head small{font-size:10px;letter-spacing:.14em;color:var(--b-muted)}
+.b-phone .head b{font-weight:900;font-size:28px;letter-spacing:.05em;line-height:1.1}
+.b-phone .head span{font-size:13px;color:var(--b-muted)}
+.b-stack{display:grid;gap:10px;padding:6px 14px 0}
+.b-stack .b-cert-b{grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:2px 10px;padding:10px 12px}
+.b-stack .lbl{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--b-muted)}
+.b-stack .dt{font-family:"Chivo Mono",monospace;font-size:17px;font-weight:700;letter-spacing:.02em}
+.b-stack .stampS{grid-row:1/3;grid-column:2;font-size:10px;padding:4px 8px;transform:rotate(-8deg)}
+.b-phone .b-btn{margin:14px 14px 0;height:44px}
+.b-tabs{margin-top:auto;display:flex;justify-content:space-around;padding:12px 6px 16px;border-top:2px solid var(--b-ink);background:var(--b-sheet);font-size:10.5px;font-weight:700;color:var(--b-muted)}
+.b-tabs span{display:grid;justify-items:center;gap:3px}
+.b-tabs .on{color:var(--b-green)}
+
+/* =====================================================================
+   DIRECTION C — Bright and friendly (single light world, explicit colours)
+   ===================================================================== */
+.C{--c-bg:#F4F3F9;--c-card:#FFFFFF;--c-ink:#1E1B33;--c-muted:#6A6783;--c-line:#E6E4EF;--c-coral:#FF5A3C;--c-coral-d:#DE3B22;--c-sky:#E4EDFF;--c-sky-i:#2858D6;--c-mint:#DCF5E9;--c-mint-i:#0B7F4C;--c-butter:#FFEFC4;--c-butter-i:#946000;--c-rose:#FFE2DC;--c-rose-i:#C92F18;
+  background:var(--c-bg);color:var(--c-ink);font-family:"Figtree",system-ui,sans-serif}
+.C .g{font-family:"Gabarito","Figtree",system-ui,sans-serif}
+.c-wrap{display:grid;grid-template-columns:210px minmax(0,1fr)}
+.c-side{background:var(--c-card);padding:22px 12px;display:flex;flex-direction:column;gap:4px;border-right:1px solid var(--c-line)}
+.c-logo{display:flex;align-items:center;gap:10px;font-family:"Gabarito",sans-serif;font-weight:800;font-size:19px;margin:0 8px 18px;letter-spacing:-.01em}
+.c-logo i{width:32px;height:32px;border-radius:11px;background:var(--c-coral);display:grid;place-items:center;color:#fff}
+.c-nav{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:14px;font-weight:600;color:var(--c-muted);font-size:14.5px}
+.c-nav.on{background:var(--c-rose);color:var(--c-coral-d)}
+.c-help{margin-top:auto;padding:16px;border-radius:18px;background:var(--c-sky);color:var(--c-ink);font-size:13px;display:grid;gap:4px}
+.c-help b{font-family:"Gabarito",sans-serif;font-size:15px}
+.c-help span{color:var(--c-sky-i);font-weight:700}
+.c-main{padding:26px 28px 30px;display:grid;gap:20px;min-width:0}
+.c-top{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.c-top h3{font-family:"Gabarito",sans-serif;font-weight:800;font-size:30px;letter-spacing:-.02em;line-height:1.1}
+.c-top p{color:var(--c-muted)}
+.c-top-r{display:flex;gap:10px}
+.c-circle{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;flex:none}
+.c-bell{background:var(--c-card);border:1px solid var(--c-line);position:relative}
+.c-bell::after{content:"";position:absolute;top:9px;right:10px;width:9px;height:9px;border-radius:50%;background:var(--c-coral);border:2px solid var(--c-card)}
+.c-av{background:var(--c-butter);color:var(--c-butter-i);font-weight:800;font-size:14px}
+.c-row1{display:grid;grid-template-columns:1.7fr 1fr;gap:16px}
+.c-hero{position:relative;overflow:hidden;background:var(--c-coral);color:#fff;border-radius:28px;padding:26px;display:grid;gap:10px;align-content:start;min-height:220px}
+.c-hero h4{font-family:"Gabarito",sans-serif;font-weight:800;font-size:28px;line-height:1.08;letter-spacing:-.02em;max-width:15ch;position:relative}
+.c-hero p{opacity:.94;max-width:34ch;position:relative;font-size:14.5px}
+.c-chip-w{justify-self:start;background:rgba(255,255,255,.22);padding:4px 11px;border-radius:999px;font-size:12px;font-weight:700;position:relative}
+.c-btn-w{justify-self:start;margin-top:8px;height:46px;padding:0 20px;border-radius:15px;background:#fff;color:var(--c-coral-d);font-weight:800;border:0;font-size:14.5px;position:relative}
+.c-ghost{position:absolute;right:-34px;bottom:-30px;width:250px;height:126px;border-radius:20px;transform:rotate(-12deg);display:grid;place-items:center;font-family:"Gabarito",sans-serif;font-weight:900;font-size:38px;letter-spacing:.06em;color:rgba(255,255,255,.3);border:3px solid rgba(255,255,255,.28);background:rgba(255,255,255,.08)}
+.c-wallet{background:var(--c-ink);color:#fff;border-radius:28px;padding:24px;display:grid;gap:6px;align-content:start}
+.c-wallet .l{font-size:13px;opacity:.72;font-weight:600}
+.c-wallet b{font-family:"Gabarito",sans-serif;font-weight:800;font-size:40px;letter-spacing:-.02em;line-height:1.05}
+.c-btn{height:42px;padding:0 18px;border-radius:14px;background:var(--c-coral);color:#fff;font-weight:700;border:0;justify-self:start;font-size:14px;margin-top:6px}
+.c-auto{display:flex;align-items:center;justify-content:space-between;margin-top:10px;padding-top:12px;border-top:1px solid rgba(255,255,255,.14);font-size:13px;color:rgba(255,255,255,.82)}
+.c-toggle{width:38px;height:22px;border-radius:999px;background:rgba(255,255,255,.22);position:relative;flex:none}
+.c-toggle::after{content:"";position:absolute;left:3px;top:3px;width:16px;height:16px;border-radius:50%;background:#fff}
+.c-h{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.c-h h4{font-family:"Gabarito",sans-serif;font-weight:800;font-size:20px;letter-spacing:-.01em}
+.c-h span{font-size:13.5px;color:var(--c-coral-d);font-weight:700}
+.c-tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px}
+.c-tile{border-radius:22px;padding:18px;display:grid;gap:2px;align-content:start}
+.c-tile .k{font-size:12.5px;font-weight:700;display:flex;align-items:center;gap:6px}
+.c-tile .k .ic{width:15px;height:15px}
+.c-num{font-family:"Gabarito",sans-serif;font-weight:900;font-size:46px;line-height:1;letter-spacing:-.03em;margin-top:8px}
+.c-num small{font-size:16px;font-weight:700;letter-spacing:0;margin-left:4px}
+.c-tile .s{font-size:13px;font-weight:600;opacity:.85}
+.c-tile .who{color:var(--c-ink);font-weight:600;font-size:13px;margin-top:10px}
+.t-sky{background:var(--c-sky);color:var(--c-sky-i)}
+.t-mint{background:var(--c-mint);color:var(--c-mint-i)}
+.t-butter{background:var(--c-butter);color:var(--c-butter-i)}
+.t-rose{background:var(--c-rose);color:var(--c-rose-i)}
+.c-pill{justify-self:start;display:inline-flex;font-size:11.5px;font-weight:800;padding:3px 9px;border-radius:999px;background:var(--c-card);margin-top:6px}
+.c-cars{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:14px}
+.c-car{background:var(--c-card);border-radius:22px;padding:16px;display:grid;gap:8px;border:1px solid var(--c-line);align-content:start}
+.c-car .pl{justify-self:start;font-family:"Gabarito",sans-serif;font-weight:800;font-size:12.5px;letter-spacing:.08em;padding:4px 9px;border-radius:8px;background:var(--c-bg)}
+.c-car b{font-family:"Gabarito",sans-serif;font-size:17px;font-weight:700;line-height:1.15}
+.c-bars{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-top:2px}
+.c-bars i{height:7px;border-radius:999px;background:var(--c-line)}
+.c-bars i.sky{background:#7FA2F5} .c-bars i.mint{background:#4FC48F} .c-bars i.butter{background:#F2C14E} .c-bars i.rose{background:var(--c-coral)}
+.c-bars i.none{background:repeating-linear-gradient(90deg,var(--c-line) 0 5px,transparent 5px 8px)}
+.c-status{font-size:12.5px;font-weight:700}
+@container (max-width:900px){.c-wrap{grid-template-columns:minmax(0,1fr)}.c-side{display:none}}
+@container (max-width:620px){.c-row1{grid-template-columns:minmax(0,1fr)}.c-main{padding:18px 14px}.c-hero h4{font-size:24px}.c-tiles,.c-cars{grid-template-columns:repeat(2,minmax(0,1fr))}.c-num{font-size:38px}}
+/* C phone */
+.c-phone .hero{background:var(--c-coral);color:#fff;padding:16px 18px 22px;border-radius:0 0 28px 28px;display:grid;gap:6px}
+.c-phone .pt{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.c-phone .pt span{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.2);display:grid;place-items:center}
+.c-phone .plate{justify-self:start;font-family:"Gabarito",sans-serif;font-weight:800;font-size:13px;letter-spacing:.1em;background:#fff;color:var(--c-ink);padding:5px 10px;border-radius:9px}
+.c-phone .hero h4{font-family:"Gabarito",sans-serif;font-weight:800;font-size:26px;letter-spacing:-.02em;line-height:1.1}
+.c-phone .hero p{font-size:13px;opacity:.9}
+.c-phone .body{padding:14px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.c-phone .c-tile{padding:14px;border-radius:20px}
+.c-phone .c-tile.wide{grid-column:1/-1}
+.c-phone .c-num{font-size:34px;margin-top:6px}
+.c-phone .c-tile.wide .c-num{font-size:44px}
+.c-phone .c-btn{grid-column:1/-1;width:100%;height:48px;margin:2px 0 0;border-radius:16px;font-size:15px}
+.c-tabs{margin-top:auto;display:flex;justify-content:space-around;padding:12px 8px 16px;background:var(--c-card);border-top:1px solid var(--c-line);color:var(--c-muted)}
+.c-tabs span{display:grid;justify-items:center;gap:2px;font-size:10.5px;font-weight:700}
+.c-tabs .on{color:var(--c-coral-d)}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M3.5 10.5 12 3.5l8.5 7V19a1.5 1.5 0 0 1-1.5 1.5h-4v-6h-6v6H5A1.5 1.5 0 0 1 3.5 19z"/></symbol>
+  <symbol id="i-car" viewBox="0 0 24 24"><path d="M5 11.5 6.8 7a2 2 0 0 1 1.9-1.3h6.6A2 2 0 0 1 17.2 7l1.8 4.5"/><rect x="3" y="11.5" width="18" height="5.5" rx="1.5"/><path d="M6 17v2M18 17v2M7 14.2h.01M17 14.2h.01"/></symbol>
+  <symbol id="i-receipt" viewBox="0 0 24 24"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6M9 16h3"/></symbol>
+  <symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></symbol>
+  <symbol id="i-licence" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="11" r="2"/><path d="M6 16c.5-1.3 1.4-2 2.5-2s2 .7 2.5 2M14 10h4M14 13.5h3"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.5 3 8.2 7 10 4-1.8 7-5.5 7-10V6z"/></symbol>
+  <symbol id="i-gauge" viewBox="0 0 24 24"><path d="M4 17a8 8 0 1 1 16 0"/><path d="m12 17 4-5"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 16v-5a6 6 0 1 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></symbol>
+  <symbol id="i-chevl" viewBox="0 0 24 24"><path d="m15 6-6 6 6 6"/></symbol>
+  <symbol id="i-more" viewBox="0 0 24 24"><path d="M6 12h.01M12 12h.01M18 12h.01" stroke-width="3"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-doc" viewBox="0 0 24 24"><path d="M7 3.5h7l4 4v13H7z"/><path d="M14 3.5v4h4M10 12h5M10 15.5h3"/></symbol>
+</svg>
+
+<div class="wrap">
+  <header class="intro">
+    <p class="tag">MotoPapers · design directions</p>
+    <h1>Three ways MotoPapers could look</h1>
+    <p>Same dashboard, same sample data, three different personalities. Each direction shows the signed-in dashboard on a laptop and one vehicle on a phone. Pick one, or mix parts of them, and I'll restyle every screen in that direction.</p>
+    <nav class="jump" aria-label="Directions">
+      <a href="#a"><b style="background:#FF5442">A</b>Instrument cluster</a>
+      <a href="#b"><b style="background:#0A7A4A">B</b>Certificate</a>
+      <a href="#c"><b style="background:#FF5A3C">C</b>Bright and friendly</a>
+    </nav>
+  </header>
+
+  <!-- ============================ A ============================ -->
+  <section class="dir" id="a">
+    <div class="dir-head">
+      <div>
+        <p class="dir-tag">Direction A</p>
+        <h2>Instrument cluster</h2>
+        <p class="idea">Your papers read like a car's dashboard. Each paper is a gauge, and anything that needs attention lights up like a warning lamp. Dark, glowing and unmistakably about cars.</p>
+      </div>
+      <div class="spec">
+        <span class="spec-l">Palette</span>
+        <div class="swatches">
+          <span class="sw"><i style="background:#0D0F12"></i>Graphite</span>
+          <span class="sw"><i style="background:#1C2027"></i>Panel</span>
+          <span class="sw"><i style="background:#FFB224"></i>Gauge amber</span>
+          <span class="sw"><i style="background:#FF5442"></i>Warning red</span>
+          <span class="sw"><i style="background:#38D996"></i>OK green</span>
+        </div>
+        <span class="spec-l">Type</span>
+        <div class="type"><span class="t1" style="font-family:'Archivo',sans-serif;font-stretch:125%;font-weight:800">9 DAYS LEFT</span><span class="t2">Archivo Expanded for headings and numbers, Archivo for text</span></div>
+      </div>
+    </div>
+    <div class="dir-body">
+      <div class="frame" tabindex="0" aria-label="Direction A dashboard mock-up">
+        <div class="frame-bar"><i></i><i></i><i></i><span>motopapers.ng/dashboard</span></div>
+        <div class="screen A">
+          <div class="a-wrap">
+            <nav class="a-rail" aria-hidden="true">
+              <span class="a-logo">MP</span>
+              <span class="ri on"><svg class="ic"><use href="#i-home"/></svg></span>
+              <span class="ri"><svg class="ic"><use href="#i-car"/></svg></span>
+              <span class="ri"><svg class="ic"><use href="#i-receipt"/></svg></span>
+              <span class="ri"><svg class="ic"><use href="#i-sliders"/></svg></span>
+              <span class="a-av">AO</span>
+            </nav>
+            <div class="a-main">
+              <header class="a-top">
+                <div><p class="a-eyebrow">Sunday 11 October 2026</p><h3 class="a-h">Welcome back, Ada</h3></div>
+                <div class="a-lamps">
+                  <span class="lamp red"><span><svg class="ic"><use href="#i-licence"/></svg></span>Licence</span>
+                  <span class="lamp amber"><span><svg class="ic"><use href="#i-shield"/></svg></span>Insurance</span>
+                  <span class="lamp amber"><span><svg class="ic"><use href="#i-gauge"/></svg></span>Road</span>
+                </div>
+              </header>
+              <section class="a-cluster">
+                <div class="a-dial sm" data-dial='{"sweep":180,"frac":0.17,"color":"#38D996","ticks":8,"major":2,"needle":"#EDEFF3","labels":[[0,"E"],[1,"F"]]}'>
+                  <div class="a-read low"><span class="a-lbl">Wallet</span><b>₦8,500</b><span class="a-sub">Top up</span></div>
+                </div>
+                <div class="a-dial lg" data-dial='{"sweep":270,"frac":0.3,"color":"#FFB224","ticks":30,"major":5,"labels":[[0,"0"],[0.5,"15"],[1,"30"]]}'>
+                  <div class="a-read"><span class="a-lbl">Next renewal</span><b class="big">9</b><span class="a-unit">days</span><span class="a-sub">Insurance<br>KJA 731 AE</span></div>
+                </div>
+                <div class="a-dial sm" data-dial='{"sweep":270,"segments":["#38D996","#38D996","#38D996","#38D996","#38D996","#38D996","#38D996","#FFB224","#FFB224","#FF5442","#343A44","#343A44"]}'>
+                  <div class="a-read"><span class="a-lbl">Papers valid</span><b>7/12</b><span class="a-sub">2 due · 1 expired</span></div>
+                </div>
+              </section>
+              <div class="a-msg"><p><b>LICENCE EXPIRED</b>EKY 219 GD · Ford Edge · 13 days ago</p><button class="a-btn red">Renew now</button></div>
+              <div class="a-cols">
+                <section class="a-panel">
+                  <h4 class="a-ph">Upcoming renewals</h4>
+                  <ul>
+                    <li class="a-row"><span class="a-days c-red"><b>13</b><small>days ago</small></span><span class="t"><b>Vehicle licence</b><span>EKY 219 GD · Ford Edge</span></span><span class="a-date">28 SEP 2026</span><button class="a-btn red">Renew</button></li>
+                    <li class="a-row"><span class="a-days c-amber"><b>9</b><small>days</small></span><span class="t"><b>Insurance, third party</b><span>KJA 731 AE · Toyota Camry</span></span><span class="a-date">20 OCT 2026</span><button class="a-btn amber">Renew</button></li>
+                    <li class="a-row"><span class="a-days c-amber"><b>23</b><small>days</small></span><span class="t"><b>Roadworthiness</b><span>EKY 219 GD · Ford Edge</span></span><span class="a-date">03 NOV 2026</span><button class="a-btn amber">Renew</button></li>
+                    <li class="a-row"><span class="a-days c-green"><b>80</b><small>days</small></span><span class="t"><b>Vehicle licence</b><span>APP 105 BC · Lexus RX 350</span></span><span class="a-date">30 DEC 2026</span><button class="a-btn ghost">View</button></li>
+                    <li class="a-row"><span class="a-days c-green"><b>103</b><small>days</small></span><span class="t"><b>Insurance, comprehensive</b><span>LSD 482 KJ · Honda CR-V</span></span><span class="a-date">22 JAN 2027</span><button class="a-btn ghost">View</button></li>
+                  </ul>
+                </section>
+                <section class="a-panel">
+                  <h4 class="a-ph">Your vehicles</h4>
+                  <ul>
+                    <li class="a-car"><span><span class="a-plate">EKY 219 GD</span><span class="m">Ford Edge</span></span><span class="a-dots"><span><i class="r"></i>LIC</span><span><i class="g"></i>INS</span><span><i class="y"></i>RW</span></span></li>
+                    <li class="a-car"><span><span class="a-plate">KJA 731 AE</span><span class="m">Toyota Camry</span></span><span class="a-dots"><span><i class="g"></i>LIC</span><span><i class="y"></i>INS</span><span><i class="g"></i>RW</span></span></li>
+                    <li class="a-car"><span><span class="a-plate">APP 105 BC</span><span class="m">Lexus RX 350</span></span><span class="a-dots"><span><i class="g"></i>LIC</span><span><i></i>INS</span><span><i></i>RW</span></span></li>
+                    <li class="a-car"><span><span class="a-plate">LSD 482 KJ</span><span class="m">Honda CR-V</span></span><span class="a-dots"><span><i class="g"></i>LIC</span><span><i class="g"></i>INS</span><span><i class="g"></i>RW</span></span></li>
+                  </ul>
+                </section>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="phone-col">
+        <div class="phone" role="img" aria-label="Direction A phone mock-up: Toyota Camry vehicle screen">
+          <div class="screen A a-phone">
+            <div class="pt"><svg class="ic"><use href="#i-chevl"/></svg><span class="a-eyebrow">Vehicle</span><svg class="ic"><use href="#i-more"/></svg></div>
+            <div class="head"><span class="a-lcd">KJA 731 AE</span><p>Toyota Camry · 2018 · Silver</p></div>
+            <div class="a-trio">
+              <div class="a-dial" data-dial='{"sweep":270,"frac":0.42,"color":"#38D996","w":12}'><div class="a-read"><b>154</b><span class="a-lbl">Licence</span></div></div>
+              <div class="a-dial" data-dial='{"sweep":270,"frac":0.04,"color":"#FFB224","w":12}'><div class="a-read"><b class="c-amber">9</b><span class="a-lbl">Insurance</span></div></div>
+              <div class="a-dial" data-dial='{"sweep":270,"frac":0.31,"color":"#38D996","w":12}'><div class="a-read"><b>114</b><span class="a-lbl">Road</span></div></div>
+            </div>
+            <div class="a-msg amber"><p><b>DUE IN 9 DAYS</b>Insurance, third party · 20 Oct</p><button class="a-btn amber">Renew</button></div>
+            <dl class="a-specs">
+              <div><dt>Engine no.</dt><dd>2AR-4417392</dd></div>
+              <div><dt>Chassis no.</dt><dd>4T1BF1FK5JU512847</dd></div>
+              <div><dt>Capacity</dt><dd>2,494 cc</dd></div>
+              <div><dt>Next reminder</dt><dd>13 Oct · SMS</dd></div>
+              <div><dt>Auto-renew</dt><dd class="c-amber">Off</dd></div>
+            </dl>
+            <nav class="a-tabs" aria-hidden="true"><svg class="ic"><use href="#i-home"/></svg><svg class="ic on"><use href="#i-car"/></svg><svg class="ic"><use href="#i-receipt"/></svg><svg class="ic"><use href="#i-sliders"/></svg></nav>
+          </div>
+        </div>
+        <p class="cap">One vehicle: days left on each paper, as gauges</p>
+      </div>
+    </div>
+    <div class="notes">
+      <div class="note"><h3>Why it works</h3><p>It speaks drivers' language. Warning lamps make urgency impossible to miss, and it looks like no other app on a Nigerian phone.</p></div>
+      <div class="note"><h3>Watch out for</h3><p>Dark-only screens can be hard to read outdoors in bright sun, and gauges need care to stay legible at small sizes.</p></div>
+      <div class="note"><h3>Best if</h3><p>You want MotoPapers to feel like a premium, car-first brand rather than a form-filling service.</p></div>
+    </div>
+  </section>
+
+  <!-- ============================ B ============================ -->
+  <section class="dir" id="b">
+    <div class="dir-head">
+      <div>
+        <p class="dir-tag">Direction B</p>
+        <h2>Certificate</h2>
+        <p class="idea">Lean into the papers themselves. Security-print patterns, ruled ledgers, serial numbers and rubber stamps for status. It looks official, so it feels trustworthy.</p>
+      </div>
+      <div class="spec">
+        <span class="spec-l">Palette</span>
+        <div class="swatches">
+          <span class="sw"><i style="background:#EDF1EA"></i>Paper</span>
+          <span class="sw"><i style="background:#13261B"></i>Ink</span>
+          <span class="sw"><i style="background:#0A7A4A"></i>Register green</span>
+          <span class="sw"><i style="background:#C2362B"></i>Stamp red</span>
+          <span class="sw"><i style="background:#9C610C"></i>Stamp amber</span>
+        </div>
+        <span class="spec-l">Type</span>
+        <div class="type"><span class="t1" style="font-family:'Chivo',sans-serif;font-weight:900">Register <span style="font-family:'Chivo Mono',monospace;font-weight:500;font-size:.8em">No. 0047312</span></span><span class="t2">Chivo Black for headings, Chivo for text, Chivo Mono for dates and serials</span></div>
+      </div>
+    </div>
+    <div class="dir-body">
+      <div class="frame" tabindex="0" aria-label="Direction B dashboard mock-up">
+        <div class="frame-bar"><i></i><i></i><i></i><span>motopapers.ng/register</span></div>
+        <div class="screen B">
+          <header class="b-mast">
+            <div class="b-brand"><span class="b-crest">MP</span><span><b>MOTOPAPERS</b><small>Vehicle papers register</small></span></div>
+            <nav class="b-nav" aria-hidden="true"><span class="on">Register</span><span>Vehicles</span><span>Payments</span><span>Settings</span></nav>
+            <div class="b-holder"><small>Holder</small><b>Ada Okafor</b><span class="mono">No. MP-0047312</span></div>
+          </header>
+          <div class="b-band"></div>
+          <div class="b-body">
+            <div class="b-title">
+              <div><h3>Vehicle Papers Register</h3><p class="mono">As at Sunday 11.10.2026 · 4 vehicles · 12 papers</p></div>
+              <button class="b-btn line">+ Register a vehicle</button>
+            </div>
+            <div class="b-sum">
+              <div class="b-box"><small>Papers in force</small><b>7 <em>of 12</em></b><span>2 due soon · 1 lapsed · 2 not on file</span></div>
+              <div class="b-box"><small>Next due</small><b>9 days</b><span>Insurance · KJA 731 AE · 20.10.2026</span></div>
+              <div class="b-box"><small>Credit on account</small><b>₦8,500</b><span>Used first for renewals · Add credit</span></div>
+            </div>
+            <div class="b-notice">
+              <span class="b-seal">LAPSED<small>28.09.26</small></span>
+              <div><b>The vehicle licence for EKY 219 GD has lapsed.</b><p>Ford Edge · expired 13 days ago. Renew it to keep this vehicle road-legal.</p></div>
+              <button class="b-btn">Renew now</button>
+            </div>
+            <div class="b-grid">
+              <section class="b-sheet">
+                <div class="b-sh"><h4>Renewal schedule</h4><span class="mono">Sorted by expiry</span></div>
+                <div style="overflow-x:auto"><table class="b-ledger">
+                  <thead><tr><th>No.</th><th>Paper</th><th class="hide-s">Vehicle</th><th>Expires</th><th>Status</th><th class="hide-s"></th></tr></thead>
+                  <tbody>
+                    <tr><td class="no">01</td><td><b>Vehicle licence</b><small>EKY 219 GD</small></td><td class="hide-s">Ford Edge</td><td class="date">28.09.2026</td><td><span class="stampS st-red">Lapsed</span></td><td class="act hide-s"><a>Renew</a></td></tr>
+                    <tr><td class="no">02</td><td><b>Insurance</b><small>KJA 731 AE · Third party</small></td><td class="hide-s">Toyota Camry</td><td class="date">20.10.2026</td><td><span class="stampS st-amber">Due 9 days</span></td><td class="act hide-s"><a>Renew</a></td></tr>
+                    <tr><td class="no">03</td><td><b>Roadworthiness</b><small>EKY 219 GD</small></td><td class="hide-s">Ford Edge</td><td class="date">03.11.2026</td><td><span class="stampS st-amber">Due 23 days</span></td><td class="act hide-s"><a>Renew</a></td></tr>
+                    <tr><td class="no">04</td><td><b>Vehicle licence</b><small>APP 105 BC</small></td><td class="hide-s">Lexus RX 350</td><td class="date">30.12.2026</td><td><span class="stampS st-green">In force</span></td><td class="act hide-s"></td></tr>
+                    <tr><td class="no">05</td><td><b>Insurance</b><small>LSD 482 KJ · Comprehensive</small></td><td class="hide-s">Honda CR-V</td><td class="date">22.01.2027</td><td><span class="stampS st-green">In force</span></td><td class="act hide-s"></td></tr>
+                  </tbody>
+                </table></div>
+              </section>
+              <section>
+                <div class="b-certs">
+                  <article class="b-cert"><div class="b-cert-h">CERT. MP-V-0291</div><div class="b-cert-b"><span class="pl">EKY 219 GD</span><span class="md">Ford Edge · 2016</span><div class="b-checks"><span>Licence <em class="st-red">LAPSED</em></span><span>Insurance <em>05.06.27</em></span><span>Roadworthy <em class="st-amber">03.11.26</em></span></div></div><span class="stampL st-red">Lapsed</span></article>
+                  <article class="b-cert"><div class="b-cert-h">CERT. MP-V-0288</div><div class="b-cert-b"><span class="pl">KJA 731 AE</span><span class="md">Toyota Camry · 2018</span><div class="b-checks"><span>Licence <em>14.03.27</em></span><span>Insurance <em class="st-amber">20.10.26</em></span><span>Roadworthy <em>02.02.27</em></span></div></div><span class="stampL st-amber">Renew</span></article>
+                  <article class="b-cert"><div class="b-cert-h">CERT. MP-V-0302</div><div class="b-cert-b"><span class="pl">APP 105 BC</span><span class="md">Lexus RX 350 · 2015</span><div class="b-checks"><span>Licence <em>30.12.26</em></span><span>Insurance <em class="st-grey">NOT ON FILE</em></span><span>Roadworthy <em class="st-grey">NOT ON FILE</em></span></div></div><span class="stampL st-grey">Incomplete</span></article>
+                  <article class="b-cert"><div class="b-cert-h">CERT. MP-V-0274</div><div class="b-cert-b"><span class="pl">LSD 482 KJ</span><span class="md">Honda CR-V · 2020</span><div class="b-checks"><span>Licence <em>19.08.27</em></span><span>Insurance <em>22.01.27</em></span><span>Roadworthy <em>30.07.27</em></span></div></div><span class="stampL st-green">In force</span></article>
+                </div>
+              </section>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="phone-col">
+        <div class="phone" role="img" aria-label="Direction B phone mock-up: Toyota Camry vehicle record">
+          <div class="screen B b-phone">
+            <div class="pt"><svg class="ic"><use href="#i-chevl"/></svg><span>Vehicle record</span><svg class="ic"><use href="#i-more"/></svg></div>
+            <div class="b-band"></div>
+            <div class="head"><small class="mono">REG. NO.</small><b>KJA 731 AE</b><span>Toyota Camry · 2018 · Silver</span></div>
+            <div class="b-stack">
+              <article class="b-cert"><div class="b-cert-h">VEHICLE LICENCE · VL-2291847</div><div class="b-cert-b"><span class="lbl">Valid until</span><span class="dt">14.03.2027</span><span class="stampS st-green">In force</span></div></article>
+              <article class="b-cert"><div class="b-cert-h">INSURANCE · THIRD PARTY</div><div class="b-cert-b"><span class="lbl">Expires</span><span class="dt">20.10.2026</span><span class="stampS st-amber">Due 9 days</span></div></article>
+              <article class="b-cert"><div class="b-cert-h">ROADWORTHINESS · RW-118204</div><div class="b-cert-b"><span class="lbl">Valid until</span><span class="dt">02.02.2027</span><span class="stampS st-green">In force</span></div></article>
+            </div>
+            <button class="b-btn">Renew insurance</button>
+            <nav class="b-tabs" aria-hidden="true"><span><svg class="ic"><use href="#i-doc"/></svg>Register</span><span class="on"><svg class="ic"><use href="#i-car"/></svg>Vehicles</span><span><svg class="ic"><use href="#i-receipt"/></svg>Payments</span><span><svg class="ic"><use href="#i-sliders"/></svg>Settings</span></nav>
+          </div>
+        </div>
+        <p class="cap">One vehicle: its three papers as stamped certificates</p>
+      </div>
+    </div>
+    <div class="notes">
+      <div class="note"><h3>Why it works</h3><p>It looks official, which builds trust when people hand over money for legal documents. Stamps read instantly, and it ties directly to the papers in the glovebox.</p></div>
+      <div class="note"><h3>Watch out for</h3><p>Too much pattern and it starts to look like a government portal. It needs restraint, especially on phones.</p></div>
+      <div class="note"><h3>Best if</h3><p>Trust matters most, for example if you plan to partner with insurers or the licensing office.</p></div>
+    </div>
+  </section>
+
+  <!-- ============================ C ============================ -->
+  <section class="dir" id="c">
+    <div class="dir-head">
+      <div>
+        <p class="dir-tag">Direction C</p>
+        <h2>Bright and friendly</h2>
+        <p class="idea">Warm, colourful and phone-first, like the money apps your users already open every day. Big countdown numbers, chunky rounded cards, and a colour for each type of paper.</p>
+      </div>
+      <div class="spec">
+        <span class="spec-l">Palette</span>
+        <div class="swatches">
+          <span class="sw"><i style="background:#FF5A3C"></i>Coral</span>
+          <span class="sw"><i style="background:#1E1B33"></i>Night</span>
+          <span class="sw"><i style="background:#E4EDFF"></i>Licence sky</span>
+          <span class="sw"><i style="background:#DCF5E9"></i>Insurance mint</span>
+          <span class="sw"><i style="background:#FFEFC4"></i>Road butter</span>
+        </div>
+        <span class="spec-l">Type</span>
+        <div class="type"><span class="t1" style="font-family:'Gabarito',sans-serif;font-weight:900">9 days to go</span><span class="t2">Gabarito for headings and numbers, Figtree for text</span></div>
+      </div>
+    </div>
+    <div class="dir-body">
+      <div class="frame" tabindex="0" aria-label="Direction C dashboard mock-up">
+        <div class="frame-bar"><i></i><i></i><i></i><span>motopapers.ng/home</span></div>
+        <div class="screen C">
+          <div class="c-wrap">
+            <aside class="c-side" aria-hidden="true">
+              <span class="c-logo"><i><svg class="ic"><use href="#i-doc"/></svg></i>MotoPapers</span>
+              <span class="c-nav on"><svg class="ic"><use href="#i-home"/></svg>Home</span>
+              <span class="c-nav"><svg class="ic"><use href="#i-car"/></svg>My cars</span>
+              <span class="c-nav"><svg class="ic"><use href="#i-receipt"/></svg>Payments</span>
+              <span class="c-nav"><svg class="ic"><use href="#i-sliders"/></svg>Settings</span>
+              <div class="c-help"><b>Need a hand?</b>Our team can renew any paper for you.<span>Chat with us</span></div>
+            </aside>
+            <main class="c-main">
+              <header class="c-top">
+                <div><h3>Hi Ada</h3><p>Here's what's coming up for your cars.</p></div>
+                <div class="c-top-r"><span class="c-circle c-bell"><svg class="ic"><use href="#i-bell"/></svg></span><span class="c-circle c-av">AO</span></div>
+              </header>
+              <div class="c-row1">
+                <div class="c-hero">
+                  <span class="c-ghost">EKY 219 GD</span>
+                  <span class="c-chip-w">Needs action</span>
+                  <h4>Your Ford Edge licence expired 13 days ago</h4>
+                  <p>Renew it now and we'll deliver the new licence to your door.</p>
+                  <button class="c-btn-w">Renew licence · ₦18,500</button>
+                </div>
+                <div class="c-wallet">
+                  <span class="l">Wallet balance</span>
+                  <b>₦8,500</b>
+                  <button class="c-btn">Top up</button>
+                  <div class="c-auto"><span>Auto-renew from wallet</span><span class="c-toggle"></span></div>
+                </div>
+              </div>
+              <div class="c-h"><h4>Coming up</h4><span>See all</span></div>
+              <div class="c-tiles">
+                <div class="c-tile t-mint"><span class="k"><svg class="ic"><use href="#i-shield"/></svg>Insurance</span><span class="c-num">9<small>days</small></span><span class="s">20 Oct</span><span class="who">KJA 731 AE · Camry</span></div>
+                <div class="c-tile t-butter"><span class="k"><svg class="ic"><use href="#i-gauge"/></svg>Roadworthiness</span><span class="c-num">23<small>days</small></span><span class="s">3 Nov</span><span class="who">EKY 219 GD · Edge</span></div>
+                <div class="c-tile t-sky"><span class="k"><svg class="ic"><use href="#i-licence"/></svg>Licence</span><span class="c-num">80<small>days</small></span><span class="s">30 Dec</span><span class="who">APP 105 BC · RX 350</span></div>
+                <div class="c-tile t-mint"><span class="k"><svg class="ic"><use href="#i-shield"/></svg>Insurance</span><span class="c-num">103<small>days</small></span><span class="s">22 Jan</span><span class="who">LSD 482 KJ · CR-V</span></div>
+              </div>
+              <div class="c-h"><h4>Your cars</h4><span>+ Add a car</span></div>
+              <div class="c-cars">
+                <div class="c-car"><span class="pl">EKY 219 GD</span><b>Ford Edge</b><div class="c-bars"><i class="rose"></i><i class="mint"></i><i class="butter"></i></div><span class="c-status" style="color:var(--c-rose-i)">Licence expired</span></div>
+                <div class="c-car"><span class="pl">KJA 731 AE</span><b>Toyota Camry</b><div class="c-bars"><i class="sky"></i><i class="mint"></i><i class="butter"></i></div><span class="c-status" style="color:var(--c-butter-i)">Insurance due soon</span></div>
+                <div class="c-car"><span class="pl">APP 105 BC</span><b>Lexus RX 350</b><div class="c-bars"><i class="sky"></i><i class="none"></i><i class="none"></i></div><span class="c-status" style="color:var(--c-muted)">2 papers to add</span></div>
+                <div class="c-car"><span class="pl">LSD 482 KJ</span><b>Honda CR-V</b><div class="c-bars"><i class="sky"></i><i class="mint"></i><i class="butter"></i></div><span class="c-status" style="color:var(--c-mint-i)">All good</span></div>
+              </div>
+            </main>
+          </div>
+        </div>
+      </div>
+      <div class="phone-col">
+        <div class="phone" role="img" aria-label="Direction C phone mock-up: Toyota Camry car screen">
+          <div class="screen C c-phone">
+            <div class="hero">
+              <div class="pt"><span><svg class="ic"><use href="#i-chevl"/></svg></span><span><svg class="ic"><use href="#i-more"/></svg></span></div>
+              <span class="plate">KJA 731 AE</span>
+              <h4>Toyota Camry</h4>
+              <p>2018 · Silver · 2,494 cc</p>
+            </div>
+            <div class="body">
+              <div class="c-tile t-mint wide"><span class="k"><svg class="ic"><use href="#i-shield"/></svg>Insurance · Third party</span><span class="c-num">9<small>days left</small></span><span class="s">Expires 20 Oct 2026</span><span class="c-pill" style="color:var(--c-butter-i)">Renew soon</span></div>
+              <div class="c-tile t-sky"><span class="k"><svg class="ic"><use href="#i-licence"/></svg>Licence</span><span class="c-num">154<small>d</small></span><span class="s">14 Mar 2027</span></div>
+              <div class="c-tile t-butter"><span class="k"><svg class="ic"><use href="#i-gauge"/></svg>Road</span><span class="c-num">114<small>d</small></span><span class="s">2 Feb 2027</span></div>
+              <button class="c-btn">Renew insurance</button>
+            </div>
+            <nav class="c-tabs" aria-hidden="true"><span><svg class="ic"><use href="#i-home"/></svg>Home</span><span class="on"><svg class="ic"><use href="#i-car"/></svg>My cars</span><span><svg class="ic"><use href="#i-receipt"/></svg>Payments</span><span><svg class="ic"><use href="#i-sliders"/></svg>Settings</span></nav>
+          </div>
+        </div>
+        <p class="cap">One car: a big countdown for each paper</p>
+      </div>
+    </div>
+    <div class="notes">
+      <div class="note"><h3>Why it works</h3><p>Big numbers are easy to scan, a colour per paper helps people learn the app quickly, and it feels at home on a phone.</p></div>
+      <div class="note"><h3>Watch out for</h3><p>Bright colour can make legal deadlines feel less serious. Red has to stay reserved for real problems.</p></div>
+      <div class="note"><h3>Best if</h3><p>You're aiming at everyday drivers on mobile and want signing up to feel easy and quick.</p></div>
+    </div>
+  </section>
+
+  <section class="compare">
+    <h2>Side by side</h2>
+    <p class="lead">Any of these can carry the improvements from the earlier review (status at a glance, upcoming renewals, the vehicle detail view, the guided Add vehicle flow). This choice is about personality.</p>
+    <div class="tbl">
+      <table>
+        <thead><tr><th></th><th>A · Instrument cluster</th><th>B · Certificate</th><th>C · Bright and friendly</th></tr></thead>
+        <tbody>
+          <tr><th>Mood</th><td>Premium, technical, automotive</td><td>Official, calm, trustworthy</td><td>Warm, playful, approachable</td></tr>
+          <tr><th>Light or dark</th><td>Dark</td><td>Light</td><td>Light</td></tr>
+          <tr><th>Signature</th><td>Gauges and warning lamps</td><td>Stamps, ledgers and security print</td><td>Colour per paper, giant countdowns</td></tr>
+          <tr><th>Strongest at</th><td>Standing out and looking expensive</td><td>Earning trust with payments</td><td>Phone use and quick sign-ups</td></tr>
+          <tr><th>Main risk</th><td>Readability outdoors</td><td>Looking like a government site</td><td>Feeling less serious</td></tr>
+          <tr><th>Build effort</th><td>Higher (custom gauges)</td><td>Medium (patterns, stamps)</td><td>Lower (standard components)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>
+
+<script>
+(function(){
+  function pt(a, r){ const t = a * Math.PI / 180; return [100 + r * Math.cos(t), 100 + r * Math.sin(t)]; }
+  function arc(r, a0, a1){
+    const [x0, y0] = pt(a0, r), [x1, y1] = pt(a1, r);
+    return `M${x0.toFixed(2)} ${y0.toFixed(2)} A${r} ${r} 0 ${a1 - a0 > 180 ? 1 : 0} 1 ${x1.toFixed(2)} ${y1.toFixed(2)}`;
+  }
+  function dial(o){
+    const sw = o.sweep || 270, st = 90 + (360 - sw) / 2, w = o.w || 9;
+    const r = o.labels ? 62 : (o.ticks ? 70 : 78);
+    let s = '<svg viewBox="0 0 200 200" aria-hidden="true">';
+    const n = o.ticks || 0;
+    for (let i = 0; i <= n && n; i++){
+      const major = i % (o.major || 1) === 0;
+      const a = st + sw * i / n, r1 = r + w / 2 + 4, r2 = r1 + (major ? 9 : 5);
+      const [x1, y1] = pt(a, r1), [x2, y2] = pt(a, r2);
+      s += `<line x1="${x1.toFixed(2)}" y1="${y1.toFixed(2)}" x2="${x2.toFixed(2)}" y2="${y2.toFixed(2)}" stroke="${major ? '#5A6170' : '#343A44'}" stroke-width="${major ? 2.2 : 1.6}" stroke-linecap="round"/>`;
+    }
+    (o.labels || []).forEach(([f, t]) => {
+      const [x, y] = pt(st + sw * f, r + w / 2 + 25);
+      s += `<text x="${x.toFixed(1)}" y="${(y + 4).toFixed(1)}" text-anchor="middle" font-family="Archivo, sans-serif" font-size="11" font-weight="700" fill="#8B93A1">${t}</text>`;
+    });
+    if (o.segments){
+      const k = o.segments.length, seg = sw / k, gap = 3.5;
+      o.segments.forEach((c, i) => {
+        s += `<path d="${arc(r, st + i * seg + gap / 2, st + (i + 1) * seg - gap / 2)}" stroke="${c}" stroke-width="${w + 3}" fill="none"/>`;
+      });
+    } else {
+      s += `<path d="${arc(r, st, st + sw)}" stroke="#262B33" stroke-width="${w}" fill="none" stroke-linecap="round"/>`;
+      if (o.frac > 0) s += `<path d="${arc(r, st, st + sw * Math.max(o.frac, 0.012))}" stroke="${o.color}" stroke-width="${w}" fill="none" stroke-linecap="round" style="filter:drop-shadow(0 0 5px ${o.color})"/>`;
+    }
+    if (o.needle){
+      const [x, y] = pt(st + sw * o.frac, r - 14);
+      s += `<line x1="100" y1="100" x2="${x.toFixed(2)}" y2="${y.toFixed(2)}" stroke="${o.needle}" stroke-width="3" stroke-linecap="round"/><circle cx="100" cy="100" r="6" fill="#0D0F12" stroke="${o.needle}" stroke-width="3"/>`;
+    }
+    return s + '</svg>';
+  }
+  document.querySelectorAll('[data-dial]').forEach(el => {
+    try { el.insertAdjacentHTML('afterbegin', dial(JSON.parse(el.dataset.dial))); } catch (e) {}
+  });
+})();
+</script>

@@ -1,0 +1,1312 @@
+<title>MotoPapers Build Plan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Gabarito:wght@600;700;800;900&display=swap">
+<style>
+/* Layout: a working document. Sticky contents rail on wide screens, one reading column; diagrams and tables break out to full column width. */
+:root{
+  --bg:#F6F5FA; --card:#FFFFFF; --ink:#1E1B33; --ink-2:#45425C; --muted:#67647F; --line:#E3E1EC;
+  --coral:#FF5A3C; --coral-t:#C93A20; --coral-soft:#FFE8E2;
+  --ok:#0A7647; --ok-soft:#DCF5E9; --warn:#8F4A00; --warn-soft:#FFEACF; --bad:#BC2A14; --bad-soft:#FFE2DC;
+  --info:#2453CF; --info-soft:#E4EDFF; --lilac:#5A3FCC; --lilac-soft:#ECE7FF;
+  --b-fe:#FF5A3C; --b-site:#8B72F0; --b-be:#1E1B33; --b-mail:#2DAA6E; --b-qa:#E2A622;
+  --code-bg:#F0EFF6;
+  --f-head:"Gabarito","Figtree",system-ui,sans-serif;
+  --f-body:"Figtree",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --f-mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#12111A; --card:#1B1A26; --ink:#EEEDF6; --ink-2:#C8C6D8; --muted:#9894B0; --line:#2C2A3C;
+  --coral-t:#FF8064; --coral-soft:#3B201A;
+  --ok:#4CD394; --ok-soft:#123224; --warn:#F2B35A; --warn-soft:#382813; --bad:#FF8676; --bad-soft:#3D1A15;
+  --info:#8EB0FF; --info-soft:#1A2544; --lilac:#B5A4FF; --lilac-soft:#272043;
+  --b-be:#C8C6D8; --code-bg:#23222F; color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#12111A; --card:#1B1A26; --ink:#EEEDF6; --ink-2:#C8C6D8; --muted:#9894B0; --line:#2C2A3C;
+  --coral-t:#FF8064; --coral-soft:#3B201A;
+  --ok:#4CD394; --ok-soft:#123224; --warn:#F2B35A; --warn-soft:#382813; --bad:#FF8676; --bad-soft:#3D1A15;
+  --info:#8EB0FF; --info-soft:#1A2544; --lilac:#B5A4FF; --lilac-soft:#272043;
+  --b-be:#C8C6D8; --code-bg:#23222F; color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:var(--f-head);margin:0;letter-spacing:-.02em;line-height:1.15;text-wrap:balance}
+p,ul,ol,dl,dd,figure{margin:0}
+ul,ol{padding-left:1.25em}
+a{color:var(--coral-t)}
+code{font-family:var(--f-mono);font-size:.84em;background:var(--code-bg);padding:.1em .4em;border-radius:6px;overflow-wrap:anywhere}
+:focus-visible{outline:2.5px solid var(--info);outline-offset:2px;border-radius:6px}
+.shell{max-width:1240px;margin:0 auto;padding-inline:24px;display:grid;grid-template-columns:220px minmax(0,1fr);gap:56px}
+.toc{position:sticky;top:24px;align-self:start;padding-block:48px 24px;display:grid;gap:2px;font-size:14px}
+.toc b{font-family:var(--f-head);font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.toc a{color:var(--ink-2);text-decoration:none;padding:6px 10px;border-radius:9px}
+.toc a:hover{background:var(--card);color:var(--ink)}
+main{padding-block:48px 96px;min-width:0;display:grid;gap:72px}
+header.top{display:grid;gap:16px}
+.eyebrow{font-size:12.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--coral-t)}
+header.top h1{font-weight:900;font-size:clamp(36px,5vw,58px);letter-spacing:-.04em;line-height:1}
+.lede{font-size:19px;color:var(--ink-2);max-width:62ch}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-top:8px}
+.fact{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 16px;display:grid;gap:2px}
+.fact b{font-family:var(--f-head);font-weight:900;font-size:28px;letter-spacing:-.03em;line-height:1.05}
+.fact span{font-size:13px;color:var(--muted);line-height:1.35}
+section{display:grid;gap:20px;scroll-margin-top:16px}
+section>h2{font-weight:900;font-size:clamp(26px,3vw,34px);letter-spacing:-.03em}
+.sec-lede{color:var(--ink-2);max-width:68ch}
+h3{font-weight:800;font-size:19px}
+.prose{display:grid;gap:12px;max-width:72ch;color:var(--ink-2)}
+.prose li{margin:4px 0}
+.decisions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.dec{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:20px;display:grid;gap:8px;align-content:start}
+.dec .n{font-family:var(--f-head);font-weight:900;font-size:14px;color:var(--coral-t);letter-spacing:.04em}
+.dec h3{font-size:20px}
+.dec p{color:var(--ink-2);font-size:15px}
+.dec .why{font-size:14px;color:var(--muted)}
+figure{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:20px;display:grid;gap:14px}
+figure>svg{width:100%;height:auto;display:block;font-family:var(--f-body);color:var(--ink)}
+.legend svg{width:26px;height:10px;display:inline-block;flex:none}
+figcaption{font-size:14px;color:var(--muted);max-width:80ch}
+.legend{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:13px;color:var(--ink-2)}
+.legend span{display:inline-flex;align-items:center;gap:8px}
+.legend i{width:18px;height:12px;border-radius:4px;display:inline-block}
+.sw-new{background:rgba(255,90,60,.12);border:1.6px solid #FF5A3C}
+.sw-old{border:1.4px solid var(--muted)}
+.tbl{overflow-x:auto;background:var(--card);border:1px solid var(--line);border-radius:20px}
+table{width:100%;border-collapse:collapse;font-size:14.5px}
+th,td{padding:12px 16px;text-align:left;vertical-align:top;border-top:1px solid var(--line)}
+thead th{border-top:0;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+td{color:var(--ink-2)}
+td b{color:var(--ink)}
+td.ep code{display:inline-block;margin:2px 4px 2px 0}
+.screens table{min-width:860px}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:3px 10px 3px 8px;border-radius:999px;font-size:12px;font-weight:800;white-space:nowrap;line-height:1.4}
+.chip::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+.chip-ok,.chip-exists{background:var(--ok-soft);color:var(--ok)}
+.chip-part,.chip-blocked{background:var(--warn-soft);color:var(--warn)}
+.chip-miss{background:var(--bad-soft);color:var(--bad)}
+.chip-new{background:var(--lilac-soft);color:var(--lilac)}
+.chip-p0{background:var(--bad-soft);color:var(--bad)}
+.chip-p1{background:var(--warn-soft);color:var(--warn)}
+.chip-p2{background:var(--info-soft);color:var(--info)}
+.callout{background:var(--card);border:1px solid var(--line);border-left:0;border-radius:18px;padding:16px 18px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:start}
+.callout .ic{width:34px;height:34px;border-radius:11px;display:grid;place-items:center;font-family:var(--f-head);font-weight:900}
+.callout.warn .ic{background:var(--warn-soft);color:var(--warn)}
+.callout.info .ic{background:var(--info-soft);color:var(--info)}
+.callout p{color:var(--ink-2);font-size:15px}
+.callout b{color:var(--ink)}
+.changes{display:grid;gap:10px}
+.change{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px 18px;display:grid;grid-template-columns:64px minmax(0,1fr);gap:4px 16px;align-items:start}
+.change .chip{grid-row:1/3;align-self:start;justify-self:start}
+.change h3{font-size:17px}
+.change p{color:var(--ink-2);font-size:15px}
+.change p code{font-size:.82em}
+.gantt-wrap{overflow-x:auto;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:16px 18px}
+.gantt{display:grid;grid-template-columns:minmax(170px,1.5fr) repeat(8,minmax(52px,1fr));min-width:720px;row-gap:8px;font-size:13.5px}
+.gantt .wk{font-size:12px;font-weight:700;color:var(--muted);text-align:center;letter-spacing:.04em;padding-bottom:6px;border-bottom:1px solid var(--line)}
+.gantt .lab{grid-column:1;color:var(--ink-2);padding-right:12px;align-self:center;line-height:1.3}
+.gantt .bar{height:26px;border-radius:8px;align-self:center;margin:0 2px;display:flex;align-items:center;padding-left:8px;font-size:11.5px;font-weight:800;color:#fff;white-space:nowrap;overflow:hidden}
+.b-fe{background:var(--b-fe)} .b-site{background:var(--b-site)} .b-be{background:var(--b-be);color:var(--bg)!important} .b-mail{background:var(--b-mail)} .b-qa{background:var(--b-qa);color:#2A1C00!important}
+.gantt .ms{grid-column:1/-1;display:grid;grid-template-columns:subgrid;border-top:1px dashed var(--line);padding-top:10px;margin-top:4px}
+.gantt .ms span{font-size:12px;font-weight:700;color:var(--coral-t);text-align:center;line-height:1.25}
+.lg-gantt i{width:14px;height:14px;border-radius:4px}
+.milestones{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.mile{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 16px;display:grid;gap:4px}
+.mile b{font-family:var(--f-head);font-size:13px;color:var(--coral-t);letter-spacing:.04em}
+.mile h4{font-size:16px;font-weight:800}
+.mile p{font-size:14px;color:var(--ink-2)}
+pre{margin:0;background:var(--code-bg);border-radius:16px;padding:16px 18px;overflow-x:auto;font-family:var(--f-mono);font-size:13px;line-height:1.55;color:var(--ink-2)}
+.two-col{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;align-items:start}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:18px 20px;display:grid;gap:10px;align-content:start}
+.card h3{font-size:17px}
+.card ol,.card ul{color:var(--ink-2);font-size:15px;display:grid;gap:6px}
+.mail{display:grid;grid-template-columns:300px minmax(0,1fr);gap:20px;background:var(--card);border:1px solid var(--line);border-radius:22px;padding:18px;align-items:start}
+.mail-meta{display:grid;gap:12px;position:sticky;top:16px}
+.mail-h{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between}
+.mail-h h3{font-size:20px}
+.kv{display:grid;gap:10px}
+.kv dt{font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.kv dd{font-size:14px;color:var(--ink);overflow-wrap:anywhere}
+.kv dd.vars{display:flex;flex-wrap:wrap;gap:4px}
+.kv dd.vars code{font-size:11.5px}
+.file{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+.mail-frame{border-radius:16px;overflow:hidden;background:#F4F3F9;min-width:0}
+.mail-frame iframe{width:100%;border:0;display:block;height:760px;background:#F4F3F9}
+.mails{display:grid;gap:18px}
+.checks{list-style:none;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 24px}
+.checks li{display:grid;grid-template-columns:20px minmax(0,1fr);gap:10px;color:var(--ink-2);font-size:15px}
+.checks li::before{content:"";width:16px;height:16px;border:2px solid var(--muted);border-radius:5px;margin-top:4px}
+.checks b{color:var(--ink)}
+.qs{display:grid;gap:10px;counter-reset:q;list-style:none;padding:0}
+.qs li{counter-increment:q;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 16px 14px 56px;position:relative;color:var(--ink-2)}
+.qs li::before{content:counter(q);position:absolute;left:16px;top:14px;width:28px;height:28px;border-radius:9px;background:var(--coral-soft);color:var(--coral-t);font-family:var(--f-head);font-weight:900;display:grid;place-items:center;font-size:14px}
+.qs b{color:var(--ink)}
+.phase{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:20px 22px;display:grid;gap:14px;scroll-margin-top:16px}
+.phase-h{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px}
+.phase-h .no{font-family:var(--f-head);font-weight:900;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--coral-t)}
+.phase-h h3{font-size:23px}
+.phase-h .when{font-size:13px;color:var(--muted);font-weight:600;margin-left:auto}
+.phase .goal{color:var(--ink);font-size:16.5px;max-width:70ch}
+.phase-cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.phase-col h4{font-family:var(--f-body);font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.phase-col ul{font-size:14.5px;color:var(--ink-2);display:grid;gap:5px;padding-left:1.1em}
+.done{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:baseline;background:var(--ok-soft);border-radius:14px;padding:12px 16px;font-size:15px;color:var(--ink)}
+.done b{color:var(--ok);font-family:var(--f-head);font-size:13px;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
+.fallback{font-size:14px;color:var(--warn);background:var(--warn-soft);border-radius:14px;padding:10px 14px}
+.gantt .lab b{font-family:var(--f-head);color:var(--coral-t)}
+@media (max-width:760px){.phase-cols{grid-template-columns:minmax(0,1fr)}.done{grid-template-columns:minmax(0,1fr);gap:2px}.phase-h .when{margin-left:0;flex-basis:100%}}
+@media (max-width:1100px){.shell{grid-template-columns:minmax(0,1fr);gap:0}.toc{display:none}.mail{grid-template-columns:minmax(0,1fr)}.mail-meta{position:static}}
+@media (max-width:760px){.decisions,.two-col,.checks{grid-template-columns:minmax(0,1fr)}.milestones{grid-template-columns:repeat(2,minmax(0,1fr))}.shell{padding-inline:16px}main{gap:56px;padding-top:32px}.change{grid-template-columns:minmax(0,1fr)}.change .chip{grid-row:auto}.mail{padding:12px}}
+</style>
+
+<div class="shell">
+  <nav class="toc" aria-label="Contents">
+    <b>Contents</b>
+    <a href="#decisions">Decisions</a>
+    <a href="#architecture">Architecture</a>
+    <a href="#screens">Screens and endpoints</a>
+    <a href="#payments">How payment works</a>
+    <a href="#backend">Backend changes</a>
+    <a href="#phases">Phases</a>
+    <a href="#deploy">Deployment</a>
+    <a href="#emails">Emails</a>
+    <a href="#launch">Launch checklist</a>
+    <a href="#questions">Open questions</a>
+  </nav>
+
+  <main>
+    <header class="top">
+      <p class="eyebrow">MotoPapers · build plan · 11 October 2026 · github.com/jomitiron/mpaper</p>
+      <h1>Building the new MotoPapers</h1>
+      <p class="lede">How we ship the Direction C redesign on top of the existing MotorPapers API: what we build, what the backend has to add, how we deploy it, and the emails drivers will get.</p>
+      <div class="facts">
+        <div class="fact"><b>8 weeks</b><span>from kick-off to public launch</span></div>
+        <div class="fact"><b>7</b><span>phases, each with a GitHub milestone</span></div>
+        <div class="fact"><b>29</b><span>documented endpoints reused as they are</span></div>
+        <div class="fact"><b>9</b><span>backend changes needed before launch</span></div>
+        <div class="fact"><b>9</b><span>email templates, 2 restyled and 7 new</span></div>
+      </div>
+    </header>
+
+    <section id="decisions">
+      <h2>Four decisions</h2>
+      <div class="decisions">
+        <article class="dec"><span class="n">01</span><h3>Keep Vue 3, add TypeScript</h3><p>Rebuild the app in Vue 3 with Vite, TypeScript, Pinia for the session, TanStack Query for API data and Zod to check API responses.</p><p class="why">The current app is already Vue 3, so the team keeps its tools and knowledge. Only the screens change. The API stays the same.</p></article>
+        <article class="dec"><span class="n">02</span><h3>Two sites, one codebase</h3><p>The marketing site is static pages built with Astro at the main domain. The signed-in app is a Vue single-page app at <code>app.</code> on the same domain.</p><p class="why">The landing page needs search ranking and a fast first load on mobile data. The app needs sign-in. They share colours, fonts and components from one repo.</p></article>
+        <article class="dec"><span class="n">03</span><h3>Host on Azure Static Web Apps</h3><p>Both sites deploy from GitHub to Azure Static Web Apps, next to the existing API on Azure App Service.</p><p class="why">One cloud account, free SSL, a global CDN, and a preview link for every pull request with no extra setup.</p></article>
+        <article class="dec"><span class="n">04</span><h3>Backend is the critical path</h3><p>The design needs a renewal order, paying from the wallet, and labelled payments. None of these exist yet. Backend work starts in week 1, alongside the frontend.</p><p class="why">The frontend can build against mocked data, but launch is blocked until renewals work end to end.</p></article>
+      </div>
+    </section>
+
+    <section id="architecture">
+      <h2>Architecture</h2>
+      <p class="sec-lede">Two new front ends talk to the API that already exists. A daily reminder job and an SMS gateway are added. Paystack confirms payments to the API, and the API tells the open app through a live stream.</p>
+      <figure>
+        <svg viewBox="0 0 1000 410" role="img" aria-label="Drivers use a new static marketing site and a new Vue web app on Azure Static Web Apps. The web app calls the existing MotorPapers API with a token, sends licence photos to the document parser, and sends drivers to Paystack to pay. Paystack sends a webhook to the API, and the API streams payment confirmation back to the app. A new daily reminder job checks expiry dates and sends reminders through the email provider and a new SMS gateway.">
+          <defs>
+            <marker id="a1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="currentColor"/></marker>
+          </defs>
+          <rect x="20" y="50" width="120" height="172" rx="14" fill="none" stroke="currentColor" stroke-opacity=".55" stroke-width="1.4"/>
+          <text x="80" y="130" text-anchor="middle" font-size="15" font-weight="700" fill="currentColor">Drivers</text>
+          <text x="80" y="150" text-anchor="middle" font-size="12" fill="currentColor" fill-opacity=".7">phone or laptop</text>
+
+          <rect x="180" y="18" width="240" height="226" rx="18" fill="none" stroke="currentColor" stroke-opacity=".35" stroke-dasharray="5 5"/>
+          <text x="196" y="38" font-size="12" fill="currentColor" fill-opacity=".7">Azure Static Web Apps</text>
+          <rect x="200" y="50" width="200" height="60" rx="12" fill="#FF5A3C" fill-opacity=".1" stroke="#FF5A3C" stroke-width="1.6"/>
+          <text x="300" y="76" text-anchor="middle" font-size="14" font-weight="700" fill="currentColor">Marketing site</text>
+          <text x="300" y="96" text-anchor="middle" font-size="12" fill="currentColor" fill-opacity=".7">Astro · static pages</text>
+          <rect x="200" y="162" width="200" height="60" rx="12" fill="#FF5A3C" fill-opacity=".1" stroke="#FF5A3C" stroke-width="1.6"/>
+          <text x="300" y="188" text-anchor="middle" font-size="14" font-weight="700" fill="currentColor">Web app</text>
+          <text x="300" y="208" text-anchor="middle" font-size="12" fill="currentColor" fill-opacity=".7">Vue 3 · TypeScript</text>
+
+          <line x1="140" y1="80" x2="198" y2="80" stroke="currentColor" stroke-width="1.4" marker-end="url(#a1)"/>
+          <text x="169" y="72" text-anchor="middle" font-size="12" fill="currentColor">visits</text>
+          <line x1="140" y1="192" x2="198" y2="192" stroke="currentColor" stroke-width="1.4" marker-end="url(#a1)"/>
+          <text x="169" y="184" text-anchor="middle" font-size="12" fill="currentColor">signs in</text>
+          <line x1="300" y1="110" x2="300" y2="160" stroke="currentColor" stroke-width="1.4" marker-end="url(#a1)"/>
+          <text x="308" y="140" font-size="12" fill="currentColor">Get started</text>
+
+          <rect x="200" y="300" width="140" height="56" rx="12" fill="none" stroke="currentColor" stroke-opacity=".55" stroke-width="1.4"/>
+          <text x="270" y="324" text-anchor="middle" font-size="14" font-weight="700" fill="currentColor">Doc parser</text>
+          <text x="270" y="343" text-anchor="middle" font-size="12" fill="currentColor" fill-opacity=".7">reads the licence</text>
+          <line x1="250" y1="222" x2="250" y2="298" stroke="currentColor" stroke-width="1.4" marker-end="url(#a1)"/>
+          <text x="258" y="266" font-size="12" fill="currentColor">licence photo</text>
+
+          <rect x="370" y="300" width="130" height="56" rx="12" fill="none" stroke="currentColor" stroke-opacity=".55" stroke-width="1.4"/>
+          <text x="435" y="324" text-anchor="middle" font-size="14" font-weight="700" fill="currentColor">Paystack</text>
+          <text x="435" y="343" text-anchor="middle" font-size="12" fill="currentColor" fill-opacity=".7">checkout</text>
+          <line x1="362" y1="222" x2="419" y2="297" stroke="currentColor" stroke-width="1.4" marker-end="url(#a1)"/>
+          <text x="398" y="254" font-size="12" fill="currentColor">pays</text>
+
+          <rect x="520" y="18" width="250" height="372" rx="18" fill="none" stroke="currentColor" stroke-opacity=".35" stroke-dasharray="5 5"/>
+          <text x="536" y="38" font-size="12" fill="currentColor" fill-opacity=".7">Azure App Service</text>
+          <rect x="545" y="50" width="200" height="60" rx="12" fill="#FF5A3C" fill-opacity=".1" stroke="#FF5A3C" stroke-width="1.6"/>
+          <text x="645" y="76" text-anchor="middle" font-size="14" font-weight="700" fill="currentColor">Reminder job</text>
+          <text x="645" y="96" text-anchor="middle" font-size="12" fill="currentColor" fill-opacity=".7">runs daily</text>
+          <rect x="545" y="162" width="200" height="60" rx="12" fill="none" stroke="currentColor" stroke-opacity=".55" stroke-width="1.4"/>
+          <text x="645" y="188" text-anchor="middle" font-size="14" font-weight="700" fill="currentColor">MotorPapers API</text>
+          <text x="645" y="208" text-anchor="middle" font-size="12" fill="currentColor" fill-opacity=".7">ijanla · REST</text>
+          <rect x="545" y="314" width="200" height="56" rx="12" fill="none" stroke="currentColor" stroke-opacity=".55" stroke-width="1.4"/>
+          <text x="645" y="347" text-anchor="middle" font-size="14" font-weight="700" fill="currentColor">Database</text>
+          <line x1="645" y1="110" x2="645" y2="160" stroke="currentColor" stroke-width="1.4" marker-end="url(#a1)"/>
+          <text x="653" y="140" font-size="12" fill="currentColor">checks expiries</text>
+          <line x1="645" y1="224" x2="645" y2="312" stroke="currentColor" stroke-width="1.4" marker-start="url(#a1)" marker-end="url(#a1)"/>
+          <text x="653" y="272" font-size="12" fill="currentColor">reads, writes</text>
+
+          <line x1="400" y1="184" x2="543" y2="184" stroke="currentColor" stroke-width="1.4" marker-end="url(#a1)"/>
+          <text x="472" y="176" text-anchor="middle" font-size="12" fill="currentColor">REST + token</text>
+          <line x1="545" y1="204" x2="402" y2="204" stroke="#FF5A3C" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#a1)"/>
+          <text x="472" y="222" text-anchor="middle" font-size="12" fill="currentColor">SSE: payment done</text>
+          <line x1="500" y1="312" x2="573" y2="225" stroke="currentColor" stroke-width="1.4" marker-end="url(#a1)"/>
+          <text x="530" y="290" font-size="12" fill="currentColor">webhook</text>
+
+          <rect x="840" y="96" width="140" height="56" rx="12" fill="none" stroke="currentColor" stroke-opacity=".55" stroke-width="1.4"/>
+          <text x="910" y="120" text-anchor="middle" font-size="14" font-weight="700" fill="currentColor">Email provider</text>
+          <text x="910" y="139" text-anchor="middle" font-size="12" fill="currentColor" fill-opacity=".7">new templates</text>
+          <rect x="840" y="262" width="140" height="56" rx="12" fill="#FF5A3C" fill-opacity=".1" stroke="#FF5A3C" stroke-width="1.6"/>
+          <text x="910" y="286" text-anchor="middle" font-size="14" font-weight="700" fill="currentColor">SMS gateway</text>
+          <text x="910" y="305" text-anchor="middle" font-size="12" fill="currentColor" fill-opacity=".7">reminders</text>
+          <line x1="745" y1="80" x2="838" y2="116" stroke="currentColor" stroke-width="1.4" marker-end="url(#a1)"/>
+          <text x="790" y="86" text-anchor="middle" font-size="12" fill="currentColor">reminders</text>
+          <line x1="745" y1="184" x2="838" y2="136" stroke="currentColor" stroke-width="1.4" marker-end="url(#a1)"/>
+          <text x="794" y="182" text-anchor="middle" font-size="12" fill="currentColor">OTP, receipts</text>
+          <line x1="745" y1="206" x2="838" y2="286" stroke="currentColor" stroke-width="1.4" marker-end="url(#a1)"/>
+          <text x="786" y="276" text-anchor="middle" font-size="12" fill="currentColor">SMS</text>
+        </svg>
+        <div class="legend"><span><i class="sw-new"></i>New in this project</span><span><i class="sw-old"></i>Already exists</span><span><svg width="26" height="10" aria-hidden="true"><line x1="0" y1="5" x2="26" y2="5" stroke="#FF5A3C" stroke-width="2" stroke-dasharray="5 4"/></svg>Live stream back to the app</span></div>
+        <figcaption>The API, database, doc parser and Paystack stay as they are. Everything coral is new: the two front ends, the reminder job and the SMS gateway. The email provider stays, with new templates.</figcaption>
+      </figure>
+    </section>
+
+    <section id="screens">
+      <h2>Screens and the endpoints they use</h2>
+      <p class="sec-lede">Every screen in the approved design, mapped to the API. Most screens work with the API as it is. The gaps are concentrated in renewals, wallet payments and payment labels.</p>
+      <div class="tbl screens">
+        <table>
+          <thead><tr><th>Screen · route</th><th>Reads</th><th>Writes</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td><b>Sign up</b><br><code>/sign-up</code></td><td class="ep"><code>GET /users/oauth-url</code></td><td class="ep"><code>POST /users/sign-up</code><code>POST /users/verify-email</code><code>POST /users/resend-verification-email</code></td><td><span class="chip chip-ok">Ready</span></td></tr>
+            <tr><td><b>Sign in</b><br><code>/sign-in</code></td><td class="ep"><code>GET /users/oauth-url</code></td><td class="ep"><code>POST /users/sign-in</code></td><td><span class="chip chip-part">Session expires</span></td></tr>
+            <tr><td><b>Forgot and reset password</b><br><code>/forgot-password</code></td><td>—</td><td class="ep"><code>POST /users/forgot-password</code><code>POST /users/reset-password</code></td><td><span class="chip chip-ok">Ready</span></td></tr>
+            <tr><td><b>Home</b><br><code>/</code></td><td class="ep"><code>GET /vehicles</code><code>GET /wallets/balance</code><code>GET /transactions?per_page=4</code></td><td>—</td><td><span class="chip chip-part">Needs payment labels</span></td></tr>
+            <tr><td><b>My cars</b><br><code>/cars</code></td><td class="ep"><code>GET /vehicles</code> (includes the current licence, insurance and roadworthiness)</td><td>—</td><td><span class="chip chip-ok">Ready</span></td></tr>
+            <tr><td><b>Car panel</b><br><code>/cars/:id</code></td><td class="ep"><code>GET /vehicles/:id</code><code>GET /vehicle/:id/insurance</code> (history)</td><td class="ep"><code>PATCH /vehicles/:id</code> (colour only)<code>POST /vehicle/:id/insurance</code><code>POST /vehicle/:id/roadworthiness</code><code>POST /vehicle/:id/vehicle-licenses</code><code>DELETE /vehicles/:id</code> (not documented)</td><td><span class="chip chip-part">Confirm delete</span></td></tr>
+            <tr><td><b>Renew a paper</b><br>button on Home, My cars, car panel</td><td>—</td><td>No endpoint yet</td><td><span class="chip chip-miss">Missing</span></td></tr>
+            <tr><td><b>Add a car</b><br><code>/cars/new</code></td><td class="ep"><code>GET /insurance-companies</code></td><td class="ep">Document reader <code>POST /api/vehicleDocument</code> (separate service)<code>POST /vehicles</code><code>POST /vehicle/:id/vehicle-licenses</code><code>POST /vehicle/:id/insurance</code><code>POST /vehicle/:id/roadworthiness</code><code>POST /transactions/initialize</code></td><td><span class="chip chip-part">Needs wallet pay, duplicate check</span></td></tr>
+            <tr><td><b>Payments</b><br><code>/payments</code></td><td class="ep"><code>GET /wallets/balance</code><code>GET /transactions?page&amp;status</code></td><td class="ep"><code>POST /transactions/initialize</code> (<code>wallet_transaction</code>)</td><td><span class="chip chip-part">Needs payment labels</span></td></tr>
+            <tr><td><b>Payment return</b><br><code>/payments/callback</code></td><td class="ep"><code>GET /transactions/completed-payment/:ref</code> (SSE)<code>GET /transactions/:id</code> (fallback)</td><td>—</td><td><span class="chip chip-ok">Ready</span></td></tr>
+            <tr><td><b>Settings</b><br><code>/settings</code></td><td>User from sign-in response</td><td class="ep"><code>PUT /users</code> (incl. address)<code>POST /users/password</code></td><td><span class="chip chip-part">Needs GET /users/me, reminder settings</span></td></tr>
+            <tr><td><b>Sign out</b></td><td>—</td><td class="ep"><code>POST /users/sign-out</code></td><td><span class="chip chip-ok">Ready</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card" id="doc-reader">
+        <h3>The document reader (not in the API docs)</h3>
+        <p style="color:var(--ink-2);font-size:15px">Reads the text off a vehicle licence photo. It's a separate service from the API, and the old app calls it directly from the browser. This is the call as the old app makes it:</p>
+<pre>POST https://motorpapers-doc-parser-api.azurewebsites.net/api/vehicleDocument
+Content-Type: application/json
+
+{ "DOCUMENT_TYPE": "VEHICLE_LICENSE", "DOCUMENT": "&lt;base64 of the image&gt;" }
+
+→ { "Registration Number": { "content": "KTU 604 XR" },
+    "Vehicle Make":        { "content": "Toyota" },
+    "Vehicle Model":       { "content": "Corolla" },
+    "Vehicle Color":       { "content": "Grey" },
+    "Engine Number":       { "content": "2ZR-6618023" },
+    "Chassis Number":      { "content": "2T1BURHE0KC184362" },
+    "Engine Capacity":     { "content": "1,798 cc" },
+    "Expiry Date":         { "content": "…" },
+    "Date Issued":         { "content": "…" },
+    "PIN":                 { "content": "…" } }</pre>
+        <p style="color:var(--ink-2);font-size:15px">The new app maps these labels to the API fields: Registration Number → <code>plate_number</code>, Vehicle Make → <code>brand</code>, Vehicle Model → <code>model</code>, Vehicle Color → <code>color</code>, Engine Number → <code>engine_number</code>, Chassis Number → <code>chassis_number</code>, Engine Capacity → <code>engine_capacity</code>, Expiry Date and PIN → the licence record. Each mapped field gets the "Read from licence" tag in the design. No sign-in token is sent, and the old app caps uploads at 4 MB.</p>
+      </div>
+      <div class="callout info"><span class="ic">i</span><div><p><b>Design changes the API asks for.</b></p><ul style="color:var(--ink-2);font-size:15px;margin-top:6px">
+        <li>Add a <b>Licence PIN</b> field to Add a car. <code>POST /vehicle-licenses</code> requires <code>license_pin</code>, and the document reader already returns it as "PIN".</li>
+        <li>Change the upload limit in the design from 10 MB to <b>4 MB</b>, which is what the old app allows. Turn PDFs into an image in the browser before sending, as the old app does with pdf.js.</li>
+        <li><b>Year</b> isn't stored by the API. Either add <code>year</code> to vehicles or drop it from the cards.</li>
+        <li>Add a <b>delivery address</b> to Settings and to the renewal step. <code>PUT /users</code> already accepts <code>address</code>.</li>
+        <li>Add an <b>insurer picker</b> to the insurance step. The API lists 57 insurers.</li>
+        <li>Only colour is editable on a car. Show the other details as read-only, with "Contact us to change".</li>
+        <li>Payments can be <b>reversed</b>. Add a "Reversed" status pill.</li>
+        <li>The API also supports Facebook sign-in. The design only shows Google. Decide whether to add it.</li>
+      </ul></div></div>
+    </section>
+
+    <section id="payments">
+      <h2>How a payment works</h2>
+      <p class="sec-lede">Top-ups and the tracking fee both go through Paystack. The app waits for the API to hear back from Paystack before it shows a receipt, so drivers never see "paid" for a payment that failed.</p>
+      <figure>
+        <svg viewBox="0 0 900 420" role="img" aria-label="Payment sequence. 1: the web app asks the API to initialise a transaction. 2: the API creates a Paystack checkout. 3: the API returns the checkout URL and reference. 4: the app sends the driver to Paystack to pay. 5: Paystack sends a charge success webhook to the API. 6: Paystack sends the driver back to the app's payment return page. 7: the app opens a live stream to the API for that payment reference. 8: the API sends a success event and the app shows the receipt.">
+          <defs>
+            <marker id="a2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="currentColor"/></marker>
+            <marker id="a2c" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#FF5A3C"/></marker>
+          </defs>
+          <rect x="70" y="14" width="160" height="40" rx="12" fill="#FF5A3C" fill-opacity=".1" stroke="#FF5A3C" stroke-width="1.6"/>
+          <text x="150" y="39" text-anchor="middle" font-size="14" font-weight="700" fill="currentColor">Web app</text>
+          <rect x="370" y="14" width="160" height="40" rx="12" fill="none" stroke="currentColor" stroke-opacity=".55" stroke-width="1.4"/>
+          <text x="450" y="39" text-anchor="middle" font-size="14" font-weight="700" fill="currentColor">MotorPapers API</text>
+          <rect x="670" y="14" width="160" height="40" rx="12" fill="none" stroke="currentColor" stroke-opacity=".55" stroke-width="1.4"/>
+          <text x="750" y="39" text-anchor="middle" font-size="14" font-weight="700" fill="currentColor">Paystack</text>
+          <line x1="150" y1="54" x2="150" y2="406" stroke="currentColor" stroke-opacity=".3" stroke-dasharray="3 5"/>
+          <line x1="450" y1="54" x2="450" y2="406" stroke="currentColor" stroke-opacity=".3" stroke-dasharray="3 5"/>
+          <line x1="750" y1="54" x2="750" y2="406" stroke="currentColor" stroke-opacity=".3" stroke-dasharray="3 5"/>
+
+          <line x1="152" y1="96" x2="447" y2="96" stroke="currentColor" stroke-width="1.4" marker-end="url(#a2)"/>
+          <text x="300" y="88" text-anchor="middle" font-size="13" fill="currentColor"><tspan font-weight="700">1</tspan>  POST /transactions/initialize</text>
+          <line x1="452" y1="136" x2="747" y2="136" stroke="currentColor" stroke-width="1.4" marker-end="url(#a2)"/>
+          <text x="600" y="128" text-anchor="middle" font-size="13" fill="currentColor"><tspan font-weight="700">2</tspan>  create checkout</text>
+          <line x1="448" y1="176" x2="153" y2="176" stroke="currentColor" stroke-width="1.4" stroke-dasharray="5 4" marker-end="url(#a2)"/>
+          <text x="300" y="168" text-anchor="middle" font-size="13" fill="currentColor"><tspan font-weight="700">3</tspan>  auth_url + reference</text>
+          <line x1="152" y1="216" x2="747" y2="216" stroke="currentColor" stroke-width="1.4" marker-end="url(#a2)"/>
+          <text x="600" y="208" text-anchor="middle" font-size="13" fill="currentColor"><tspan font-weight="700">4</tspan>  redirect: driver pays</text>
+          <line x1="748" y1="256" x2="453" y2="256" stroke="currentColor" stroke-width="1.4" marker-end="url(#a2)"/>
+          <text x="600" y="248" text-anchor="middle" font-size="13" fill="currentColor"><tspan font-weight="700">5</tspan>  webhook: charge.success</text>
+          <line x1="748" y1="296" x2="153" y2="296" stroke="currentColor" stroke-width="1.4" stroke-dasharray="5 4" marker-end="url(#a2)"/>
+          <text x="300" y="288" text-anchor="middle" font-size="13" fill="currentColor"><tspan font-weight="700">6</tspan>  back to /payments/callback?reference</text>
+          <line x1="152" y1="336" x2="447" y2="336" stroke="#FF5A3C" stroke-width="2" marker-end="url(#a2c)"/>
+          <text x="300" y="328" text-anchor="middle" font-size="13" fill="currentColor"><tspan font-weight="700">7</tspan>  open SSE completed-payment/:ref</text>
+          <line x1="448" y1="376" x2="153" y2="376" stroke="#FF5A3C" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#a2c)"/>
+          <text x="300" y="368" text-anchor="middle" font-size="13" fill="currentColor"><tspan font-weight="700">8</tspan>  event: success → show receipt</text>
+        </svg>
+        <figcaption>Steps 5 and 6 can arrive in either order. That's why the app waits on step 7 instead of trusting the redirect. Dashed arrows are responses. Coral marks the part the new app adds.</figcaption>
+      </figure>
+      <div class="callout warn"><span class="ic">!</span><div><p><b>Two implementation traps.</b> The browser's built-in <code>EventSource</code> can't send an <code>Authorization</code> header, so open the stream with a fetch-based client such as <code>@microsoft/fetch-event-source</code>. Azure App Service also closes idle connections, so if no event arrives within 20 seconds, fall back to polling <code>GET /transactions/:id</code> every 3 seconds for up to 2 minutes. After that, show "Still confirming. We'll email you".</p></div></div>
+    </section>
+
+    <section id="backend">
+      <h2>Backend changes</h2>
+      <p class="sec-lede">Ordered by what blocks launch. The P0 items need to be on staging by the end of week 5. Each item names the phase that needs it first.</p>
+      <div class="changes">
+        <article class="change"><span class="chip chip-p0">P0</span><h3>Renewal orders</h3><p><code>POST /vehicles/:id/renewals</code> with <code>document_type</code> and <code>pay_with</code>, plus <code>GET /renewals</code>. Status moves through paid, processing, out for delivery, delivered, and each change sends the renewal email. This is what the Renew button does, and it's the core of the service.</p></article>
+        <article class="change"><span class="chip chip-p0">P0</span><h3>Pay from the wallet</h3><p>Today <code>/transactions/initialize</code> always sends the driver to Paystack. The tracking fee and renewals need to debit the wallet directly when the balance covers them.</p></article>
+        <article class="change"><span class="chip chip-p0">P0</span><h3>Say what each payment was for</h3><p>Add <code>category</code>, <code>description</code>, <code>vehicle_id</code> and <code>document_type</code> to transactions, so Payments can show "Licence renewal · EKY 219 GD" instead of "credit".</p></article>
+        <article class="change"><span class="chip chip-p0">P0</span><h3>Longer sessions</h3><p>Sign-in tokens expire after 30 minutes and there is no refresh endpoint, so drivers get signed out halfway through Add a car. Add a refresh token in an httpOnly cookie, or a sliding session.</p></article>
+        <article class="change"><span class="chip chip-p0">P0</span><h3>Profile and car basics</h3><p>Add <code>GET /users/me</code> so the app can reload the profile. Document <code>DELETE /vehicles/:id</code>, which the old app already calls. Make <code>POST /vehicles</code> return <code>409</code> for a plate that's already on the account.</p></article>
+        <article class="change"><span class="chip chip-p0">P0</span><h3>New domains</h3><p>Configuration rather than code. Allow the new app and site domains in CORS, register the new OAuth redirect URLs with Google, and set the Paystack callback URL to <code>/payments/callback</code>. The doc parser needs the same CORS change.</p></article>
+        <article class="change"><span class="chip chip-p0">P0</span><h3>Protect and document the document reader</h3><p>The reader at <code>motorpapers-doc-parser-api.azurewebsites.net</code> isn't in the API docs and accepts requests without a token. Add it to GitBook, require the same sign-in token as the API (or rate-limit it), and return a confidence score per field so the app can flag readings to double-check.</p></article>
+        <article class="change"><span class="chip chip-p0">P0</span><h3>Reminder job and emails</h3><p>A daily job finds papers 30, 14, 7 and 1 days from expiry and the day after expiry, then sends the matching email. Send the receipt, failed-payment, welcome and password-changed emails from the existing events. All templates are ready in <code>emails/</code>.</p></article>
+        <article class="change"><span class="chip chip-p0">P0</span><h3>Paystack webhook is the source of truth</h3><p>Confirm the webhook verifies Paystack's signature, is safe to receive twice, and is what moves a transaction to success or failed. The SSE stream and emails both depend on it.</p></article>
+        <article class="change"><span class="chip chip-p1">P1</span><h3>Reminder settings</h3><p><code>GET</code> and <code>PUT /users/notification-preferences</code> for email, SMS and WhatsApp, the reminder days, and auto-renew. Until then, Settings hides this card behind a feature flag.</p></article>
+        <article class="change"><span class="chip chip-p1">P1</span><h3>SMS reminders</h3><p>Connect a Nigerian SMS gateway such as Termii for the same reminder schedule as email.</p></article>
+        <article class="change"><span class="chip chip-p1">P1</span><h3>Recheck a pending payment</h3><p><code>POST /transactions/:reference/verify</code> asks Paystack again. It powers the "Check status" button on payments stuck as pending.</p></article>
+        <article class="change"><span class="chip chip-p1">P1</span><h3>Prices from the API</h3><p><code>GET /pricing</code> for the tracking fee and the renewal price of each paper, so prices aren't hard-coded in the app.</p></article>
+        <article class="change"><span class="chip chip-p2">P2</span><h3>Nice to have</h3><p>Vehicle <code>year</code>, insurer on the insurance record, Facebook sign-in in the UI, and the admin user-management redesign.</p></article>
+      </div>
+    </section>
+
+    <section id="phases">
+      <h2>Phases</h2>
+      <p class="sec-lede">Seven phases over eight weeks, built in <code>github.com/jomitiron/mpaper</code>. Each phase has a GitHub milestone and ends with something working on staging. The plan assumes two frontend developers and part-time backend support. One developer owns the app phases. The other builds the marketing site and emails, then joins the app for payments and renewals.</p>
+      <div class="gantt-wrap">
+        <div class="gantt" role="table" aria-label="Eight-week phase timeline">
+          <span class="wk" style="text-align:left">Phase</span><span class="wk">W1</span><span class="wk">W2</span><span class="wk">W3</span><span class="wk">W4</span><span class="wk">W5</span><span class="wk">W6</span><span class="wk">W7</span><span class="wk">W8</span>
+          <span class="lab"><b>0</b> · Foundations</span><span class="bar b-fe" style="grid-column:2/3"></span>
+          <span class="lab"><b>1</b> · Sign-in</span><span class="bar b-fe" style="grid-column:3/4"></span>
+          <span class="lab"><b>2</b> · Cars</span><span class="bar b-fe" style="grid-column:4/6"></span>
+          <span class="lab"><b>3</b> · Payments</span><span class="bar b-fe" style="grid-column:5/7"></span>
+          <span class="lab"><b>4</b> · Renewals and reminders</span><span class="bar b-fe" style="grid-column:6/9">needs renewals API</span>
+          <span class="lab"><b>5</b> · Marketing site</span><span class="bar b-site" style="grid-column:4/8">in parallel</span>
+          <span class="lab"><b>6</b> · QA and launch</span><span class="bar b-qa" style="grid-column:8/10"></span>
+          <span class="lab">Backend changes</span><span class="bar b-be" style="grid-column:2/8">critical path</span>
+          <div class="ms"><span style="text-align:left;color:var(--muted)">Milestones</span><span></span><span>M1</span><span></span><span></span><span>M2</span><span></span><span>M3</span><span>M4</span></div>
+        </div>
+      </div>
+      <div class="legend lg-gantt"><span><i class="b-fe"></i>Web app</span><span><i class="b-site"></i>Marketing site</span><span><i class="b-be"></i>Backend</span><span><i class="b-qa"></i>Quality and launch</span></div>
+
+      <article class="phase" id="phase-0">
+        <div class="phase-h"><span class="no">Phase 0</span><h3>Foundations</h3><span class="when">Week 1 · milestone <code>P0 Foundations</code></span></div>
+        <p class="goal">An empty app and site deploy from the repo to preview and staging, and talk to the real API.</p>
+        <div class="phase-cols">
+          <div class="phase-col"><h4>Frontend</h4><ul><li>pnpm monorepo: <code>apps/web</code>, <code>apps/site</code>, <code>packages/tokens</code>, <code>ui</code>, <code>api</code></li><li>Design tokens from the approved prototype</li><li>Base components: Button, Chip, Plate, Tile, Card, Sheet, Modal, Toast, Input, Switch</li><li>Typed API client with Zod schemas for all 29 endpoints and the document reader</li><li>Mock server (MSW) for endpoints that don't exist yet</li></ul></div>
+          <div class="phase-col"><h4>Backend</h4><ul><li>Agree the backend change list and owners</li><li>CORS for preview and staging addresses</li><li>Add the document reader to the GitBook docs</li></ul></div>
+          <div class="phase-col"><h4>Setup</h4><ul><li>Protect <code>main</code>: CI must pass, one review</li><li>Azure Static Web Apps for the app and the site</li><li>GitHub environments: staging, and production with a required approver</li><li>Sentry project and release tagging</li></ul></div>
+        </div>
+        <div class="done"><b>Done when</b><span>Every pull request gets a preview link, and staging shows the app shell loading cars from <code>ijanla-stage</code>.</span></div>
+      </article>
+
+      <article class="phase" id="phase-1">
+        <div class="phase-h"><span class="no">Phase 1</span><h3>Sign-in</h3><span class="when">Week 2 · milestone <code>P1 Sign-in</code></span></div>
+        <p class="goal">Drivers can create an account, verify their email, sign in, and stay signed in.</p>
+        <div class="phase-cols">
+          <div class="phase-col"><h4>Frontend</h4><ul><li>Sign up in three steps, sign in, Google sign-in</li><li>Forgot and reset password</li><li>Route guards, sign-out, and returning to the page you were on after a 401</li><li>Restore the session on refresh</li></ul></div>
+          <div class="phase-col"><h4>Backend</h4><ul><li>Refresh token or sliding session (tokens last 30 minutes today)</li><li><code>GET /users/me</code></li><li>Google sign-in redirect addresses for the new domains</li></ul></div>
+          <div class="phase-col"><h4>Emails</h4><ul><li>Verify email and reset password templates live on the existing sends</li></ul></div>
+        </div>
+        <div class="done"><b>Done when · M1</b><span>A new account can be created and used on staging, and refreshing the page keeps you signed in.</span></div>
+      </article>
+
+      <article class="phase" id="phase-2">
+        <div class="phase-h"><span class="no">Phase 2</span><h3>Cars</h3><span class="when">Weeks 3–4 · milestone <code>P2 Cars</code></span></div>
+        <p class="goal">Drivers see every paper's days left at a glance, and can add a car from a photo of its licence.</p>
+        <div class="phase-cols">
+          <div class="phase-col"><h4>Frontend</h4><ul><li>Home: alert card, wallet, coming up, your cars, recent activity</li><li>My cars: search, filters, cards</li><li>Car panel: papers, specs, update a paper, delete</li><li>Add a car, steps 1–3: document reader, check details (with licence PIN), insurance with insurer picker, roadworthiness</li></ul></div>
+          <div class="phase-col"><h4>Backend</h4><ul><li><code>409</code> for a plate that's already on the account</li><li>Document <code>DELETE /vehicles/:id</code></li><li>Protect the document reader and return a confidence score per field</li></ul></div>
+          <div class="phase-col"><h4>Design</h4><ul><li>Read-only car details with "Contact us to change"</li><li>Decide on <code>year</code>: add to the API or drop from cards</li></ul></div>
+        </div>
+        <div class="done"><b>Done when</b><span>A car added from a real licence photo shows the right days left on Home and My cars.</span></div>
+      </article>
+
+      <article class="phase" id="phase-3">
+        <div class="phase-h"><span class="no">Phase 3</span><h3>Payments</h3><span class="when">Weeks 4–5 · milestone <code>P3 Payments</code></span></div>
+        <p class="goal">Drivers can top up and pay the tracking fee, and see what every payment was for.</p>
+        <div class="phase-cols">
+          <div class="phase-col"><h4>Frontend</h4><ul><li>Add a car, step 4: review and pay</li><li>Paystack redirect and payment return page (stream with polling fallback)</li><li>Payments page: filters, pages, status pills including Reversed</li><li>Top-up and Retry</li></ul></div>
+          <div class="phase-col"><h4>Backend</h4><ul><li>Pay from the wallet</li><li>Category, description and car on every transaction</li><li>Webhook signature check, safe to receive twice</li><li>Recheck a pending payment (P1)</li></ul></div>
+          <div class="phase-col"><h4>Emails</h4><ul><li>Payment received</li><li>Payment failed</li><li>Welcome</li><li>Password changed</li></ul></div>
+        </div>
+        <div class="done"><b>Done when · M2</b><span>Add a car and pay end to end in Paystack test mode, and the receipt email arrives.</span></div>
+      </article>
+
+      <article class="phase" id="phase-4">
+        <div class="phase-h"><span class="no">Phase 4</span><h3>Renewals and reminders</h3><span class="when">Weeks 5–7 · milestone <code>P4 Renewals</code></span></div>
+        <p class="goal">The Renew button works, and reminders go out on time.</p>
+        <div class="phase-cols">
+          <div class="phase-col"><h4>Frontend</h4><ul><li>Renew from Home, My cars and the car panel: confirm the paper, price and delivery address, then pay</li><li>Renewal status in the car panel</li><li>Settings: profile, address, password; reminder settings behind a flag</li></ul></div>
+          <div class="phase-col"><h4>Backend</h4><ul><li>Renewal orders and their statuses</li><li>Daily reminder job: 30, 14, 7 and 1 days, and after expiry</li><li>Reminder preferences, SMS gateway, <code>GET /pricing</code> (P1)</li></ul></div>
+          <div class="phase-col"><h4>Emails</h4><ul><li>Renewal reminder</li><li>Paper expired</li><li>Renewal update</li></ul></div>
+        </div>
+        <div class="done"><b>Done when</b><span>A paper renewed on staging moves through every status with its emails, and a reminder dry run lists the right drivers.</span></div>
+        <p class="fallback">If the renewal API slips past week 6, ship a "Request renewal" button that creates an order the team handles by hand, and switch to the automatic flow behind the feature flag later.</p>
+      </article>
+
+      <article class="phase" id="phase-5">
+        <div class="phase-h"><span class="no">Phase 5</span><h3>Marketing site</h3><span class="when">Weeks 3–6, in parallel · milestone <code>P5 Site</code></span></div>
+        <p class="goal">The landing page from the approved design, fast on mobile data and easy to find on Google.</p>
+        <div class="phase-cols">
+          <div class="phase-col"><h4>Build</h4><ul><li>Astro build of every landing section and the FAQ</li><li>Sign up and sign in links into the app</li><li>Privacy and Terms pages</li></ul></div>
+          <div class="phase-col"><h4>Findability</h4><ul><li>Titles, descriptions, sitemap, robots</li><li>Social preview image</li><li>Privacy-friendly analytics with a cookie notice</li></ul></div>
+          <div class="phase-col"><h4>Needed from you</h4><ul><li>Privacy and Terms text</li><li>Real customer quotes, if you want a reviews section</li></ul></div>
+        </div>
+        <div class="done"><b>Done when</b><span>The main content appears in under 2.5 seconds on a mid-range Android phone over 4G, and Lighthouse scores 90 or more on staging.</span></div>
+      </article>
+
+      <article class="phase" id="phase-6">
+        <div class="phase-h"><span class="no">Phase 6</span><h3>QA and launch</h3><span class="when">Weeks 7–8 · milestone <code>P6 Launch</code></span></div>
+        <p class="goal">Ship to everyone without breaking anything for current users.</p>
+        <div class="phase-cols">
+          <div class="phase-col"><h4>Quality</h4><ul><li>Accessibility pass to WCAG 2.2 AA</li><li>Low-end Android and iOS Safari testing</li><li>End-to-end tests: sign up, add a car, top up, renew</li></ul></div>
+          <div class="phase-col"><h4>Beta · M3</h4><ul><li>New app at <code>app.&lt;domain&gt;</code>, old app still running</li><li>Invite existing users by email</li><li>A week of feedback and fixes</li></ul></div>
+          <div class="phase-col"><h4>Launch · M4</h4><ul><li>Redirect old routes, switch the domain</li><li>Monitoring and alerts on</li><li>Keep the old app for 30 days</li></ul></div>
+        </div>
+        <div class="done"><b>Done when · M4</b><span>The launch checklist is complete and the main domain serves the new site.</span></div>
+      </article>
+    </section>
+
+    <section id="deploy">
+      <h2>Deployment</h2>
+      <p class="sec-lede">Three environments, each paired with the matching API that already exists. Every pull request gets its own preview link. Production only changes after someone approves.</p>
+      <figure>
+        <svg viewBox="0 0 980 170" role="img" aria-label="Deployment pipeline. A pull request runs CI checks: lint, types, tests and build. When they pass it deploys a preview environment using the dev API. Merging to main deploys staging, which uses the staging API and runs end-to-end tests. After manual approval, production deploys using the live API and live Paystack keys.">
+          <defs><marker id="a3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="currentColor"/></marker></defs>
+          <rect x="10" y="20" width="140" height="56" rx="12" fill="none" stroke="currentColor" stroke-opacity=".55" stroke-width="1.4"/>
+          <text x="80" y="44" text-anchor="middle" font-size="14" font-weight="700" fill="currentColor">Pull request</text>
+          <text x="80" y="63" text-anchor="middle" font-size="12" fill="currentColor" fill-opacity=".7">GitHub</text>
+          <rect x="220" y="20" width="140" height="56" rx="12" fill="none" stroke="currentColor" stroke-opacity=".55" stroke-width="1.4"/>
+          <text x="290" y="44" text-anchor="middle" font-size="14" font-weight="700" fill="currentColor">CI checks</text>
+          <text x="290" y="63" text-anchor="middle" font-size="12" fill="currentColor" fill-opacity=".7">lint · types · tests</text>
+          <rect x="430" y="20" width="140" height="56" rx="12" fill="none" stroke="currentColor" stroke-opacity=".55" stroke-width="1.4"/>
+          <text x="500" y="44" text-anchor="middle" font-size="14" font-weight="700" fill="currentColor">Preview</text>
+          <text x="500" y="63" text-anchor="middle" font-size="12" fill="currentColor" fill-opacity=".7">one per PR</text>
+          <rect x="640" y="20" width="140" height="56" rx="12" fill="none" stroke="currentColor" stroke-opacity=".55" stroke-width="1.4"/>
+          <text x="710" y="44" text-anchor="middle" font-size="14" font-weight="700" fill="currentColor">Staging</text>
+          <text x="710" y="63" text-anchor="middle" font-size="12" fill="currentColor" fill-opacity=".7">e2e tests run here</text>
+          <rect x="830" y="20" width="140" height="56" rx="12" fill="#FF5A3C" fill-opacity=".1" stroke="#FF5A3C" stroke-width="1.6"/>
+          <text x="900" y="44" text-anchor="middle" font-size="14" font-weight="700" fill="currentColor">Production</text>
+          <text x="900" y="63" text-anchor="middle" font-size="12" fill="currentColor" fill-opacity=".7">drivers use this</text>
+          <line x1="150" y1="48" x2="218" y2="48" stroke="currentColor" stroke-width="1.4" marker-end="url(#a3)"/>
+          <text x="184" y="40" text-anchor="middle" font-size="12" fill="currentColor">push</text>
+          <line x1="360" y1="48" x2="428" y2="48" stroke="currentColor" stroke-width="1.4" marker-end="url(#a3)"/>
+          <text x="394" y="40" text-anchor="middle" font-size="12" fill="currentColor">pass</text>
+          <line x1="570" y1="48" x2="638" y2="48" stroke="currentColor" stroke-width="1.4" marker-end="url(#a3)"/>
+          <text x="604" y="40" text-anchor="middle" font-size="12" fill="currentColor">merge</text>
+          <line x1="780" y1="48" x2="828" y2="48" stroke="currentColor" stroke-width="1.4" marker-end="url(#a3)"/>
+          <text x="804" y="40" text-anchor="middle" font-size="12" fill="currentColor">approve</text>
+          <line x1="500" y1="76" x2="500" y2="104" stroke="currentColor" stroke-opacity=".5" stroke-dasharray="3 3"/>
+          <line x1="710" y1="76" x2="710" y2="104" stroke="currentColor" stroke-opacity=".5" stroke-dasharray="3 3"/>
+          <line x1="900" y1="76" x2="900" y2="104" stroke="currentColor" stroke-opacity=".5" stroke-dasharray="3 3"/>
+          <text x="500" y="124" text-anchor="middle" font-size="12.5" font-weight="700" fill="currentColor">ijanla-dev</text>
+          <text x="500" y="143" text-anchor="middle" font-size="12" fill="currentColor" fill-opacity=".7">Paystack test</text>
+          <text x="710" y="124" text-anchor="middle" font-size="12.5" font-weight="700" fill="currentColor">ijanla-stage</text>
+          <text x="710" y="143" text-anchor="middle" font-size="12" fill="currentColor" fill-opacity=".7">Paystack test</text>
+          <text x="900" y="124" text-anchor="middle" font-size="12.5" font-weight="700" fill="currentColor">ijanla (live)</text>
+          <text x="900" y="143" text-anchor="middle" font-size="12" fill="currentColor" fill-opacity=".7">Paystack live</text>
+        </svg>
+        <figcaption>The bottom row is the API each environment talks to. Only production touches live data and live Paystack keys.</figcaption>
+      </figure>
+      <div class="tbl">
+        <table>
+          <thead><tr><th>Environment</th><th>Web app</th><th>Marketing site</th><th>API base URL</th><th>Deploys when</th></tr></thead>
+          <tbody>
+            <tr><td><b>Preview</b></td><td>Auto URL per pull request</td><td>Auto URL per pull request</td><td><code>https://ijanla-dev.azurewebsites.net</code></td><td>Every pull request</td></tr>
+            <tr><td><b>Staging</b></td><td><code>app-staging.&lt;domain&gt;</code></td><td><code>staging.&lt;domain&gt;</code></td><td><code>https://ijanla-stage.azurewebsites.net</code></td><td>Merge to <code>main</code></td></tr>
+            <tr><td><b>Production</b></td><td><code>app.&lt;domain&gt;</code></td><td><code>&lt;domain&gt;</code></td><td><code>https://ijanla.azurewebsites.net</code></td><td>Manual approval</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card">
+        <h3>How we use the repo</h3>
+        <ul>
+          <li><b>Branches:</b> <code>main</code> is protected and needs passing CI plus one review. Feature branches are named after their phase, for example <code>p2/my-cars</code>.</li>
+          <li><b>Milestones:</b> one per phase (<code>P0 Foundations</code> to <code>P6 Launch</code>). Every issue sits in one.</li>
+          <li><b>Labels:</b> <code>frontend</code>, <code>backend-needed</code>, <code>emails</code>, <code>design</code>, <code>blocked</code>.</li>
+          <li><b>Environments:</b> <code>staging</code> deploys on merge. <code>production</code> waits for an approver.</li>
+          <li><b>Secrets:</b> the Static Web Apps deploy tokens for the app and the site, and the Sentry auth token. Nothing else. The repo is public, so API keys never go in it.</li>
+        </ul>
+      </div>
+      <div class="two-col">
+        <div class="card">
+          <h3>Repository layout</h3>
+<pre>mpaper/   github.com/jomitiron/mpaper
+├─ apps/
+│  ├─ web/      Vue 3 app → app.&lt;domain&gt;
+│  └─ site/     Astro site → &lt;domain&gt;
+├─ packages/
+│  ├─ tokens/   colours, type, radii
+│  ├─ ui/       Button, Chip, Tile, Sheet…
+│  └─ api/      typed client + Zod schemas
+├─ emails/      HTML email templates
+├─ design/      approved prototype
+├─ docs/        this plan
+└─ .github/workflows/</pre>
+        </div>
+        <div class="card">
+          <h3>Settings per environment</h3>
+          <ul>
+            <li><code>VITE_API_BASE_URL</code>: the ijanla URL for that environment</li>
+            <li><code>VITE_DOC_PARSER_URL</code>: doc parser service</li>
+            <li><code>VITE_APP_URL</code> and <code>PUBLIC_SITE_URL</code>: links between the two sites</li>
+            <li><code>VITE_SENTRY_DSN</code>: error reporting</li>
+            <li><code>VITE_FLAG_RENEWALS</code>, <code>VITE_FLAG_REMINDER_SETTINGS</code>: hide features until the API ships them</li>
+          </ul>
+          <p style="font-size:14px;color:var(--muted)">No secrets live in the front end. Paystack and Google keys stay on the API.</p>
+        </div>
+        <div class="card">
+          <h3>Switching over from the old app</h3>
+          <ol>
+            <li>Launch the beta at <code>app.&lt;domain&gt;</code>. The old app keeps running.</li>
+            <li>Email existing users an invite and collect feedback for a week.</li>
+            <li>Redirect old routes: <code>/home</code> → <code>/</code>, <code>/vehicles</code> → <code>/cars</code>, <code>/transactions</code> → <code>/payments</code>, <code>/login</code> → <code>/sign-in</code>, <code>/signup</code> → <code>/sign-up</code>.</li>
+            <li>Point the main domain at the marketing site, and send the old app address to the new app.</li>
+          </ol>
+        </div>
+        <div class="card">
+          <h3>If something goes wrong</h3>
+          <ul>
+            <li>Static Web Apps keeps earlier builds. Redeploying the previous one takes minutes.</li>
+            <li>Keep the old App Service running for 30 days after launch as a fallback.</li>
+            <li>Sentry tags errors by release. Uptime checks watch the app, the site and the API.</li>
+            <li>Track sign-up, car added and payment success, so a drop shows up the same day.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="emails">
+      <h2>Emails</h2>
+      <p class="sec-lede">Nine emails in the same bright style as the app. Each one is finished HTML in <code>emails/</code>, with Handlebars placeholders the backend fills in. The previews below use sample data.</p>
+      <div class="callout info"><span class="ic">i</span><div><p><b>Built for real inboxes.</b> 600px wide, table layout, inline styles and web-safe fallback fonts, so they hold up in Gmail, Outlook and Apple Mail. Light theme only. Every paper keeps its colour from the app: sky for the licence, mint for insurance, butter for roadworthiness. Send a plain-text version with each one, and set up SPF, DKIM and DMARC on the sending domain.</p></div></div>
+      <div class="mails">
+<article class="mail" id="mail-verify-email">
+  <div class="mail-meta">
+    <div class="mail-h"><h3>Verify email</h3><span class="chip chip-exists">Exists · restyle</span></div>
+    <dl class="kv">
+      <div><dt>Subject</dt><dd>Your MotoPapers code: {{otp}}</dd></div>
+      <div><dt>Preview text</dt><dd>Enter this code to confirm your email. It expires in {{otp_expiry_minutes}} minutes.</dd></div>
+      <div><dt>Sent when</dt><dd>POST /users/sign-up and POST /users/resend-verification-email</dd></div>
+      <div><dt>Variables</dt><dd class="vars"><code>otp_expiry_minutes</code> <code>first_name</code> <code>otp</code></dd></div>
+    </dl>
+    <p class="file">emails/verify-email.html</p>
+  </div>
+  <div class="mail-frame"><iframe title="Verify email email preview" loading="lazy" srcdoc="<!doctype html>
+<html lang=&quot;en&quot; xmlns=&quot;http://www.w3.org/1999/xhtml&quot;>
+<head>
+<meta charset=&quot;utf-8&quot;>
+<meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;>
+<meta name=&quot;x-apple-disable-message-reformatting&quot;>
+<meta name=&quot;color-scheme&quot; content=&quot;light&quot;>
+<meta name=&quot;supported-color-schemes&quot; content=&quot;light&quot;>
+<title>Verify your email</title>
+<link href=&quot;https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700&amp;amp;family=Gabarito:wght@700;800;900&amp;amp;display=swap&quot; rel=&quot;stylesheet&quot;>
+<style>
+  body{margin:0;padding:0;background:#F4F3F9;-webkit-text-size-adjust:100%;}
+  table{border-collapse:collapse;}
+  a{color:#DE3B22;}
+  @media (max-width:620px){
+    .container{width:100%!important;}
+    .px{padding-left:22px!important;padding-right:22px!important;}
+    .h1{font-size:28px!important;line-height:32px!important;}
+    .big{font-size:46px!important;line-height:48px!important;}
+  }
+</style>
+</head>
+<body style=&quot;margin:0;padding:0;background:#F4F3F9;&quot;>
+<div style=&quot;display:none;max-height:0;overflow:hidden;opacity:0;mso-hide:all;&quot;>Enter this code to confirm your email. It expires in 10 minutes.&amp;#8199;&amp;#847;&amp;#8199;&amp;#847;&amp;#8199;&amp;#847;&amp;#8199;&amp;#847;&amp;#8199;&amp;#847;&amp;#8199;&amp;#847;</div>
+<table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot; style=&quot;background:#F4F3F9;&quot;>
+<tr><td align=&quot;center&quot; style=&quot;padding:32px 12px 40px;&quot;>
+  <table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; class=&quot;container&quot; width=&quot;600&quot; style=&quot;width:600px;max-width:600px;&quot;>
+    <tr><td style=&quot;padding:0 6px 18px;&quot;>
+      <table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot;><tr>
+        <td width=&quot;34&quot; height=&quot;34&quot; align=&quot;center&quot; valign=&quot;middle&quot; style=&quot;width:34px;height:34px;background:#FF5A3C;border-radius:11px;font-family:'Gabarito','Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:900;font-size:17px;line-height:34px;color:#FFFFFF;&quot;>M</td>
+        <td style=&quot;padding-left:10px;font-family:'Gabarito','Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:800;font-size:20px;line-height:24px;color:#1E1B33;letter-spacing:-0.3px;&quot;>MotoPapers</td>
+      </tr></table>
+    </td></tr>
+    <tr><td style=&quot;background:#FFFFFF;border-radius:28px;&quot;>
+      <table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot;><tr><td class=&quot;px&quot; style=&quot;background:#ECE7FF;padding:32px 36px 30px;border-radius:28px 28px 0 0;&quot;>
+    <span style=&quot;display:inline-block;padding:5px 12px;border-radius:999px;background:#FFFFFF;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:12px;line-height:16px;font-weight:700;color:#5A3FCC;&quot;>Verify your email</span>
+    <h1 class=&quot;h1&quot; style=&quot;margin:14px 0 0;font-family:'Gabarito','Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:900;font-size:34px;line-height:38px;letter-spacing:-0.8px;color:#1E1B33;&quot;>Here's your code, Ada</h1>
+    
+    
+  </td></tr></table>
+      <table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot;><tr><td class=&quot;px&quot; style=&quot;padding:28px 36px 20px;&quot;><p style=&quot;margin:0 0 16px;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:16px;line-height:25px;color:#45425C;&quot;>Enter this code in MotoPapers to confirm your email address.</p><table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot; style=&quot;margin:6px 0 22px;&quot;><tr><td align=&quot;center&quot; style=&quot;background:#ECE7FF;border-radius:20px;padding:22px 12px;font-family:'Gabarito','Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:900;font-size:40px;line-height:44px;letter-spacing:12px;color:#1E1B33;&quot;>482913</td></tr></table><p style=&quot;margin:0 0 16px;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:16px;line-height:25px;color:#45425C;&quot;>The code expires in 10 minutes.</p><p style=&quot;margin:0 0 12px;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;line-height:21px;color:#6A6783;&quot;>Didn't create a MotoPapers account? You can ignore this email. Nothing will happen.</p></td></tr></table>
+    </td></tr>
+    <tr><td class=&quot;px&quot; style=&quot;padding:24px 28px 0;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:12.5px;line-height:19px;color:#6A6783;text-align:center;&quot;>
+      You're getting this email because you have a MotoPapers account.<br>MotoPapers · 8 Sunday Gbajobi Street, Millennium Estate, Gbagada, Lagos · +234 802 959 5069
+    </td></tr>
+  </table>
+</td></tr>
+</table>
+</body>
+</html>
+"></iframe></div>
+</article>
+<article class="mail" id="mail-reset-password">
+  <div class="mail-meta">
+    <div class="mail-h"><h3>Reset password</h3><span class="chip chip-exists">Exists · restyle</span></div>
+    <dl class="kv">
+      <div><dt>Subject</dt><dd>Reset your MotoPapers password</dd></div>
+      <div><dt>Preview text</dt><dd>Use code {{otp}} to choose a new password.</dd></div>
+      <div><dt>Sent when</dt><dd>POST /users/forgot-password</dd></div>
+      <div><dt>Variables</dt><dd class="vars"><code>otp</code> <code>email</code> <code>reset_url</code> <code>otp_expiry_minutes</code></dd></div>
+    </dl>
+    <p class="file">emails/reset-password.html</p>
+  </div>
+  <div class="mail-frame"><iframe title="Reset password email preview" loading="lazy" srcdoc="<!doctype html>
+<html lang=&quot;en&quot; xmlns=&quot;http://www.w3.org/1999/xhtml&quot;>
+<head>
+<meta charset=&quot;utf-8&quot;>
+<meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;>
+<meta name=&quot;x-apple-disable-message-reformatting&quot;>
+<meta name=&quot;color-scheme&quot; content=&quot;light&quot;>
+<meta name=&quot;supported-color-schemes&quot; content=&quot;light&quot;>
+<title>Reset your password</title>
+<link href=&quot;https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700&amp;amp;family=Gabarito:wght@700;800;900&amp;amp;display=swap&quot; rel=&quot;stylesheet&quot;>
+<style>
+  body{margin:0;padding:0;background:#F4F3F9;-webkit-text-size-adjust:100%;}
+  table{border-collapse:collapse;}
+  a{color:#DE3B22;}
+  @media (max-width:620px){
+    .container{width:100%!important;}
+    .px{padding-left:22px!important;padding-right:22px!important;}
+    .h1{font-size:28px!important;line-height:32px!important;}
+    .big{font-size:46px!important;line-height:48px!important;}
+  }
+</style>
+</head>
+<body style=&quot;margin:0;padding:0;background:#F4F3F9;&quot;>
+<div style=&quot;display:none;max-height:0;overflow:hidden;opacity:0;mso-hide:all;&quot;>Use code 482913 to choose a new password.&amp;#8199;&amp;#847;&amp;#8199;&amp;#847;&amp;#8199;&amp;#847;&amp;#8199;&amp;#847;&amp;#8199;&amp;#847;&amp;#8199;&amp;#847;</div>
+<table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot; style=&quot;background:#F4F3F9;&quot;>
+<tr><td align=&quot;center&quot; style=&quot;padding:32px 12px 40px;&quot;>
+  <table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; class=&quot;container&quot; width=&quot;600&quot; style=&quot;width:600px;max-width:600px;&quot;>
+    <tr><td style=&quot;padding:0 6px 18px;&quot;>
+      <table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot;><tr>
+        <td width=&quot;34&quot; height=&quot;34&quot; align=&quot;center&quot; valign=&quot;middle&quot; style=&quot;width:34px;height:34px;background:#FF5A3C;border-radius:11px;font-family:'Gabarito','Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:900;font-size:17px;line-height:34px;color:#FFFFFF;&quot;>M</td>
+        <td style=&quot;padding-left:10px;font-family:'Gabarito','Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:800;font-size:20px;line-height:24px;color:#1E1B33;letter-spacing:-0.3px;&quot;>MotoPapers</td>
+      </tr></table>
+    </td></tr>
+    <tr><td style=&quot;background:#FFFFFF;border-radius:28px;&quot;>
+      <table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot;><tr><td class=&quot;px&quot; style=&quot;background:#ECE7FF;padding:32px 36px 30px;border-radius:28px 28px 0 0;&quot;>
+    <span style=&quot;display:inline-block;padding:5px 12px;border-radius:999px;background:#FFFFFF;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:12px;line-height:16px;font-weight:700;color:#5A3FCC;&quot;>Password reset</span>
+    <h1 class=&quot;h1&quot; style=&quot;margin:14px 0 0;font-family:'Gabarito','Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:900;font-size:34px;line-height:38px;letter-spacing:-0.8px;color:#1E1B33;&quot;>Let's get you back in</h1>
+    
+    
+  </td></tr></table>
+      <table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot;><tr><td class=&quot;px&quot; style=&quot;padding:28px 36px 20px;&quot;><p style=&quot;margin:0 0 16px;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:16px;line-height:25px;color:#45425C;&quot;>We got a request to reset the password for <b style=&quot;color:#1E1B33;&quot;>ada.okafor@example.com</b>. Enter this code on the reset page:</p><table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot; style=&quot;margin:6px 0 22px;&quot;><tr><td align=&quot;center&quot; style=&quot;background:#ECE7FF;border-radius:20px;padding:22px 12px;font-family:'Gabarito','Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:900;font-size:40px;line-height:44px;letter-spacing:12px;color:#1E1B33;&quot;>482913</td></tr></table><table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; style=&quot;margin:8px 0 20px;&quot;><tr><td align=&quot;center&quot; bgcolor=&quot;#FF5A3C&quot; style=&quot;background:#FF5A3C;border-radius:14px;&quot;>
+    <a href=&quot;#&quot; target=&quot;_blank&quot; style=&quot;display:inline-block;padding:15px 26px;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:16px;line-height:20px;font-weight:700;color:#FFFFFF;text-decoration:none;border-radius:14px;&quot;>Choose a new password</a>
+  </td></tr></table><p style=&quot;margin:0 0 16px;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:16px;line-height:25px;color:#45425C;&quot;>The code expires in 10 minutes.</p><p style=&quot;margin:0 0 12px;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;line-height:21px;color:#6A6783;&quot;>Didn't ask for this? Ignore this email and your password stays the same.</p></td></tr></table>
+    </td></tr>
+    <tr><td class=&quot;px&quot; style=&quot;padding:24px 28px 0;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:12.5px;line-height:19px;color:#6A6783;text-align:center;&quot;>
+      You're getting this email because you have a MotoPapers account.<br>MotoPapers · 8 Sunday Gbajobi Street, Millennium Estate, Gbagada, Lagos · +234 802 959 5069
+    </td></tr>
+  </table>
+</td></tr>
+</table>
+</body>
+</html>
+"></iframe></div>
+</article>
+<article class="mail" id="mail-welcome">
+  <div class="mail-meta">
+    <div class="mail-h"><h3>Welcome</h3><span class="chip chip-new">New</span></div>
+    <dl class="kv">
+      <div><dt>Subject</dt><dd>Welcome to MotoPapers, {{first_name}}</dd></div>
+      <div><dt>Preview text</dt><dd>Add your first car with one photo and we'll track all three papers.</dd></div>
+      <div><dt>Sent when</dt><dd>After POST /users/verify-email succeeds</dd></div>
+      <div><dt>Variables</dt><dd class="vars"><code>first_name</code> <code>add_car_url</code></dd></div>
+    </dl>
+    <p class="file">emails/welcome.html</p>
+  </div>
+  <div class="mail-frame"><iframe title="Welcome email preview" loading="lazy" srcdoc="<!doctype html>
+<html lang=&quot;en&quot; xmlns=&quot;http://www.w3.org/1999/xhtml&quot;>
+<head>
+<meta charset=&quot;utf-8&quot;>
+<meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;>
+<meta name=&quot;x-apple-disable-message-reformatting&quot;>
+<meta name=&quot;color-scheme&quot; content=&quot;light&quot;>
+<meta name=&quot;supported-color-schemes&quot; content=&quot;light&quot;>
+<title>Welcome to MotoPapers</title>
+<link href=&quot;https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700&amp;amp;family=Gabarito:wght@700;800;900&amp;amp;display=swap&quot; rel=&quot;stylesheet&quot;>
+<style>
+  body{margin:0;padding:0;background:#F4F3F9;-webkit-text-size-adjust:100%;}
+  table{border-collapse:collapse;}
+  a{color:#DE3B22;}
+  @media (max-width:620px){
+    .container{width:100%!important;}
+    .px{padding-left:22px!important;padding-right:22px!important;}
+    .h1{font-size:28px!important;line-height:32px!important;}
+    .big{font-size:46px!important;line-height:48px!important;}
+  }
+</style>
+</head>
+<body style=&quot;margin:0;padding:0;background:#F4F3F9;&quot;>
+<div style=&quot;display:none;max-height:0;overflow:hidden;opacity:0;mso-hide:all;&quot;>Add your first car with one photo and we'll track all three papers.&amp;#8199;&amp;#847;&amp;#8199;&amp;#847;&amp;#8199;&amp;#847;&amp;#8199;&amp;#847;&amp;#8199;&amp;#847;&amp;#8199;&amp;#847;</div>
+<table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot; style=&quot;background:#F4F3F9;&quot;>
+<tr><td align=&quot;center&quot; style=&quot;padding:32px 12px 40px;&quot;>
+  <table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; class=&quot;container&quot; width=&quot;600&quot; style=&quot;width:600px;max-width:600px;&quot;>
+    <tr><td style=&quot;padding:0 6px 18px;&quot;>
+      <table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot;><tr>
+        <td width=&quot;34&quot; height=&quot;34&quot; align=&quot;center&quot; valign=&quot;middle&quot; style=&quot;width:34px;height:34px;background:#FF5A3C;border-radius:11px;font-family:'Gabarito','Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:900;font-size:17px;line-height:34px;color:#FFFFFF;&quot;>M</td>
+        <td style=&quot;padding-left:10px;font-family:'Gabarito','Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:800;font-size:20px;line-height:24px;color:#1E1B33;letter-spacing:-0.3px;&quot;>MotoPapers</td>
+      </tr></table>
+    </td></tr>
+    <tr><td style=&quot;background:#FFFFFF;border-radius:28px;&quot;>
+      <table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot;><tr><td class=&quot;px&quot; style=&quot;background:#FF5A3C;padding:32px 36px 30px;border-radius:28px 28px 0 0;&quot;>
+    <span style=&quot;display:inline-block;padding:5px 12px;border-radius:999px;background:#FFFFFF;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:12px;line-height:16px;font-weight:700;color:#DE3B22;&quot;>You're in</span>
+    <h1 class=&quot;h1&quot; style=&quot;margin:14px 0 0;font-family:'Gabarito','Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:900;font-size:34px;line-height:38px;letter-spacing:-0.8px;color:#FFFFFF;&quot;>Welcome to MotoPapers, Ada</h1>
+    
+    <p style=&quot;margin:10px 0 0;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:16px;line-height:24px;color:#FFFFFF;&quot;>Let's make expired papers a thing of the past.</p>
+  </td></tr></table>
+      <table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot;><tr><td class=&quot;px&quot; style=&quot;padding:28px 36px 20px;&quot;><p style=&quot;margin:0 0 16px;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:16px;line-height:25px;color:#45425C;&quot;>Three things to do and you are covered:</p><table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot; style=&quot;margin:4px 0 18px;&quot;><tr>
+    <td width=&quot;44&quot; valign=&quot;top&quot; style=&quot;padding:0 14px 16px 0;&quot;><table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot;><tr><td width=&quot;40&quot; height=&quot;40&quot; align=&quot;center&quot; valign=&quot;middle&quot; style=&quot;width:40px;height:40px;border-radius:13px;background:#E4EDFF;font-family:'Gabarito','Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:900;font-size:18px;color:#2453CF;&quot;>1</td></tr></table></td>
+    <td valign=&quot;top&quot; style=&quot;padding:0 0 16px;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;line-height:22px;color:#45425C;&quot;><b style=&quot;display:block;font-family:'Gabarito','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:17px;line-height:22px;color:#1E1B33;&quot;>Add your car</b>Upload a photo of your vehicle licence. We'll read the plate, make, model, engine and chassis numbers.</td>
+  </tr><tr>
+    <td width=&quot;44&quot; valign=&quot;top&quot; style=&quot;padding:0 14px 16px 0;&quot;><table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot;><tr><td width=&quot;40&quot; height=&quot;40&quot; align=&quot;center&quot; valign=&quot;middle&quot; style=&quot;width:40px;height:40px;border-radius:13px;background:#DCF5E9;font-family:'Gabarito','Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:900;font-size:18px;color:#0A7647;&quot;>2</td></tr></table></td>
+    <td valign=&quot;top&quot; style=&quot;padding:0 0 16px;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;line-height:22px;color:#45425C;&quot;><b style=&quot;display:block;font-family:'Gabarito','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:17px;line-height:22px;color:#1E1B33;&quot;>Add your other papers</b>Your insurance and roadworthiness expiry dates.</td>
+  </tr><tr>
+    <td width=&quot;44&quot; valign=&quot;top&quot; style=&quot;padding:0 14px 16px 0;&quot;><table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot;><tr><td width=&quot;40&quot; height=&quot;40&quot; align=&quot;center&quot; valign=&quot;middle&quot; style=&quot;width:40px;height:40px;border-radius:13px;background:#FFEFC4;font-family:'Gabarito','Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:900;font-size:18px;color:#7F5300;&quot;>3</td></tr></table></td>
+    <td valign=&quot;top&quot; style=&quot;padding:0 0 16px;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;line-height:22px;color:#45425C;&quot;><b style=&quot;display:block;font-family:'Gabarito','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:17px;line-height:22px;color:#1E1B33;&quot;>Leave the rest to us</b>We'll remind you by SMS and email before anything runs out.</td>
+  </tr></table><table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; style=&quot;margin:8px 0 20px;&quot;><tr><td align=&quot;center&quot; bgcolor=&quot;#FF5A3C&quot; style=&quot;background:#FF5A3C;border-radius:14px;&quot;>
+    <a href=&quot;#&quot; target=&quot;_blank&quot; style=&quot;display:inline-block;padding:15px 26px;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:16px;line-height:20px;font-weight:700;color:#FFFFFF;text-decoration:none;border-radius:14px;&quot;>Add your first car</a>
+  </td></tr></table></td></tr></table>
+    </td></tr>
+    <tr><td class=&quot;px&quot; style=&quot;padding:24px 28px 0;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:12.5px;line-height:19px;color:#6A6783;text-align:center;&quot;>
+      You're getting this email because you have a MotoPapers account.<br>MotoPapers · 8 Sunday Gbajobi Street, Millennium Estate, Gbagada, Lagos · +234 802 959 5069
+    </td></tr>
+  </table>
+</td></tr>
+</table>
+</body>
+</html>
+"></iframe></div>
+</article>
+<article class="mail" id="mail-reminder-due">
+  <div class="mail-meta">
+    <div class="mail-h"><h3>Renewal reminder</h3><span class="chip chip-new">New</span></div>
+    <dl class="kv">
+      <div><dt>Subject</dt><dd>{{document_name}} for {{plate_number}} expires in {{days_left}} days</dd></div>
+      <div><dt>Preview text</dt><dd>Renew now from your wallet and we'll deliver the new papers.</dd></div>
+      <div><dt>Sent when</dt><dd>Daily reminder job, 30, 14, 7 and 1 days before expiry_date</dd></div>
+      <div><dt>Variables</dt><dd class="vars"><code>document_name_lower</code> <code>first_name</code> <code>vehicle_name</code> <code>expiry_date</code> <code>doc_tile_bg</code> <code>doc_tile_color</code> <code>document_label</code> <code>days_left</code> <code>plate_number</code> <code>renew_url</code> <code>wallet_balance</code> <code>update_url</code> <code>settings_url</code> <code>document_name</code></dd></div>
+    </dl>
+    <p class="file">emails/reminder-due.html</p>
+  </div>
+  <div class="mail-frame"><iframe title="Renewal reminder email preview" loading="lazy" srcdoc="<!doctype html>
+<html lang=&quot;en&quot; xmlns=&quot;http://www.w3.org/1999/xhtml&quot;>
+<head>
+<meta charset=&quot;utf-8&quot;>
+<meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;>
+<meta name=&quot;x-apple-disable-message-reformatting&quot;>
+<meta name=&quot;color-scheme&quot; content=&quot;light&quot;>
+<meta name=&quot;supported-color-schemes&quot; content=&quot;light&quot;>
+<title>Renewal reminder</title>
+<link href=&quot;https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700&amp;amp;family=Gabarito:wght@700;800;900&amp;amp;display=swap&quot; rel=&quot;stylesheet&quot;>
+<style>
+  body{margin:0;padding:0;background:#F4F3F9;-webkit-text-size-adjust:100%;}
+  table{border-collapse:collapse;}
+  a{color:#DE3B22;}
+  @media (max-width:620px){
+    .container{width:100%!important;}
+    .px{padding-left:22px!important;padding-right:22px!important;}
+    .h1{font-size:28px!important;line-height:32px!important;}
+    .big{font-size:46px!important;line-height:48px!important;}
+  }
+</style>
+</head>
+<body style=&quot;margin:0;padding:0;background:#F4F3F9;&quot;>
+<div style=&quot;display:none;max-height:0;overflow:hidden;opacity:0;mso-hide:all;&quot;>Renew now from your wallet and we'll deliver the new papers.&amp;#8199;&amp;#847;&amp;#8199;&amp;#847;&amp;#8199;&amp;#847;&amp;#8199;&amp;#847;&amp;#8199;&amp;#847;&amp;#8199;&amp;#847;</div>
+<table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot; style=&quot;background:#F4F3F9;&quot;>
+<tr><td align=&quot;center&quot; style=&quot;padding:32px 12px 40px;&quot;>
+  <table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; class=&quot;container&quot; width=&quot;600&quot; style=&quot;width:600px;max-width:600px;&quot;>
+    <tr><td style=&quot;padding:0 6px 18px;&quot;>
+      <table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot;><tr>
+        <td width=&quot;34&quot; height=&quot;34&quot; align=&quot;center&quot; valign=&quot;middle&quot; style=&quot;width:34px;height:34px;background:#FF5A3C;border-radius:11px;font-family:'Gabarito','Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:900;font-size:17px;line-height:34px;color:#FFFFFF;&quot;>M</td>
+        <td style=&quot;padding-left:10px;font-family:'Gabarito','Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:800;font-size:20px;line-height:24px;color:#1E1B33;letter-spacing:-0.3px;&quot;>MotoPapers</td>
+      </tr></table>
+    </td></tr>
+    <tr><td style=&quot;background:#FFFFFF;border-radius:28px;&quot;>
+      <table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot;><tr><td class=&quot;px&quot; style=&quot;background:#FFFFFF;padding:32px 36px 30px;border-radius:28px 28px 0 0;border-bottom:1px solid #E6E4EF;&quot;>
+    <span style=&quot;display:inline-block;padding:5px 12px;border-radius:999px;background:#FFE6C7;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:12px;line-height:16px;font-weight:700;color:#9A4500;&quot;>Renewal reminder</span>
+    <h1 class=&quot;h1&quot; style=&quot;margin:14px 0 0;font-family:'Gabarito','Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:900;font-size:34px;line-height:38px;letter-spacing:-0.8px;color:#1E1B33;&quot;>Your insurance is due soon</h1>
+    
+    
+  </td></tr></table>
+      <table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot;><tr><td class=&quot;px&quot; style=&quot;padding:28px 36px 20px;&quot;><p style=&quot;margin:0 0 16px;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:16px;line-height:25px;color:#45425C;&quot;>Hi Ada, the insurance for your Toyota Camry expires on <b style=&quot;color:#1E1B33;&quot;>20 Oct 2026</b>.</p><table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot; style=&quot;margin:6px 0 22px;&quot;><tr><td style=&quot;background:#DCF5E9;border-radius:22px;padding:20px 22px;&quot;>
+    <p style=&quot;margin:0;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:13px;line-height:18px;font-weight:700;color:#0A7647;&quot;>Insurance · Third party</p>
+    <p class=&quot;big&quot; style=&quot;margin:8px 0 0;font-family:'Gabarito','Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:900;font-size:56px;line-height:58px;letter-spacing:-2px;color:#0A7647;&quot;>14<span style=&quot;font-size:18px;letter-spacing:0;font-weight:800;&quot;> days left</span></p>
+    <p style=&quot;margin:4px 0 0;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;font-weight:600;color:#0A7647;&quot;>Expires 20 Oct 2026</p>
+    <table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; style=&quot;margin-top:14px;&quot;><tr>
+    <td style=&quot;background:#FFFFFF;border-radius:9px;padding:6px 11px;font-family:'Gabarito','Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:800;font-size:13px;line-height:16px;letter-spacing:1.3px;color:#1E1B33;white-space:nowrap;&quot;>KJA 731 AE</td>
+    <td style=&quot;padding-left:10px;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;line-height:18px;font-weight:600;color:#1E1B33;&quot;>Toyota Camry</td>
+  </tr></table>
+  </td></tr></table><table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; style=&quot;margin:8px 0 20px;&quot;><tr><td align=&quot;center&quot; bgcolor=&quot;#FF5A3C&quot; style=&quot;background:#FF5A3C;border-radius:14px;&quot;>
+    <a href=&quot;#&quot; target=&quot;_blank&quot; style=&quot;display:inline-block;padding:15px 26px;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:16px;line-height:20px;font-weight:700;color:#FFFFFF;text-decoration:none;border-radius:14px;&quot;>Renew insurance</a>
+  </td></tr></table><p style=&quot;margin:0 0 16px;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:16px;line-height:25px;color:#45425C;&quot;>Your wallet balance is <b style=&quot;color:#1E1B33;&quot;>₦8,500</b>.</p><p style=&quot;margin:0 0 12px;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;line-height:21px;color:#6A6783;&quot;>Already renewed? <a href=&quot;#&quot; style=&quot;color:#DE3B22;font-weight:700;text-decoration:underline;&quot;>Update the expiry date</a> so we stop reminding you.</p></td></tr></table>
+    </td></tr>
+    <tr><td class=&quot;px&quot; style=&quot;padding:24px 28px 0;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:12.5px;line-height:19px;color:#6A6783;text-align:center;&quot;>
+      You're getting this because reminders are on for KJA 731 AE. <a href=&quot;#&quot; style=&quot;color:#DE3B22;font-weight:700;text-decoration:underline;&quot;>Manage reminders</a>.<br>MotoPapers · 8 Sunday Gbajobi Street, Millennium Estate, Gbagada, Lagos · +234 802 959 5069
+    </td></tr>
+  </table>
+</td></tr>
+</table>
+</body>
+</html>
+"></iframe></div>
+</article>
+<article class="mail" id="mail-paper-expired">
+  <div class="mail-meta">
+    <div class="mail-h"><h3>Paper expired</h3><span class="chip chip-new">New</span></div>
+    <dl class="kv">
+      <div><dt>Subject</dt><dd>Action needed: {{document_name}} for {{plate_number}} has expired</dd></div>
+      <div><dt>Preview text</dt><dd>It expired on {{expiry_date}}. Renew now to stay road-legal.</dd></div>
+      <div><dt>Sent when</dt><dd>Daily reminder job, the day after expiry_date, then weekly up to 3 times</dd></div>
+      <div><dt>Variables</dt><dd class="vars"><code>expiry_date</code> <code>document_name_lower</code> <code>plate_number</code> <code>vehicle_name</code> <code>document_name</code> <code>days_since</code> <code>renew_url</code> <code>support_phone</code> <code>settings_url</code></dd></div>
+    </dl>
+    <p class="file">emails/paper-expired.html</p>
+  </div>
+  <div class="mail-frame"><iframe title="Paper expired email preview" loading="lazy" srcdoc="<!doctype html>
+<html lang=&quot;en&quot; xmlns=&quot;http://www.w3.org/1999/xhtml&quot;>
+<head>
+<meta charset=&quot;utf-8&quot;>
+<meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;>
+<meta name=&quot;x-apple-disable-message-reformatting&quot;>
+<meta name=&quot;color-scheme&quot; content=&quot;light&quot;>
+<meta name=&quot;supported-color-schemes&quot; content=&quot;light&quot;>
+<title>Paper expired</title>
+<link href=&quot;https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700&amp;amp;family=Gabarito:wght@700;800;900&amp;amp;display=swap&quot; rel=&quot;stylesheet&quot;>
+<style>
+  body{margin:0;padding:0;background:#F4F3F9;-webkit-text-size-adjust:100%;}
+  table{border-collapse:collapse;}
+  a{color:#DE3B22;}
+  @media (max-width:620px){
+    .container{width:100%!important;}
+    .px{padding-left:22px!important;padding-right:22px!important;}
+    .h1{font-size:28px!important;line-height:32px!important;}
+    .big{font-size:46px!important;line-height:48px!important;}
+  }
+</style>
+</head>
+<body style=&quot;margin:0;padding:0;background:#F4F3F9;&quot;>
+<div style=&quot;display:none;max-height:0;overflow:hidden;opacity:0;mso-hide:all;&quot;>It expired on 28 Sep 2026. Renew now to stay road-legal.&amp;#8199;&amp;#847;&amp;#8199;&amp;#847;&amp;#8199;&amp;#847;&amp;#8199;&amp;#847;&amp;#8199;&amp;#847;&amp;#8199;&amp;#847;</div>
+<table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot; style=&quot;background:#F4F3F9;&quot;>
+<tr><td align=&quot;center&quot; style=&quot;padding:32px 12px 40px;&quot;>
+  <table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; class=&quot;container&quot; width=&quot;600&quot; style=&quot;width:600px;max-width:600px;&quot;>
+    <tr><td style=&quot;padding:0 6px 18px;&quot;>
+      <table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot;><tr>
+        <td width=&quot;34&quot; height=&quot;34&quot; align=&quot;center&quot; valign=&quot;middle&quot; style=&quot;width:34px;height:34px;background:#FF5A3C;border-radius:11px;font-family:'Gabarito','Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:900;font-size:17px;line-height:34px;color:#FFFFFF;&quot;>M</td>
+        <td style=&quot;padding-left:10px;font-family:'Gabarito','Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:800;font-size:20px;line-height:24px;color:#1E1B33;letter-spacing:-0.3px;&quot;>MotoPapers</td>
+      </tr></table>
+    </td></tr>
+    <tr><td style=&quot;background:#FFFFFF;border-radius:28px;&quot;>
+      <table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot;><tr><td class=&quot;px&quot; style=&quot;background:#FF5A3C;padding:32px 36px 30px;border-radius:28px 28px 0 0;&quot;>
+    <span style=&quot;display:inline-block;padding:5px 12px;border-radius:999px;background:#FFFFFF;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:12px;line-height:16px;font-weight:700;color:#DE3B22;&quot;>Action needed</span>
+    <h1 class=&quot;h1&quot; style=&quot;margin:14px 0 0;font-family:'Gabarito','Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:900;font-size:34px;line-height:38px;letter-spacing:-0.8px;color:#FFFFFF;&quot;>Your vehicle licence for EKY 219 GD has expired</h1>
+    
+    <p style=&quot;margin:10px 0 0;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:16px;line-height:24px;color:#FFFFFF;&quot;>It expired on 28 Sep 2026. Renew it to keep your Ford Edge road-legal.</p>
+  </td></tr></table>
+      <table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot;><tr><td class=&quot;px&quot; style=&quot;padding:28px 36px 20px;&quot;><table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot; style=&quot;margin:6px 0 22px;&quot;><tr><td style=&quot;background:#FFE2DC;border-radius:22px;padding:20px 22px;&quot;>
+    <p style=&quot;margin:0;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:13px;line-height:18px;font-weight:700;color:#C02B15;&quot;>Vehicle licence</p>
+    <p class=&quot;big&quot; style=&quot;margin:8px 0 0;font-family:'Gabarito','Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:900;font-size:56px;line-height:58px;letter-spacing:-2px;color:#C02B15;&quot;>13<span style=&quot;font-size:18px;letter-spacing:0;font-weight:800;&quot;> days ago</span></p>
+    <p style=&quot;margin:4px 0 0;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;font-weight:600;color:#C02B15;&quot;>Expired 28 Sep 2026</p>
+    <table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; style=&quot;margin-top:14px;&quot;><tr>
+    <td style=&quot;background:#FFFFFF;border-radius:9px;padding:6px 11px;font-family:'Gabarito','Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:800;font-size:13px;line-height:16px;letter-spacing:1.3px;color:#1E1B33;white-space:nowrap;&quot;>EKY 219 GD</td>
+    <td style=&quot;padding-left:10px;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;line-height:18px;font-weight:600;color:#1E1B33;&quot;>Ford Edge</td>
+  </tr></table>
+  </td></tr></table><table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; style=&quot;margin:8px 0 20px;&quot;><tr><td align=&quot;center&quot; bgcolor=&quot;#FF5A3C&quot; style=&quot;background:#FF5A3C;border-radius:14px;&quot;>
+    <a href=&quot;#&quot; target=&quot;_blank&quot; style=&quot;display:inline-block;padding:15px 26px;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:16px;line-height:20px;font-weight:700;color:#FFFFFF;text-decoration:none;border-radius:14px;&quot;>Renew now</a>
+  </td></tr></table><p style=&quot;margin:0 0 12px;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;line-height:21px;color:#6A6783;&quot;>Need help? Reply to this email or call +234 802 959 5069.</p></td></tr></table>
+    </td></tr>
+    <tr><td class=&quot;px&quot; style=&quot;padding:24px 28px 0;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:12.5px;line-height:19px;color:#6A6783;text-align:center;&quot;>
+      You're getting this because reminders are on for EKY 219 GD. <a href=&quot;#&quot; style=&quot;color:#DE3B22;font-weight:700;text-decoration:underline;&quot;>Manage reminders</a>.<br>MotoPapers · 8 Sunday Gbajobi Street, Millennium Estate, Gbagada, Lagos · +234 802 959 5069
+    </td></tr>
+  </table>
+</td></tr>
+</table>
+</body>
+</html>
+"></iframe></div>
+</article>
+<article class="mail" id="mail-payment-received">
+  <div class="mail-meta">
+    <div class="mail-h"><h3>Payment received</h3><span class="chip chip-new">New</span></div>
+    <dl class="kv">
+      <div><dt>Subject</dt><dd>Payment received: {{amount}}</dd></div>
+      <div><dt>Preview text</dt><dd>{{description}} · reference {{reference}}</dd></div>
+      <div><dt>Sent when</dt><dd>Paystack webhook marks a transaction success</dd></div>
+      <div><dt>Variables</dt><dd class="vars"><code>description</code> <code>reference</code> <code>amount</code> <code>first_name</code> <code>payment_method</code> <code>paid_at</code> <code>wallet_balance</code> <code>payments_url</code></dd></div>
+    </dl>
+    <p class="file">emails/payment-received.html</p>
+  </div>
+  <div class="mail-frame"><iframe title="Payment received email preview" loading="lazy" srcdoc="<!doctype html>
+<html lang=&quot;en&quot; xmlns=&quot;http://www.w3.org/1999/xhtml&quot;>
+<head>
+<meta charset=&quot;utf-8&quot;>
+<meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;>
+<meta name=&quot;x-apple-disable-message-reformatting&quot;>
+<meta name=&quot;color-scheme&quot; content=&quot;light&quot;>
+<meta name=&quot;supported-color-schemes&quot; content=&quot;light&quot;>
+<title>Payment received</title>
+<link href=&quot;https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700&amp;amp;family=Gabarito:wght@700;800;900&amp;amp;display=swap&quot; rel=&quot;stylesheet&quot;>
+<style>
+  body{margin:0;padding:0;background:#F4F3F9;-webkit-text-size-adjust:100%;}
+  table{border-collapse:collapse;}
+  a{color:#DE3B22;}
+  @media (max-width:620px){
+    .container{width:100%!important;}
+    .px{padding-left:22px!important;padding-right:22px!important;}
+    .h1{font-size:28px!important;line-height:32px!important;}
+    .big{font-size:46px!important;line-height:48px!important;}
+  }
+</style>
+</head>
+<body style=&quot;margin:0;padding:0;background:#F4F3F9;&quot;>
+<div style=&quot;display:none;max-height:0;overflow:hidden;opacity:0;mso-hide:all;&quot;>Wallet top-up · reference MOT-7f3a9c21&amp;#8199;&amp;#847;&amp;#8199;&amp;#847;&amp;#8199;&amp;#847;&amp;#8199;&amp;#847;&amp;#8199;&amp;#847;&amp;#8199;&amp;#847;</div>
+<table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot; style=&quot;background:#F4F3F9;&quot;>
+<tr><td align=&quot;center&quot; style=&quot;padding:32px 12px 40px;&quot;>
+  <table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; class=&quot;container&quot; width=&quot;600&quot; style=&quot;width:600px;max-width:600px;&quot;>
+    <tr><td style=&quot;padding:0 6px 18px;&quot;>
+      <table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot;><tr>
+        <td width=&quot;34&quot; height=&quot;34&quot; align=&quot;center&quot; valign=&quot;middle&quot; style=&quot;width:34px;height:34px;background:#FF5A3C;border-radius:11px;font-family:'Gabarito','Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:900;font-size:17px;line-height:34px;color:#FFFFFF;&quot;>M</td>
+        <td style=&quot;padding-left:10px;font-family:'Gabarito','Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:800;font-size:20px;line-height:24px;color:#1E1B33;letter-spacing:-0.3px;&quot;>MotoPapers</td>
+      </tr></table>
+    </td></tr>
+    <tr><td style=&quot;background:#FFFFFF;border-radius:28px;&quot;>
+      <table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot;><tr><td class=&quot;px&quot; style=&quot;background:#DCF5E9;padding:32px 36px 30px;border-radius:28px 28px 0 0;&quot;>
+    <span style=&quot;display:inline-block;padding:5px 12px;border-radius:999px;background:#FFFFFF;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:12px;line-height:16px;font-weight:700;color:#0A7647;&quot;>Receipt</span>
+    <h1 class=&quot;h1&quot; style=&quot;margin:14px 0 0;font-family:'Gabarito','Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:900;font-size:34px;line-height:38px;letter-spacing:-0.8px;color:#0A7647;&quot;>Payment received</h1>
+    <p class=&quot;big&quot; style=&quot;margin:14px 0 0;font-family:'Gabarito','Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:900;font-size:56px;line-height:58px;letter-spacing:-2px;color:#0A7647;&quot;>₦20,000</p>
+    <p style=&quot;margin:10px 0 0;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:16px;line-height:24px;color:#0A7647;&quot;>Thanks, Ada. Here's your receipt.</p>
+  </td></tr></table>
+      <table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot;><tr><td class=&quot;px&quot; style=&quot;padding:28px 36px 20px;&quot;><table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot; style=&quot;margin:4px 0 22px;border-top:1px solid #E6E4EF;&quot;><tr>
+    <td style=&quot;padding:12px 0;border-bottom:1px solid #E6E4EF;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;color:#6A6783;&quot;>For</td>
+    <td align=&quot;right&quot; style=&quot;padding:12px 0;border-bottom:1px solid #E6E4EF;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;font-weight:700;color:#1E1B33;&quot;>Wallet top-up</td>
+  </tr><tr>
+    <td style=&quot;padding:12px 0;border-bottom:1px solid #E6E4EF;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;color:#6A6783;&quot;>Amount</td>
+    <td align=&quot;right&quot; style=&quot;padding:12px 0;border-bottom:1px solid #E6E4EF;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;font-weight:700;color:#1E1B33;&quot;>₦20,000</td>
+  </tr><tr>
+    <td style=&quot;padding:12px 0;border-bottom:1px solid #E6E4EF;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;color:#6A6783;&quot;>Paid with</td>
+    <td align=&quot;right&quot; style=&quot;padding:12px 0;border-bottom:1px solid #E6E4EF;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;font-weight:700;color:#1E1B33;&quot;>Visa card ending 4081</td>
+  </tr><tr>
+    <td style=&quot;padding:12px 0;border-bottom:1px solid #E6E4EF;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;color:#6A6783;&quot;>Reference</td>
+    <td align=&quot;right&quot; style=&quot;padding:12px 0;border-bottom:1px solid #E6E4EF;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;font-weight:700;color:#1E1B33;&quot;>MOT-7f3a9c21</td>
+  </tr><tr>
+    <td style=&quot;padding:12px 0;border-bottom:1px solid #E6E4EF;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;color:#6A6783;&quot;>Date</td>
+    <td align=&quot;right&quot; style=&quot;padding:12px 0;border-bottom:1px solid #E6E4EF;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;font-weight:700;color:#1E1B33;&quot;>8 Oct 2026, 2:14 pm</td>
+  </tr><tr>
+    <td style=&quot;padding:12px 0;border-bottom:1px solid #E6E4EF;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;color:#6A6783;&quot;>Wallet balance</td>
+    <td align=&quot;right&quot; style=&quot;padding:12px 0;border-bottom:1px solid #E6E4EF;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;font-weight:700;color:#1E1B33;&quot;>₦27,000</td>
+  </tr></table><table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; style=&quot;margin:8px 0 20px;&quot;><tr><td align=&quot;center&quot; bgcolor=&quot;#1E1B33&quot; style=&quot;background:#1E1B33;border-radius:14px;&quot;>
+    <a href=&quot;#&quot; target=&quot;_blank&quot; style=&quot;display:inline-block;padding:15px 26px;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:16px;line-height:20px;font-weight:700;color:#FFFFFF;text-decoration:none;border-radius:14px;&quot;>View payments</a>
+  </td></tr></table><p style=&quot;margin:0 0 12px;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;line-height:21px;color:#6A6783;&quot;>Payments are processed securely by Paystack. Keep this email for your records.</p></td></tr></table>
+    </td></tr>
+    <tr><td class=&quot;px&quot; style=&quot;padding:24px 28px 0;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:12.5px;line-height:19px;color:#6A6783;text-align:center;&quot;>
+      You're getting this email because you have a MotoPapers account.<br>MotoPapers · 8 Sunday Gbajobi Street, Millennium Estate, Gbagada, Lagos · +234 802 959 5069
+    </td></tr>
+  </table>
+</td></tr>
+</table>
+</body>
+</html>
+"></iframe></div>
+</article>
+<article class="mail" id="mail-payment-failed">
+  <div class="mail-meta">
+    <div class="mail-h"><h3>Payment failed</h3><span class="chip chip-new">New</span></div>
+    <dl class="kv">
+      <div><dt>Subject</dt><dd>Your payment of {{amount}} didn't go through</dd></div>
+      <div><dt>Preview text</dt><dd>You can try again with the same or a different card or bank.</dd></div>
+      <div><dt>Sent when</dt><dd>Paystack webhook marks a transaction failed</dd></div>
+      <div><dt>Variables</dt><dd class="vars"><code>amount</code> <code>description_lower</code> <code>failure_reason</code> <code>reference</code> <code>paid_at</code> <code>retry_url</code></dd></div>
+    </dl>
+    <p class="file">emails/payment-failed.html</p>
+  </div>
+  <div class="mail-frame"><iframe title="Payment failed email preview" loading="lazy" srcdoc="<!doctype html>
+<html lang=&quot;en&quot; xmlns=&quot;http://www.w3.org/1999/xhtml&quot;>
+<head>
+<meta charset=&quot;utf-8&quot;>
+<meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;>
+<meta name=&quot;x-apple-disable-message-reformatting&quot;>
+<meta name=&quot;color-scheme&quot; content=&quot;light&quot;>
+<meta name=&quot;supported-color-schemes&quot; content=&quot;light&quot;>
+<title>Payment failed</title>
+<link href=&quot;https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700&amp;amp;family=Gabarito:wght@700;800;900&amp;amp;display=swap&quot; rel=&quot;stylesheet&quot;>
+<style>
+  body{margin:0;padding:0;background:#F4F3F9;-webkit-text-size-adjust:100%;}
+  table{border-collapse:collapse;}
+  a{color:#DE3B22;}
+  @media (max-width:620px){
+    .container{width:100%!important;}
+    .px{padding-left:22px!important;padding-right:22px!important;}
+    .h1{font-size:28px!important;line-height:32px!important;}
+    .big{font-size:46px!important;line-height:48px!important;}
+  }
+</style>
+</head>
+<body style=&quot;margin:0;padding:0;background:#F4F3F9;&quot;>
+<div style=&quot;display:none;max-height:0;overflow:hidden;opacity:0;mso-hide:all;&quot;>You can try again with the same or a different card or bank.&amp;#8199;&amp;#847;&amp;#8199;&amp;#847;&amp;#8199;&amp;#847;&amp;#8199;&amp;#847;&amp;#8199;&amp;#847;&amp;#8199;&amp;#847;</div>
+<table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot; style=&quot;background:#F4F3F9;&quot;>
+<tr><td align=&quot;center&quot; style=&quot;padding:32px 12px 40px;&quot;>
+  <table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; class=&quot;container&quot; width=&quot;600&quot; style=&quot;width:600px;max-width:600px;&quot;>
+    <tr><td style=&quot;padding:0 6px 18px;&quot;>
+      <table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot;><tr>
+        <td width=&quot;34&quot; height=&quot;34&quot; align=&quot;center&quot; valign=&quot;middle&quot; style=&quot;width:34px;height:34px;background:#FF5A3C;border-radius:11px;font-family:'Gabarito','Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:900;font-size:17px;line-height:34px;color:#FFFFFF;&quot;>M</td>
+        <td style=&quot;padding-left:10px;font-family:'Gabarito','Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:800;font-size:20px;line-height:24px;color:#1E1B33;letter-spacing:-0.3px;&quot;>MotoPapers</td>
+      </tr></table>
+    </td></tr>
+    <tr><td style=&quot;background:#FFFFFF;border-radius:28px;&quot;>
+      <table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot;><tr><td class=&quot;px&quot; style=&quot;background:#FFE2DC;padding:32px 36px 30px;border-radius:28px 28px 0 0;&quot;>
+    <span style=&quot;display:inline-block;padding:5px 12px;border-radius:999px;background:#FFFFFF;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:12px;line-height:16px;font-weight:700;color:#C02B15;&quot;>Payment failed</span>
+    <h1 class=&quot;h1&quot; style=&quot;margin:14px 0 0;font-family:'Gabarito','Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:900;font-size:34px;line-height:38px;letter-spacing:-0.8px;color:#C02B15;&quot;>Your payment didn't go through</h1>
+    
+    <p style=&quot;margin:10px 0 0;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:16px;line-height:24px;color:#C02B15;&quot;>₦10,000 for a wallet top-up</p>
+  </td></tr></table>
+      <table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot;><tr><td class=&quot;px&quot; style=&quot;padding:28px 36px 20px;&quot;><p style=&quot;margin:0 0 16px;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:16px;line-height:25px;color:#45425C;&quot;>Paystack couldn't complete this payment. Your bank declined the transfer.</p><table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot; style=&quot;margin:4px 0 22px;border-top:1px solid #E6E4EF;&quot;><tr>
+    <td style=&quot;padding:12px 0;border-bottom:1px solid #E6E4EF;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;color:#6A6783;&quot;>Amount</td>
+    <td align=&quot;right&quot; style=&quot;padding:12px 0;border-bottom:1px solid #E6E4EF;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;font-weight:700;color:#1E1B33;&quot;>₦10,000</td>
+  </tr><tr>
+    <td style=&quot;padding:12px 0;border-bottom:1px solid #E6E4EF;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;color:#6A6783;&quot;>Reference</td>
+    <td align=&quot;right&quot; style=&quot;padding:12px 0;border-bottom:1px solid #E6E4EF;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;font-weight:700;color:#1E1B33;&quot;>MOT-6b0d33e1</td>
+  </tr><tr>
+    <td style=&quot;padding:12px 0;border-bottom:1px solid #E6E4EF;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;color:#6A6783;&quot;>Date</td>
+    <td align=&quot;right&quot; style=&quot;padding:12px 0;border-bottom:1px solid #E6E4EF;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;font-weight:700;color:#1E1B33;&quot;>27 Sep 2026, 6:02 pm</td>
+  </tr></table><table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; style=&quot;margin:8px 0 20px;&quot;><tr><td align=&quot;center&quot; bgcolor=&quot;#FF5A3C&quot; style=&quot;background:#FF5A3C;border-radius:14px;&quot;>
+    <a href=&quot;#&quot; target=&quot;_blank&quot; style=&quot;display:inline-block;padding:15px 26px;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:16px;line-height:20px;font-weight:700;color:#FFFFFF;text-decoration:none;border-radius:14px;&quot;>Try again</a>
+  </td></tr></table><p style=&quot;margin:0 0 12px;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;line-height:21px;color:#6A6783;&quot;>If money left your account, reply to this email with reference MOT-6b0d33e1 and we'll sort it out.</p></td></tr></table>
+    </td></tr>
+    <tr><td class=&quot;px&quot; style=&quot;padding:24px 28px 0;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:12.5px;line-height:19px;color:#6A6783;text-align:center;&quot;>
+      You're getting this email because you have a MotoPapers account.<br>MotoPapers · 8 Sunday Gbajobi Street, Millennium Estate, Gbagada, Lagos · +234 802 959 5069
+    </td></tr>
+  </table>
+</td></tr>
+</table>
+</body>
+</html>
+"></iframe></div>
+</article>
+<article class="mail" id="mail-renewal-update">
+  <div class="mail-meta">
+    <div class="mail-h"><h3>Renewal update</h3><span class="chip chip-blocked">Needs renewals API</span></div>
+    <dl class="kv">
+      <div><dt>Subject</dt><dd>Your new {{document_name_lower}} for {{plate_number}} is on its way</dd></div>
+      <div><dt>Preview text</dt><dd>Out for delivery to {{delivery_area}}.</dd></div>
+      <div><dt>Sent when</dt><dd>Renewal order changes status (paid, processing, out for delivery, delivered)</dd></div>
+      <div><dt>Variables</dt><dd class="vars"><code>delivery_area</code> <code>document_name_lower</code> <code>first_name</code> <code>vehicle_name</code> <code>plate_number</code> <code>document_name</code> <code>new_expiry_date</code> <code>delivery_address</code> <code>track_url</code> <code>steps[] (label, bg, color, mark, text_color)</code></dd></div>
+    </dl>
+    <p class="file">emails/renewal-update.html</p>
+  </div>
+  <div class="mail-frame"><iframe title="Renewal update email preview" loading="lazy" srcdoc="<!doctype html>
+<html lang=&quot;en&quot; xmlns=&quot;http://www.w3.org/1999/xhtml&quot;>
+<head>
+<meta charset=&quot;utf-8&quot;>
+<meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;>
+<meta name=&quot;x-apple-disable-message-reformatting&quot;>
+<meta name=&quot;color-scheme&quot; content=&quot;light&quot;>
+<meta name=&quot;supported-color-schemes&quot; content=&quot;light&quot;>
+<title>Renewal update</title>
+<link href=&quot;https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700&amp;amp;family=Gabarito:wght@700;800;900&amp;amp;display=swap&quot; rel=&quot;stylesheet&quot;>
+<style>
+  body{margin:0;padding:0;background:#F4F3F9;-webkit-text-size-adjust:100%;}
+  table{border-collapse:collapse;}
+  a{color:#DE3B22;}
+  @media (max-width:620px){
+    .container{width:100%!important;}
+    .px{padding-left:22px!important;padding-right:22px!important;}
+    .h1{font-size:28px!important;line-height:32px!important;}
+    .big{font-size:46px!important;line-height:48px!important;}
+  }
+</style>
+</head>
+<body style=&quot;margin:0;padding:0;background:#F4F3F9;&quot;>
+<div style=&quot;display:none;max-height:0;overflow:hidden;opacity:0;mso-hide:all;&quot;>Out for delivery to Lekki Phase 1.&amp;#8199;&amp;#847;&amp;#8199;&amp;#847;&amp;#8199;&amp;#847;&amp;#8199;&amp;#847;&amp;#8199;&amp;#847;&amp;#8199;&amp;#847;</div>
+<table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot; style=&quot;background:#F4F3F9;&quot;>
+<tr><td align=&quot;center&quot; style=&quot;padding:32px 12px 40px;&quot;>
+  <table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; class=&quot;container&quot; width=&quot;600&quot; style=&quot;width:600px;max-width:600px;&quot;>
+    <tr><td style=&quot;padding:0 6px 18px;&quot;>
+      <table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot;><tr>
+        <td width=&quot;34&quot; height=&quot;34&quot; align=&quot;center&quot; valign=&quot;middle&quot; style=&quot;width:34px;height:34px;background:#FF5A3C;border-radius:11px;font-family:'Gabarito','Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:900;font-size:17px;line-height:34px;color:#FFFFFF;&quot;>M</td>
+        <td style=&quot;padding-left:10px;font-family:'Gabarito','Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:800;font-size:20px;line-height:24px;color:#1E1B33;letter-spacing:-0.3px;&quot;>MotoPapers</td>
+      </tr></table>
+    </td></tr>
+    <tr><td style=&quot;background:#FFFFFF;border-radius:28px;&quot;>
+      <table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot;><tr><td class=&quot;px&quot; style=&quot;background:#E4EDFF;padding:32px 36px 30px;border-radius:28px 28px 0 0;&quot;>
+    <span style=&quot;display:inline-block;padding:5px 12px;border-radius:999px;background:#FFFFFF;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:12px;line-height:16px;font-weight:700;color:#2453CF;&quot;>Renewal update</span>
+    <h1 class=&quot;h1&quot; style=&quot;margin:14px 0 0;font-family:'Gabarito','Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:900;font-size:34px;line-height:38px;letter-spacing:-0.8px;color:#2453CF;&quot;>Your new vehicle licence is on its way</h1>
+    
+    
+  </td></tr></table>
+      <table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot;><tr><td class=&quot;px&quot; style=&quot;padding:28px 36px 20px;&quot;><p style=&quot;margin:0 0 16px;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:16px;line-height:25px;color:#45425C;&quot;>Good news, Ada. We've renewed the vehicle licence for your Ford Edge and it's out for delivery.</p><table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot; style=&quot;margin:6px 0 24px;background:#F4F3F9;border-radius:20px;&quot;><tr><td style=&quot;padding:18px 8px;&quot;><table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot;><tr><td align=&quot;center&quot; valign=&quot;top&quot; width=&quot;25%&quot; style=&quot;padding:0 4px;&quot;>
+      <table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot;><tr><td width=&quot;34&quot; height=&quot;34&quot; align=&quot;center&quot; valign=&quot;middle&quot; style=&quot;width:34px;height:34px;border-radius:50%;background:#0A7647;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;font-weight:700;color:#FFFFFF;&quot;>&amp;#10003;</td></tr></table>
+      <p style=&quot;margin:8px 0 0;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:12.5px;line-height:16px;font-weight:700;color:#1E1B33;&quot;>Paid</p>
+    </td><td align=&quot;center&quot; valign=&quot;top&quot; width=&quot;25%&quot; style=&quot;padding:0 4px;&quot;>
+      <table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot;><tr><td width=&quot;34&quot; height=&quot;34&quot; align=&quot;center&quot; valign=&quot;middle&quot; style=&quot;width:34px;height:34px;border-radius:50%;background:#0A7647;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;font-weight:700;color:#FFFFFF;&quot;>&amp;#10003;</td></tr></table>
+      <p style=&quot;margin:8px 0 0;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:12.5px;line-height:16px;font-weight:700;color:#1E1B33;&quot;>Processing</p>
+    </td><td align=&quot;center&quot; valign=&quot;top&quot; width=&quot;25%&quot; style=&quot;padding:0 4px;&quot;>
+      <table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot;><tr><td width=&quot;34&quot; height=&quot;34&quot; align=&quot;center&quot; valign=&quot;middle&quot; style=&quot;width:34px;height:34px;border-radius:50%;background:#FF5A3C;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;font-weight:700;color:#FFFFFF;&quot;>&amp;#9679;</td></tr></table>
+      <p style=&quot;margin:8px 0 0;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:12.5px;line-height:16px;font-weight:700;color:#1E1B33;&quot;>Out for delivery</p>
+    </td><td align=&quot;center&quot; valign=&quot;top&quot; width=&quot;25%&quot; style=&quot;padding:0 4px;&quot;>
+      <table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot;><tr><td width=&quot;34&quot; height=&quot;34&quot; align=&quot;center&quot; valign=&quot;middle&quot; style=&quot;width:34px;height:34px;border-radius:50%;background:#E6E4EF;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;font-weight:700;color:#6A6783;&quot;>&amp;#9675;</td></tr></table>
+      <p style=&quot;margin:8px 0 0;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:12.5px;line-height:16px;font-weight:700;color:#6A6783;&quot;>Delivered</p>
+    </td></tr></table></td></tr></table><table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot; style=&quot;margin:4px 0 22px;border-top:1px solid #E6E4EF;&quot;><tr>
+    <td style=&quot;padding:12px 0;border-bottom:1px solid #E6E4EF;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;color:#6A6783;&quot;>Car</td>
+    <td align=&quot;right&quot; style=&quot;padding:12px 0;border-bottom:1px solid #E6E4EF;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;font-weight:700;color:#1E1B33;&quot;>EKY 219 GD · Ford Edge</td>
+  </tr><tr>
+    <td style=&quot;padding:12px 0;border-bottom:1px solid #E6E4EF;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;color:#6A6783;&quot;>Paper</td>
+    <td align=&quot;right&quot; style=&quot;padding:12px 0;border-bottom:1px solid #E6E4EF;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;font-weight:700;color:#1E1B33;&quot;>Vehicle licence</td>
+  </tr><tr>
+    <td style=&quot;padding:12px 0;border-bottom:1px solid #E6E4EF;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;color:#6A6783;&quot;>New expiry date</td>
+    <td align=&quot;right&quot; style=&quot;padding:12px 0;border-bottom:1px solid #E6E4EF;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;font-weight:700;color:#1E1B33;&quot;>11 Oct 2027</td>
+  </tr><tr>
+    <td style=&quot;padding:12px 0;border-bottom:1px solid #E6E4EF;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;color:#6A6783;&quot;>Delivering to</td>
+    <td align=&quot;right&quot; style=&quot;padding:12px 0;border-bottom:1px solid #E6E4EF;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;font-weight:700;color:#1E1B33;&quot;>14 Admiralty Way, Lekki Phase 1, Lagos</td>
+  </tr></table><table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; style=&quot;margin:8px 0 20px;&quot;><tr><td align=&quot;center&quot; bgcolor=&quot;#FF5A3C&quot; style=&quot;background:#FF5A3C;border-radius:14px;&quot;>
+    <a href=&quot;#&quot; target=&quot;_blank&quot; style=&quot;display:inline-block;padding:15px 26px;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:16px;line-height:20px;font-weight:700;color:#FFFFFF;text-decoration:none;border-radius:14px;&quot;>Track renewal</a>
+  </td></tr></table></td></tr></table>
+    </td></tr>
+    <tr><td class=&quot;px&quot; style=&quot;padding:24px 28px 0;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:12.5px;line-height:19px;color:#6A6783;text-align:center;&quot;>
+      You're getting this email because you have a MotoPapers account.<br>MotoPapers · 8 Sunday Gbajobi Street, Millennium Estate, Gbagada, Lagos · +234 802 959 5069
+    </td></tr>
+  </table>
+</td></tr>
+</table>
+</body>
+</html>
+"></iframe></div>
+</article>
+<article class="mail" id="mail-password-changed">
+  <div class="mail-meta">
+    <div class="mail-h"><h3>Password changed</h3><span class="chip chip-new">New</span></div>
+    <dl class="kv">
+      <div><dt>Subject</dt><dd>Your MotoPapers password was changed</dd></div>
+      <div><dt>Preview text</dt><dd>If this was you, there's nothing else to do.</dd></div>
+      <div><dt>Sent when</dt><dd>POST /users/password and POST /users/reset-password succeed</dd></div>
+      <div><dt>Variables</dt><dd class="vars"><code>first_name</code> <code>email</code> <code>changed_at</code> <code>reset_url</code></dd></div>
+    </dl>
+    <p class="file">emails/password-changed.html</p>
+  </div>
+  <div class="mail-frame"><iframe title="Password changed email preview" loading="lazy" srcdoc="<!doctype html>
+<html lang=&quot;en&quot; xmlns=&quot;http://www.w3.org/1999/xhtml&quot;>
+<head>
+<meta charset=&quot;utf-8&quot;>
+<meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;>
+<meta name=&quot;x-apple-disable-message-reformatting&quot;>
+<meta name=&quot;color-scheme&quot; content=&quot;light&quot;>
+<meta name=&quot;supported-color-schemes&quot; content=&quot;light&quot;>
+<title>Password changed</title>
+<link href=&quot;https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700&amp;amp;family=Gabarito:wght@700;800;900&amp;amp;display=swap&quot; rel=&quot;stylesheet&quot;>
+<style>
+  body{margin:0;padding:0;background:#F4F3F9;-webkit-text-size-adjust:100%;}
+  table{border-collapse:collapse;}
+  a{color:#DE3B22;}
+  @media (max-width:620px){
+    .container{width:100%!important;}
+    .px{padding-left:22px!important;padding-right:22px!important;}
+    .h1{font-size:28px!important;line-height:32px!important;}
+    .big{font-size:46px!important;line-height:48px!important;}
+  }
+</style>
+</head>
+<body style=&quot;margin:0;padding:0;background:#F4F3F9;&quot;>
+<div style=&quot;display:none;max-height:0;overflow:hidden;opacity:0;mso-hide:all;&quot;>If this was you, there's nothing else to do.&amp;#8199;&amp;#847;&amp;#8199;&amp;#847;&amp;#8199;&amp;#847;&amp;#8199;&amp;#847;&amp;#8199;&amp;#847;&amp;#8199;&amp;#847;</div>
+<table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot; style=&quot;background:#F4F3F9;&quot;>
+<tr><td align=&quot;center&quot; style=&quot;padding:32px 12px 40px;&quot;>
+  <table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; class=&quot;container&quot; width=&quot;600&quot; style=&quot;width:600px;max-width:600px;&quot;>
+    <tr><td style=&quot;padding:0 6px 18px;&quot;>
+      <table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot;><tr>
+        <td width=&quot;34&quot; height=&quot;34&quot; align=&quot;center&quot; valign=&quot;middle&quot; style=&quot;width:34px;height:34px;background:#FF5A3C;border-radius:11px;font-family:'Gabarito','Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:900;font-size:17px;line-height:34px;color:#FFFFFF;&quot;>M</td>
+        <td style=&quot;padding-left:10px;font-family:'Gabarito','Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:800;font-size:20px;line-height:24px;color:#1E1B33;letter-spacing:-0.3px;&quot;>MotoPapers</td>
+      </tr></table>
+    </td></tr>
+    <tr><td style=&quot;background:#FFFFFF;border-radius:28px;&quot;>
+      <table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot;><tr><td class=&quot;px&quot; style=&quot;background:#FFFFFF;padding:32px 36px 30px;border-radius:28px 28px 0 0;border-bottom:1px solid #E6E4EF;&quot;>
+    <span style=&quot;display:inline-block;padding:5px 12px;border-radius:999px;background:#F4F3F9;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:12px;line-height:16px;font-weight:700;color:#45425C;&quot;>Security notice</span>
+    <h1 class=&quot;h1&quot; style=&quot;margin:14px 0 0;font-family:'Gabarito','Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:900;font-size:34px;line-height:38px;letter-spacing:-0.8px;color:#1E1B33;&quot;>Your password was changed</h1>
+    
+    
+  </td></tr></table>
+      <table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot;><tr><td class=&quot;px&quot; style=&quot;padding:28px 36px 20px;&quot;><p style=&quot;margin:0 0 16px;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:16px;line-height:25px;color:#45425C;&quot;>Hi Ada, the password for <b style=&quot;color:#1E1B33;&quot;>ada.okafor@example.com</b> was changed on undefined.</p><p style=&quot;margin:0 0 16px;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:16px;line-height:25px;color:#45425C;&quot;>If this was you, there's nothing else to do.</p><p style=&quot;margin:0 0 16px;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:16px;line-height:25px;color:#45425C;&quot;>If it wasn't you, reset your password now and reply to this email so we can secure your account.</p><table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; style=&quot;margin:8px 0 20px;&quot;><tr><td align=&quot;center&quot; bgcolor=&quot;#1E1B33&quot; style=&quot;background:#1E1B33;border-radius:14px;&quot;>
+    <a href=&quot;#&quot; target=&quot;_blank&quot; style=&quot;display:inline-block;padding:15px 26px;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:16px;line-height:20px;font-weight:700;color:#FFFFFF;text-decoration:none;border-radius:14px;&quot;>Reset my password</a>
+  </td></tr></table></td></tr></table>
+    </td></tr>
+    <tr><td class=&quot;px&quot; style=&quot;padding:24px 28px 0;font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:12.5px;line-height:19px;color:#6A6783;text-align:center;&quot;>
+      You're getting this email because you have a MotoPapers account.<br>MotoPapers · 8 Sunday Gbajobi Street, Millennium Estate, Gbagada, Lagos · +234 802 959 5069
+    </td></tr>
+  </table>
+</td></tr>
+</table>
+</body>
+</html>
+"></iframe></div>
+</article>
+      </div>
+    </section>
+
+    <section id="launch">
+      <h2>Launch checklist</h2>
+      <ul class="checks">
+        <li><span><b>Domain and SSL</b> for the site and the app, with <code>www</code> redirecting to the bare domain</span></li>
+        <li><span><b>CORS</b> on the API and doc parser allows the new domains only</span></li>
+        <li><span><b>Google OAuth</b> redirect URLs registered for production</span></li>
+        <li><span><b>Paystack live keys</b>, callback URL and webhook URL set and tested with a real ₦100 payment</span></li>
+        <li><span><b>Email sending domain</b> verified (SPF, DKIM, DMARC) and a reply inbox monitored</span></li>
+        <li><span><b>Reminder job</b> scheduled, with a dry run that logs who would get an email</span></li>
+        <li><span><b>Accessibility</b>: keyboard, screen reader and contrast pass (WCAG 2.2 AA)</span></li>
+        <li><span><b>Speed</b>: landing page loads its main content in under 2.5 seconds on a mid-range Android phone over 4G</span></li>
+        <li><span><b>End-to-end tests</b> green: sign up, add a car, top up, renew</span></li>
+        <li><span><b>Old-route redirects</b> and a friendly 404 page</span></li>
+        <li><span><b>Search basics</b> for the site: titles, descriptions, sitemap, robots, social preview image</span></li>
+        <li><span><b>Monitoring</b>: Sentry releases, uptime checks, and analytics with a cookie notice</span></li>
+      </ul>
+    </section>
+
+    <section id="questions">
+      <h2>Risks and open questions</h2>
+      <div class="callout warn"><span class="ic">!</span><div><p><b>The biggest risk is renewals.</b> If the renewal API isn't ready by week 6, launch with a "Request renewal" button that creates an order for the team to handle by hand, and switch it to the automatic flow later behind the feature flag.</p></div></div>
+      <ol class="qs">
+        <li><b>Which domain will the new site use?</b> The app runs on <code>memininode.azurewebsites.net</code> today. The plan assumes a custom domain with an <code>app.</code> subdomain.</li>
+        <li><b>Who processes renewals and deliveries today, and what does each paper cost to renew?</b> This shapes the renewal order statuses and the prices shown in the app.</li>
+        <li><b>What does the paid tier include?</b> <code>POST /vehicles</code> takes <code>is_paid_tier</code>. The design assumes a ₦2,500 yearly tracking fee per car.</li>
+        <li><b>Do reminders go out today, and from which email service?</b> If a provider is already sending the OTP emails, the new templates can go through it.</li>
+        <li><b>Should the document reader require sign-in?</b> Today anyone who finds the address can send it images. Adding the same token check as the API, or at least a rate limit, protects you from abuse and surprise costs.</li>
+      </ol>
+    </section>
+  </main>
+</div>
+
+<script>
+(function(){
+  function fit(f){ try { const d = f.contentDocument; if (d && d.body) f.style.height = Math.max(400, d.documentElement.scrollHeight) + 'px'; } catch (e) {} }
+  document.querySelectorAll('.mail-frame iframe').forEach(f => {
+    f.addEventListener('load', () => { fit(f); setTimeout(() => fit(f), 600); });
+    if (f.contentDocument && f.contentDocument.readyState === 'complete') fit(f);
+  });
+  let t; window.addEventListener('resize', () => { clearTimeout(t); t = setTimeout(() => document.querySelectorAll('.mail-frame iframe').forEach(fit), 200); });
+})();
+</script>
