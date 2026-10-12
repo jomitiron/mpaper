@@ -10,7 +10,9 @@ export async function startMocks(): Promise<void> {
       baseUrl: env.apiBaseUrl,
       docReaderUrl: env.docReaderUrl,
       db,
-      appOrigin: location.origin,
+      // The app's own address, base included (/app/ on App Service), for the mock Paystack and
+      // Google returns.
+      appOrigin: new URL(import.meta.env.BASE_URL, location.origin).href,
       transactionLabels: flags.txLabels,
       latency: 150,
     }),
