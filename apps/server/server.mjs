@@ -337,6 +337,8 @@ function fileCache() {
                 },
               })
             : promisify(gzip)(entry.body, { level: 9 });
+        // Don't keep a failure: the next request tries again.
+        pending.catch(() => entry.encoded.delete(encoding));
         entry.encoded.set(encoding, pending);
       }
       return pending;
