@@ -13,9 +13,9 @@ watches your progress file, and merges your pull request. Stay inside your phase
   `vehicle-licenses.md`, `transactions.md`, `wallets.md`).
 
 ## Stack (do not change without the manager)
-- pnpm workspaces, Node 20+, TypeScript strict everywhere.
+- pnpm workspaces, Node 22 (see `.nvmrc`), TypeScript strict everywhere.
 - `apps/web`: Vue 3 + Vite, Vue Router, Pinia (session only), @tanstack/vue-query (server data),
-  Zod (validate every API response), lucide-vue-next icons, plain CSS with tokens (no Tailwind).
+  Zod (validate every API response), `@lucide/vue` icons (the maintained name of lucide-vue-next), plain CSS with tokens (no Tailwind).
 - `apps/site`: Astro, static output, shares `packages/tokens`.
 - `packages/tokens`: `tokens.css` (CSS variables) + `tokens.ts`. Values come from the design file.
 - `packages/ui`: shared Vue components (Button, Chip, StatusPill, Plate, Tile, Card, Sheet, Modal,

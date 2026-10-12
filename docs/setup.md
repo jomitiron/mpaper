@@ -5,7 +5,7 @@ side so pull requests get preview links and `main` deploys to staging and then p
 
 ## Run it locally
 
-You need **Node 20.19 or later** (`nvm use` reads `.nvmrc`) and **pnpm 12** (the exact version is
+You need **Node 22.12 or later** (`nvm use` reads `.nvmrc`) and **pnpm 12** (the exact version is
 pinned in `package.json`; `corepack enable` picks it up).
 
 ```sh
@@ -125,6 +125,8 @@ Turn a flag on in an environment once the backend ships its endpoint (see
 | --- | --- | --- | --- |
 | `PUBLIC_APP_URL` | `http://localhost:5170` | `https://app-staging.<domain>` | `https://app.<domain>` |
 | `PUBLIC_SITE_URL` | `http://localhost:4320` | `https://staging.<domain>` | `https://<domain>` |
+| `PUBLIC_ANALYTICS_DOMAIN` | unset (no analytics) | unset | your Plausible site domain, e.g. `<domain>` |
+| `PUBLIC_NOINDEX` | unset | `true` (set by the workflow) | unset |
 
 ## Azure and GitHub setup
 
