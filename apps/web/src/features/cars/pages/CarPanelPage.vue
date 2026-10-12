@@ -1,30 +1,29 @@
 <script setup lang="ts">
-import { X } from '@lucide/vue';
-import { Sheet } from '@motopapers/ui';
+import { computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import ComingSoon from '@/components/ComingSoon.vue';
+import CarPanel from '../components/CarPanel.vue';
+
+/** `/cars/:id`: the car panel as a sheet over My cars, so it can be linked to. */
 
 const route = useRoute();
 const router = useRouter();
 
+const vehicleId = computed(() => Number(route.params.id));
+
 function close() {
-  void router.push('/cars');
+  // Back to wherever the driver opened it from (Home, My cars); a shared link lands on My cars.
+  const back = router.options.history.state.back;
+  const ok =
+    typeof back === 'string' && !back.startsWith('/cars/') && !router.resolve(back).meta.public;
+  if (ok) router.back();
+  else void router.push({ name: 'cars', query: route.query });
+}
+
+function onDeleted() {
+  void router.replace({ name: 'cars', query: route.query });
 }
 </script>
 
 <template>
-  <Sheet :open="true" labelledby="car-panel-title" @close="close">
-    <div class="sheet-placeholder">
-      <div class="sheet-placeholder-top">
-        <h2 id="car-panel-title">Car {{ route.params.id }}</h2>
-        <button type="button" class="icon-btn" aria-label="Close car details" @click="close">
-          <X class="ic" aria-hidden="true" />
-        </button>
-      </div>
-      <ComingSoon
-        :phase="2"
-        :items="['Days left for each paper, with Renew or Update', 'Car details', 'Delete car']"
-      />
-    </div>
-  </Sheet>
+  <CarPanel :vehicle-id="vehicleId" @close="close" @deleted="onDeleted" />
 </template>
