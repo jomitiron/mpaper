@@ -20,9 +20,14 @@ export default [
   {
     ignores: [
       '**/dist/**',
+      '**/dist-e2e/**',
       '**/.astro/**',
       '**/coverage/**',
       '**/node_modules/**',
+      '**/playwright-report/**',
+      '**/test-results/**',
+      '**/lighthouse-report/**',
+      '**/.lighthouseci/**',
       'apps/web/public/mockServiceWorker.js',
       'design/**',
       'docs/**',
@@ -54,9 +59,9 @@ export default [
   // Astro (the marketing site)
   ...astro.configs.recommended,
 
-  // Node scripts and config files
+  // Node scripts, config files and the Playwright suite
   {
-    files: ['**/*.config.{js,mjs,ts}', '**/scripts/**/*.{js,mjs}'],
+    files: ['**/*.config.{js,mjs,ts}', '**/scripts/**/*.{js,mjs}', 'e2e/**/*.{js,mjs,ts}'],
     languageOptions: { globals: globals.node },
   },
   {

@@ -4,16 +4,12 @@ import ReviewAndPay from '../../payments/addCar/ReviewAndPay.vue';
 import type { CarSaver } from './useCarSaver';
 
 /**
- * PHASE 3 SEAM · Add a car, step 4 ("Review and pay").
+ * Add a car, step 4 ("Review and pay").
  *
  * Steps 1–3 (phase 2) build a CarDraft. When the driver presses Continue on step 3, AddCarPage
  * calls `onReadyToPay(draft)` and shows the component it returns as step 4, with the props and
- * events below.
- *
- * Phase 2's step 4 (ReviewStep.vue) shows the review and saves the car without taking payment.
- * Phase 3 replaces this function's body (and ReviewStep.vue, or returns its own component) with
- * Review and pay: the tracking fee by wallet or card, then `saver.save()`, then the success
- * screen. AddCarSuccess.vue and DraftReview.vue can be reused.
+ * events below. Phase 3's Review and pay takes the tracking fee by wallet or card, then calls
+ * `saver.save()`, then shows the success screen (AddCarSuccess.vue).
  */
 export function onReadyToPay(_draft: CarDraft): Component {
   // Phase 3: Review and pay (features/payments/addCar/ReviewAndPay.vue).

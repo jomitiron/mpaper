@@ -21,12 +21,8 @@ const renewing = usePaperProgress(
   () => props.vehicleId,
   () => props.paper.kind,
 );
-const renewingWords = computed(() => {
-  if (!renewing.value) return null;
-  return renewing.value.status === 'requested' ? 'Renewal requested' : 'Renewal in progress';
-});
 const line = computed(() =>
-  [expiryLine(props.paper), coverLabel(props.paper.cover), renewingWords.value]
+  [expiryLine(props.paper), coverLabel(props.paper.cover), renewing.value && 'Renewal in progress']
     .filter(Boolean)
     .join(' · '),
 );

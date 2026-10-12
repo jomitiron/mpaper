@@ -409,7 +409,6 @@ a.tile:hover {
 .tile .s {
   font-size: 13.5px;
   font-weight: 600;
-  opacity: 0.88;
 }
 .tile .who {
   color: var(--ink);

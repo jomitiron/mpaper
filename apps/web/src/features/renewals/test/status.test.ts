@@ -10,7 +10,7 @@ import {
   shownRenewals,
   trackerSteps,
 } from '../lib/status';
-import { renewal, request, TODAY } from './fixtures';
+import { renewal, TODAY } from './fixtures';
 
 const states = (status: Parameters<typeof trackerSteps>[0]) =>
   trackerSteps(status).map((s) => `${s.label}:${s.state}`);
@@ -96,18 +96,16 @@ describe('which renewals show', () => {
 });
 
 describe('papers being renewed', () => {
-  it('lists renewals in progress and open requests, once per paper', () => {
+  it('lists the renewals still in progress', () => {
     const progress = paperProgress(
       [
         renewal({ id: 1, status: 'out_for_delivery' }),
         renewal({ id: 2, document_type: 'insurance', status: 'delivered' }),
       ],
-      [request(), request({ kind: 'roadworthiness' })],
       TODAY,
     );
     expect(progress).toEqual([
       { vehicleId: 102, kind: 'vehicle_license', status: 'out_for_delivery' },
-      { vehicleId: 102, kind: 'roadworthiness', status: 'requested' },
     ]);
   });
 

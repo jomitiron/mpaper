@@ -69,6 +69,8 @@ jobs:
           VITE_SITE_URL: ${{ vars.VITE_SITE_URL }}
           VITE_USE_MOCKS: ${{ vars.VITE_USE_MOCKS || 'false' }}
           VITE_SENTRY_DSN: ${{ vars.VITE_SENTRY_DSN }}
+          VITE_SENTRY_ENVIRONMENT: preview
+          VITE_RELEASE: ${{ github.event.pull_request.head.sha || github.sha }}
           VITE_FLAG_RENEWALS: ${{ vars.VITE_FLAG_RENEWALS || 'false' }}
           VITE_FLAG_REMINDER_SETTINGS: ${{ vars.VITE_FLAG_REMINDER_SETTINGS || 'false' }}
           VITE_FLAG_TX_LABELS: ${{ vars.VITE_FLAG_TX_LABELS || 'false' }}
@@ -121,6 +123,8 @@ jobs:
           VITE_SITE_URL: ${{ vars.VITE_SITE_URL }}
           VITE_USE_MOCKS: ${{ vars.VITE_USE_MOCKS || 'false' }}
           VITE_SENTRY_DSN: ${{ vars.VITE_SENTRY_DSN }}
+          VITE_SENTRY_ENVIRONMENT: staging
+          VITE_RELEASE: ${{ github.event.pull_request.head.sha || github.sha }}
           VITE_FLAG_RENEWALS: ${{ vars.VITE_FLAG_RENEWALS || 'false' }}
           VITE_FLAG_REMINDER_SETTINGS: ${{ vars.VITE_FLAG_REMINDER_SETTINGS || 'false' }}
           VITE_FLAG_TX_LABELS: ${{ vars.VITE_FLAG_TX_LABELS || 'false' }}
@@ -163,6 +167,8 @@ jobs:
           # Never mock in production.
           VITE_USE_MOCKS: 'false'
           VITE_SENTRY_DSN: ${{ vars.VITE_SENTRY_DSN }}
+          VITE_SENTRY_ENVIRONMENT: production
+          VITE_RELEASE: ${{ github.event.pull_request.head.sha || github.sha }}
           VITE_FLAG_RENEWALS: ${{ vars.VITE_FLAG_RENEWALS || 'false' }}
           VITE_FLAG_REMINDER_SETTINGS: ${{ vars.VITE_FLAG_REMINDER_SETTINGS || 'false' }}
           VITE_FLAG_TX_LABELS: ${{ vars.VITE_FLAG_TX_LABELS || 'false' }}

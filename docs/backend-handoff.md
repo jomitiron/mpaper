@@ -118,10 +118,10 @@ These are on top of `docs/phases/api-gaps.md`. The app is built against the mock
    - When a renewal is delivered, add the new paper to the car (so `GET /vehicles` shows its new
      `expiry_date`) and set `new_expiry_date`.
 2. **Request renewal** (the fallback while renewals are off, and for comprehensive cover, which is
-   priced on the car's value): the app has nowhere to send it. Today the request is kept in the
-   driver's browser only, and the app tells them the team will call, so **nothing reaches the team
-   yet**. Add something that records it for the team, such as `POST /vehicles/:id/renewals` with
-   `pay_with: "team"` (no payment; a new `requested` status), or
+   priced on the car's value): the app has nowhere to send a request, so it doesn't take one. The
+   renew page asks the driver to call or WhatsApp +234 802 959 5069 instead (phase 6). To let
+   drivers ask from the app, add something that records the request for the team, such as
+   `POST /vehicles/:id/renewals` with `pay_with: "team"` (no payment; a new `requested` status), or
    `POST /renewal-requests { vehicle_id, document_type, delivery_address, phone }`, and alert the
    team (email or a dashboard).
 3. **Prices** (`GET /pricing`): including a way to price comprehensive cover (a quote).

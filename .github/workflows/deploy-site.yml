@@ -68,6 +68,9 @@ jobs:
           PUBLIC_APP_URL: ${{ vars.PUBLIC_APP_URL }}
           PUBLIC_SITE_URL: ${{ vars.PUBLIC_SITE_URL }}
           PUBLIC_ANALYTICS_DOMAIN: ${{ vars.PUBLIC_ANALYTICS_DOMAIN }}
+          PUBLIC_SENTRY_DSN: ${{ vars.PUBLIC_SENTRY_DSN }}
+          PUBLIC_SENTRY_ENVIRONMENT: preview
+          PUBLIC_RELEASE: ${{ github.event.pull_request.head.sha || github.sha }}
           PUBLIC_NOINDEX: 'true'
       - name: Deploy preview
         id: deploy
@@ -113,6 +116,9 @@ jobs:
           PUBLIC_APP_URL: ${{ vars.PUBLIC_APP_URL }}
           PUBLIC_SITE_URL: ${{ vars.PUBLIC_SITE_URL }}
           PUBLIC_ANALYTICS_DOMAIN: ${{ vars.PUBLIC_ANALYTICS_DOMAIN }}
+          PUBLIC_SENTRY_DSN: ${{ vars.PUBLIC_SENTRY_DSN }}
+          PUBLIC_SENTRY_ENVIRONMENT: staging
+          PUBLIC_RELEASE: ${{ github.event.pull_request.head.sha || github.sha }}
           PUBLIC_NOINDEX: 'true'
       - name: Deploy to staging
         id: deploy
@@ -147,6 +153,9 @@ jobs:
           PUBLIC_APP_URL: ${{ vars.PUBLIC_APP_URL }}
           PUBLIC_SITE_URL: ${{ vars.PUBLIC_SITE_URL }}
           PUBLIC_ANALYTICS_DOMAIN: ${{ vars.PUBLIC_ANALYTICS_DOMAIN }}
+          PUBLIC_SENTRY_DSN: ${{ vars.PUBLIC_SENTRY_DSN }}
+          PUBLIC_SENTRY_ENVIRONMENT: production
+          PUBLIC_RELEASE: ${{ github.event.pull_request.head.sha || github.sha }}
       - name: Deploy to production
         id: deploy
         uses: Azure/static-web-apps-deploy@v1

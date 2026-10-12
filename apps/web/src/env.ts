@@ -13,6 +13,10 @@ export const env = {
   siteUrl: import.meta.env.VITE_SITE_URL || '',
   useMocks: bool(import.meta.env.VITE_USE_MOCKS),
   sentryDsn: import.meta.env.VITE_SENTRY_DSN || '',
+  /** Sentry's environment tag: preview, staging or production (set by the deploy workflow). */
+  sentryEnvironment: import.meta.env.VITE_SENTRY_ENVIRONMENT || import.meta.env.MODE,
+  /** The commit this build came from (set by the deploy workflow), for Sentry's release tag. */
+  release: import.meta.env.VITE_RELEASE || '',
 } as const;
 
 /**
@@ -20,7 +24,7 @@ export const env = {
  * When a flag is off, hide the feature or use the fallback the gap describes.
  */
 export const flags = {
-  /** Renew flow and renewal tracker (POST /vehicles/:id/renewals). Off: "Request renewal". */
+  /** Renew flow and renewal tracker (POST /vehicles/:id/renewals). Off: call or WhatsApp us. */
   renewals: bool(import.meta.env.VITE_FLAG_RENEWALS),
   /** Reminder settings card (GET/PUT /users/notification-preferences). Off: hidden. */
   reminderSettings: bool(import.meta.env.VITE_FLAG_REMINDER_SETTINGS),

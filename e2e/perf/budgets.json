@@ -1,0 +1,8 @@
+{
+  "web": {
+    "initialJsKb": 110,
+    "initialCssKb": 8,
+    "lazyChunkKb": 25,
+    "sentryKb": 40
+  }
+}

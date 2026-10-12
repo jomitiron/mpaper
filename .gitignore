@@ -1,8 +1,11 @@
 node_modules/
 dist/
+dist-e2e/
 .astro/
 coverage/
 playwright-report/
+lighthouse-report/
+.lighthouseci/
 test-results/
 .env
 .env.*
