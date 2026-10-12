@@ -98,9 +98,13 @@ describe('app shell', () => {
   });
 
   it('opens the car panel as a sheet over My cars', async () => {
-    const { router } = await mountApp('/cars/12');
+    const queryClient = new QueryClient();
+    queryClient.setQueryData(queryKeys.vehicles, [
+      { id: 12, plate_number: 'KJA 731 AE', brand: 'Toyota', model: 'Camry', color: 'Silver' },
+    ]);
+    const { router } = await mountApp('/cars/12', queryClient);
     const dialog = document.querySelector('[role="dialog"]');
-    expect(dialog?.textContent).toContain('Car 12');
+    expect(dialog?.textContent).toContain('Toyota Camry');
     (document.querySelector('[aria-label="Close car details"]') as HTMLElement).click();
     await flushPromises();
     expect(router.currentRoute.value.path).toBe('/cars');
