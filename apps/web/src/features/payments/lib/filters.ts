@@ -1,4 +1,4 @@
-import type { ListTransactionsParams, Transaction } from '@motopapers/api';
+import type { ListTransactionsParams, Transaction, TransactionPage } from '@motopapers/api';
 
 /**
  * The filter chips on Payments. `GET /transactions` can only filter by status, so:
@@ -59,6 +59,27 @@ export function matchesFilter(tx: Transaction, filter: PaymentFilter, useLabels:
     case 'pending':
       return tx.status === 'pending';
   }
+}
+
+/**
+ * The numbers on the chips. All comes from the API's total and Pending from a status=pending
+ * count. The API can't count top-ups or renewals, so those show only once every payment is loaded
+ * (most drivers have one page); otherwise they're left off rather than guessed.
+ */
+export function filterCounts(
+  everything: { pages: readonly TransactionPage[] | null; complete: boolean; pending?: number },
+  useLabels: boolean,
+): Partial<Record<PaymentFilter, number>> {
+  const counts: Partial<Record<PaymentFilter, number>> = {
+    all: everything.pages?.[0]?.meta.total,
+    pending: everything.pending,
+  };
+  if (everything.pages && everything.complete) {
+    const all = everything.pages.flatMap((page) => page.items);
+    counts.topups = all.filter((tx) => isTopUp(tx, useLabels)).length;
+    counts.renewals = all.length - counts.topups;
+  }
+  return counts;
 }
 
 /** "No top-ups yet." and friends, for a filter with nothing in it. */

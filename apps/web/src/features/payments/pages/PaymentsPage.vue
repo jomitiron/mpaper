@@ -14,6 +14,7 @@ import WalletHero from '../components/WalletHero.vue';
 import { parseAmount } from '../lib/amount';
 import {
   EMPTY_FILTER_TEXT,
+  filterCounts,
   filteredByApi,
   filterQuery,
   matchesFilter,
@@ -47,7 +48,6 @@ const walletText = flags.walletPay
   ? 'Renewals are paid from your wallet first. Top up any time by card or bank transfer.'
   : 'Top up any time by card or bank transfer.';
 
-const allCount = useQuery(paymentsCountQuery());
 const pendingCount = useQuery(paymentsCountQuery('pending'));
 const paidThisYear = useQuery(paidThisYearQuery(flags.txLabels));
 
@@ -75,12 +75,20 @@ function setFilter(key: PaymentFilter) {
   void router.replace({ query: { ...route.query, filter: key === 'all' ? undefined : key } });
 }
 
-const counts = computed<Partial<Record<PaymentFilter, number>>>(() => ({
-  all: allCount.data.value,
-  pending: pendingCount.data.value,
-}));
-
 const list = useInfiniteQuery(paymentsListQuery(serverParams));
+// Every payment, for the counts. The same query as `list` on All, Top-ups and Renewals.
+const everything = useInfiniteQuery(paymentsListQuery({}));
+
+const counts = computed(() =>
+  filterCounts(
+    {
+      pages: everything.data.value?.pages ?? null,
+      complete: everything.isSuccess.value && !everything.hasNextPage.value,
+      pending: pendingCount.data.value,
+    },
+    flags.txLabels,
+  ),
+);
 const vehicles = useQuery({ ...vehiclesQuery(), enabled: flags.txLabels, meta: { silent: true } });
 
 const loaded = computed<Transaction[]>(

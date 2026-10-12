@@ -28,9 +28,9 @@ const ICON_CLASS: Record<PaymentIcon, string> = {
     </span>
     <div class="tx-main">
       <b>{{ row.title }}</b>
-      <span>
+      <span :title="row.reference">
         {{ row.sub }} · <span class="visually-hidden">reference </span
-        ><span class="mono tx-ref">{{ row.reference }}</span>
+        ><span class="mono">{{ row.reference }}</span>
       </span>
     </div>
     <div class="tx-status">
