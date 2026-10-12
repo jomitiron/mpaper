@@ -1,0 +1,102 @@
+name: Deploy to App Service
+
+# Builds the App Service package (pnpm package:appservice) and deploys it to the dev or stage slot
+# of meminiNode. Production only ever gets a build through a manual slot swap, so there's no swap
+# job here. See docs/deploy/app-service.md.
+#
+# Signs in to Azure with OpenID Connect (no stored password). Until the AZURE_CLIENT_ID,
+# AZURE_TENANT_ID and AZURE_SUBSCRIPTION_ID secrets exist, it still builds the zip (kept as an
+# artifact) and skips the deploy.
+
+on:
+  workflow_dispatch:
+    inputs:
+      slot:
+        description: Slot to deploy to
+        type: choice
+        options: [dev, stage]
+        default: dev
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-appservice-${{ inputs.slot }}
+  cancel-in-progress: false
+
+jobs:
+  package:
+    name: Build the package
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: ./.github/actions/setup
+      - run: pnpm package:appservice
+        env:
+          RELEASE: ${{ github.sha }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist-appservice-${{ github.sha }}
+          path: dist-appservice.zip
+          if-no-files-found: error
+          retention-days: 30
+
+  deploy:
+    name: Deploy to ${{ inputs.slot }}
+    needs: package
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      id-token: write # OpenID Connect sign-in to Azure
+    environment:
+      name: appservice-${{ inputs.slot }}
+      url: https://memininode-${{ inputs.slot }}.azurewebsites.net
+    steps:
+      - name: Check for the Azure secrets
+        id: azure
+        env:
+          CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        run: |
+          if [ -n "$CLIENT_ID" ] && [ -n "$TENANT_ID" ] && [ -n "$SUBSCRIPTION_ID" ]; then
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::AZURE_CLIENT_ID, AZURE_TENANT_ID or AZURE_SUBSCRIPTION_ID isn't set, so nothing was deployed. The zip is in this run's artifacts. See docs/deploy/app-service.md."
+          fi
+      - uses: actions/download-artifact@v4
+        if: steps.azure.outputs.enabled == 'true'
+        with:
+          name: dist-appservice-${{ github.sha }}
+      - uses: azure/login@v2
+        if: steps.azure.outputs.enabled == 'true'
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      - uses: azure/webapps-deploy@v3
+        if: steps.azure.outputs.enabled == 'true'
+        with:
+          app-name: meminiNode
+          resource-group-name: ReminderServicerRG
+          slot-name: ${{ inputs.slot }}
+          package: dist-appservice.zip
+          type: zip
+      - name: Check the slot answers
+        if: steps.azure.outputs.enabled == 'true'
+        env:
+          HOST: memininode-${{ inputs.slot }}.azurewebsites.net
+        run: |
+          for attempt in $(seq 1 30); do
+            if [ "$(curl -fsS "https://$HOST/healthz" 2>/dev/null)" = "ok" ]; then
+              echo "https://$HOST is up. Its settings:"
+              curl -fsS "https://$HOST/app/config.js"
+              exit 0
+            fi
+            sleep 10
+          done
+          echo "::error::https://$HOST/healthz didn't answer ok within 5 minutes."
+          exit 1

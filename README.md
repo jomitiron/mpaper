@@ -14,6 +14,8 @@ transactional emails and the plan for building them on the existing MotorPapers 
 | `emails/` | Nine transactional email templates (HTML with Handlebars placeholders) and a README for the backend. |
 
 To run the app and site locally, and to set up deploys, see [`docs/setup.md`](docs/setup.md).
+To ship both as one package on the meminiNode App Service (site at `/`, app at `/app/`), see
+[`docs/deploy/app-service.md`](docs/deploy/app-service.md).
 
 Code arrives phase by phase, following the plan:
 
@@ -26,12 +28,14 @@ Code arrives phase by phase, following the plan:
 | 4 | Renewals and reminders: Renew flow, reminder emails, Settings | 5–7 |
 | 5 | Marketing site (in parallel) | 3–6 |
 | 6 | QA and launch: beta, then the domain switch | 7–8 |
+| 7 | Deploy: one package for the meminiNode App Service | 8 |
 
 ## Planned layout
 
 ```
 apps/web        Vue 3 + TypeScript app       → app.<domain>
 apps/site       Astro marketing site         → <domain>
+apps/server     zero-dependency Node server  → the App Service package (site at /, app at /app/)
 packages/tokens colours, type, radii from the design
 packages/ui     shared components
 packages/api    typed API client + Zod schemas
