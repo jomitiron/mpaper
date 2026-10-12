@@ -69,33 +69,13 @@
   color: var(--coral-d);
   font-weight: 700;
 }
-.side-help {
-  margin-top: auto;
-  padding: 16px;
-  border-radius: var(--radius-xl);
-  background: var(--sky);
-  display: grid;
-  gap: 4px;
-  font-size: 13px;
-  color: var(--ink-2);
-}
-.side-help b {
-  font-family: var(--f-head);
-  font-size: 16px;
-  color: var(--ink);
-}
-.side-help button {
-  justify-self: start;
-  color: var(--sky-i);
-  font-weight: 800;
-  margin-top: 4px;
-}
+/* margin-top: auto keeps the account row at the foot of the sidebar. */
 .side-user {
   display: flex;
   align-items: center;
   gap: 10px;
   padding: 14px 4px 0;
-  margin-top: 12px;
+  margin-top: auto;
   border-top: 1px solid var(--line);
 }
 .side-user .who {
