@@ -6,6 +6,7 @@ import { computed } from 'vue';
 import { RouterLink, type RouteLocationRaw } from 'vue-router';
 import { swatchFor } from '../lib/colour';
 import { carName, PAPER_NOUN, type CarSummary } from '../lib/papers';
+import { usePaperProgress } from '@/features/renewals/lib/progress';
 import { renewTarget } from '../lib/renew';
 import PaperMini from './PaperMini.vue';
 
@@ -14,6 +15,11 @@ import PaperMini from './PaperMini.vue';
 const props = defineProps<{ car: CarSummary; to: RouteLocationRaw }>();
 
 const vehicle = computed(() => props.car.vehicle);
+// Phase 4: once the urgent paper is being renewed, follow it instead of renewing again.
+const renewing = usePaperProgress(
+  () => props.car.vehicle.id,
+  () => props.car.urgent?.kind,
+);
 const meta = computed(() =>
   [vehicle.value.color, vehicle.value.engine_capacity].filter(Boolean).join(' · '),
 );
@@ -40,7 +46,11 @@ const meta = computed(() =>
       <PaperMini v-for="paper in car.papers" :key="paper.kind" :paper="paper" />
     </div>
     <div class="car-foot">
-      <Button v-if="car.urgent" size="sm" :to="renewTarget(vehicle.id, car.urgent.kind)">
+      <Button v-if="car.urgent && renewing" variant="soft" size="sm" :to="to">
+        {{ renewing.status === 'requested' ? 'Renewal requested' : 'Track renewal'
+        }}<span class="visually-hidden"> for {{ vehicle.plate_number }}</span>
+      </Button>
+      <Button v-else-if="car.urgent" size="sm" :to="renewTarget(vehicle.id, car.urgent.kind)">
         Renew {{ PAPER_NOUN[car.urgent.kind]
         }}<span class="visually-hidden"> for {{ vehicle.plate_number }}</span>
       </Button>

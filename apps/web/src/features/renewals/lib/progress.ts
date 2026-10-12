@@ -1,5 +1,5 @@
 import { lagosToday, type PaperKind, type Renewal, type RenewalStatus } from '@motopapers/api';
-import { computed } from 'vue';
+import { computed, toValue, type MaybeRefOrGetter } from 'vue';
 import { useAccountRenewals, useOpenRequests } from './queries';
 import type { RenewalRequest } from './requests';
 import { isInProgress, shownRenewals } from './status';
@@ -32,4 +32,15 @@ export function useRenewalProgress() {
   const renewals = useAccountRenewals();
   const requests = useOpenRequests();
   return computed(() => paperProgress(renewals.data.value ?? [], requests.value, lagosToday()));
+}
+
+/** Whether one paper on one car is being renewed (My cars, the car panel's Renew buttons). */
+export function usePaperProgress(
+  vehicleId: MaybeRefOrGetter<number>,
+  kind: MaybeRefOrGetter<PaperKind | undefined>,
+) {
+  const all = useRenewalProgress();
+  return computed(() =>
+    all.value.find((p) => p.vehicleId === toValue(vehicleId) && p.kind === toValue(kind)),
+  );
 }

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Button, PaperIcon } from '@motopapers/ui';
 import { computed } from 'vue';
+import { usePaperProgress } from '@/features/renewals/lib/progress';
 import { RENEW_FLOW_READY, renewTarget } from '../lib/renew';
 import { bigDays, coverLabel, expiryLine, PAPER_CLASS, type PaperView } from '../lib/papers';
 
@@ -15,8 +16,19 @@ const tone = computed(() => {
   return PAPER_CLASS[props.paper.kind];
 });
 const big = computed(() => bigDays(props.paper));
+// Phase 4: a paper that's being renewed shows that instead of a Renew button.
+const renewing = usePaperProgress(
+  () => props.vehicleId,
+  () => props.paper.kind,
+);
+const renewingWords = computed(() => {
+  if (!renewing.value) return null;
+  return renewing.value.status === 'requested' ? 'Renewal requested' : 'Renewal in progress';
+});
 const line = computed(() =>
-  [expiryLine(props.paper), coverLabel(props.paper.cover)].filter(Boolean).join(' · '),
+  [expiryLine(props.paper), coverLabel(props.paper.cover), renewingWords.value]
+    .filter(Boolean)
+    .join(' · '),
 );
 const needsAction = computed(() => props.paper.state === 'expired' || props.paper.state === 'due');
 </script>
@@ -46,7 +58,7 @@ const needsAction = computed(() => props.paper.state === 'expired' || props.pape
       </Button>
       <template v-else>
         <Button
-          v-if="needsAction && RENEW_FLOW_READY"
+          v-if="needsAction && RENEW_FLOW_READY && !renewing"
           size="sm"
           :to="renewTarget(vehicleId, paper.kind)"
         >

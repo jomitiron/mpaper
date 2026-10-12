@@ -34,7 +34,9 @@
   border-radius: 2px;
   background: var(--line);
 }
-.rn-step.rn-done + .rn-step::before {
+/* The line into a step turns green once that step has started. */
+.rn-step.rn-done::before,
+.rn-step.rn-current::before {
   background: var(--mint-b);
 }
 .rn-mark {
