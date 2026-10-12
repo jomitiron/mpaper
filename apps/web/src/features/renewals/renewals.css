@@ -208,6 +208,17 @@ h2.rn-title {
 .rn-problem {
   margin-top: 16px;
 }
+/* The number to call or WhatsApp: plain text, so it can be copied (one click selects it all). */
+.rn-contact {
+  display: grid;
+  gap: 4px;
+}
+.rn-number {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  user-select: all;
+}
 .rn-form .warn-line {
   margin-top: 16px;
 }
@@ -215,6 +226,14 @@ h2.rn-title {
 @media (max-width: 560px) {
   .rn-page .rn-card {
     padding: 20px 18px;
+  }
+  /* Call or WhatsApp: full-width buttons, Call first, Back last. */
+  .rn-call .wz-foot {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+  .rn-call-acts {
+    flex-direction: column-reverse;
   }
   .rn-label {
     font-size: 11.5px;

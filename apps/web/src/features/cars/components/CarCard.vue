@@ -47,8 +47,7 @@ const meta = computed(() =>
     </div>
     <div class="car-foot">
       <Button v-if="car.urgent && renewing" variant="soft" size="sm" :to="to">
-        {{ renewing.status === 'requested' ? 'Renewal requested' : 'Track renewal'
-        }}<span class="visually-hidden"> for {{ vehicle.plate_number }}</span>
+        Track renewal<span class="visually-hidden"> for {{ vehicle.plate_number }}</span>
       </Button>
       <Button v-else-if="car.urgent" size="sm" :to="renewTarget(vehicle.id, car.urgent.kind)">
         Renew {{ PAPER_NOUN[car.urgent.kind]

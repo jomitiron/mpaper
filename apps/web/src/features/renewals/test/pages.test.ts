@@ -17,7 +17,6 @@ import {
   type,
   useHarness,
 } from '@/features/payments/test/harness';
-import { createRequestStore, requestStore, resetRequestStore } from '../lib/requests';
 
 /** Renewing papers from Home, My cars and the car panel, against the mock API. */
 
@@ -26,7 +25,6 @@ useHarness({ flags: { renewals: true } });
 let mounted: VueWrapper | null = null;
 
 beforeEach(() => {
-  resetRequestStore(createRequestStore(null));
   mounted = null;
 });
 
@@ -227,19 +225,20 @@ describe('renew from the wallet', () => {
   });
 });
 
-describe('Request renewal', () => {
-  it('asks the team to quote for comprehensive cover', async () => {
+describe('call or WhatsApp us to renew', () => {
+  const whatsApp = (text: string) => `https://wa.me/2348029595069?text=${encodeURIComponent(text)}`;
+
+  it('gives the number to call for comprehensive cover, which the team prices', async () => {
     await open('/cars/102/renew/insurance');
-    expect(text()).toContain('Ask us to renew it');
+    expect(text()).toContain('Call or WhatsApp us to renew');
     expect(text()).toContain('Insurance renewal, comprehensiveQuoted by our team');
     expect(text()).toContain(
-      "Comprehensive cover is priced on your car's value, so our team will give you a price when they call.",
+      "Comprehensive cover is priced on your car's value, so we'll give you a price when you get in touch.",
     );
     expect(body().querySelector('input[name="renew-pay"]')).toBeNull();
-    await click('Request renewal');
-    expect(text()).toContain("We've got your request");
-    expect(text()).toContain(
-      'Our team will call you on +234 803 555 0142 to give you a price for your insurance, take payment and arrange delivery.',
+    expect(button('Call +234 802 959 5069').getAttribute('href')).toBe('tel:+2348029595069');
+    expect(button('WhatsApp us').getAttribute('href')).toBe(
+      whatsApp("Hello, I'd like to renew the insurance for EKY 219 GD."),
     );
   });
 
@@ -248,55 +247,42 @@ describe('Request renewal', () => {
       testFlags.renewals = false;
     });
 
-    it('records the request and tells the driver the team will call', async () => {
-      const renewalCalls: string[] = [];
+    it('never says a request was sent: it gives the number to call or WhatsApp', async () => {
+      const sent: string[] = [];
       server.events.on('request:start', ({ request }) => {
-        if (request.url.includes('/renewals')) renewalCalls.push(request.url);
+        if (request.method !== 'GET') sent.push(`${request.method} ${request.url}`);
       });
 
       await open('/');
       await click('Renew licence · ₦18,500');
-      await vi.waitFor(() => expect(text()).toContain('Ask us to renew it'));
-      expect(text()).toContain("You'll pay when our team calls. Nothing is charged now.");
-      expect(text()).toContain("We'll call you on +234 803 555 0142.");
-      await click('Request renewal');
-
-      expect(text()).toContain("We've got your request");
+      await vi.waitFor(() => expect(text()).toContain('Call or WhatsApp us to renew'));
       expect(text()).toContain(
-        'Our team will call you on +234 803 555 0142 to take payment and arrange delivery.',
+        'We renew your vehicle licence and deliver the new one to your door. Get in touch and tell us your plate number, EKY 219 GD.',
       );
-      expect(requestStore().list(ada().user.id)).toMatchObject([
-        { vehicleId: 102, kind: 'vehicle_license', price: 18_500, expiryAtRequest: '2026-09-29' },
-      ]);
+      expect(text()).toContain('Licence renewal₦18,500');
+      expect(text()).toContain('You pay when you renew with us. Nothing is charged here.');
 
+      // The number is plain text the driver can copy, with a tel: link and WhatsApp beside it.
+      const number = body().querySelector('.rn-number')!;
+      expect(number.textContent).toBe('+234 802 959 5069');
+      expect(number.closest('a, button')).toBeNull();
+      expect(button('Call +234 802 959 5069').getAttribute('href')).toBe('tel:+2348029595069');
+      const chat = button('WhatsApp us');
+      expect(chat.getAttribute('href')).toBe(
+        whatsApp("Hello, I'd like to renew the vehicle licence for EKY 219 GD."),
+      );
+      expect(chat.textContent).toContain('(opens WhatsApp)');
+
+      // Nothing to send, and nothing claims otherwise.
+      expect(() => button('Request renewal')).toThrow();
+      expect(text()).not.toMatch(/got your request|will call you|team will call/i);
+      expect(sent).toEqual([]);
+
+      // Home still asks to renew: nothing was recorded.
       await open('/');
       const alert = body().querySelector('.alert-card')!;
-      expect(alert.textContent).toContain('Renewal requested');
-      expect(alert.textContent).toContain("We're arranging your Ford Edge licence renewal");
-      expect(button('See request', alert).getAttribute('href')).toBe('/cars/102');
-
-      await open('/cars/102');
-      expect(dialog()!.textContent).toContain("We've got your request");
-      expect([...dialog()!.querySelectorAll('.dr-doc')][0]!.textContent).toContain(
-        'Renewal requested',
-      );
-      // Nothing went to the renewals API.
-      expect(renewalCalls).toEqual([]);
-    });
-
-    it('asks for a phone number when the account has none, and saves it', async () => {
-      ada().user.phone = null;
-      const session = useSessionStore();
-      session.setUser({ ...session.user!, phone: null });
-
-      await open('/cars/102/renew/licence');
-      await click('Request renewal');
-      expect(text()).toContain('Enter your phone number.');
-      await type('Phone number', '0803 555 0199');
-      await click('Request renewal');
-      await vi.waitFor(() => expect(text()).toContain("We've got your request"));
-      expect(text()).toContain('Our team will call you on +234 803 555 0199');
-      expect(ada().user.phone).toBe('+2348035550199');
+      expect(alert.textContent).toContain('Your Ford Edge licence expired 13 days ago');
+      expect(alert.textContent).not.toContain('Renewal requested');
     });
   });
 });

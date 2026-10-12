@@ -10,9 +10,9 @@ import {
   type RenewEvent,
   type RenewState,
 } from '../lib/flow';
-import { renewal, request } from './fixtures';
+import { renewal } from './fixtures';
 
-/** The renew page's state machine: wallet short, the card path, and Request renewal. */
+/** The renew page's state machine: wallet short, the card path, and when to call us instead. */
 
 function run(events: RenewEvent[], from: RenewState = initialRenewState): RenewState {
   return events.reduce(renewTransition, from);
@@ -23,9 +23,9 @@ describe('renew mode', () => {
     expect(renewMode({ renewalsApi: true, price: 18_500 })).toBe('pay');
   });
 
-  it('falls back to Request renewal with the API off, or when the team quotes', () => {
-    expect(renewMode({ renewalsApi: false, price: 18_500 })).toBe('request');
-    expect(renewMode({ renewalsApi: true, price: null })).toBe('request');
+  it('asks the driver to call us with the API off, or when the team quotes', () => {
+    expect(renewMode({ renewalsApi: false, price: 18_500 })).toBe('call');
+    expect(renewMode({ renewalsApi: true, price: null })).toBe('call');
   });
 });
 
@@ -124,32 +124,10 @@ describe('renew flow', () => {
     expect(run([{ type: 'PAY', method: 'card' }], failed)).toMatchObject({ status: 'paying' });
   });
 
-  it('records a request when the renewals API is off', () => {
-    const requesting = run([{ type: 'REQUEST' }]);
-    expect(requesting).toEqual({ status: 'requesting' });
-    expect(isBusy(requesting)).toBe(true);
-    const done = renewTransition(requesting, { type: 'REQUESTED', request: request() });
-    expect(done).toEqual({ status: 'requested', request: request() });
-  });
-
-  it('goes back to the form when a request fails', () => {
-    expect(
-      run([
-        { type: 'REQUEST' },
-        { type: 'FAILED', problem: { kind: 'request', message: 'Offline.' } },
-      ]),
-    ).toEqual({
-      status: 'editing',
-      chosen: null,
-      problem: { kind: 'request', message: 'Offline.' },
-    });
-  });
-
   it('ignores events that make no sense where it is', () => {
     const started: RenewState = { status: 'started', renewal: renewal() };
     for (const event of [
       { type: 'PAY', method: 'card' },
-      { type: 'REQUEST' },
       { type: 'CHOOSE', method: 'card' },
       { type: 'FAILED', problem: { kind: 'insufficient' } },
     ] satisfies RenewEvent[]) {

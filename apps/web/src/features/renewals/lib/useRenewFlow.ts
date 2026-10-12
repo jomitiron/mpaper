@@ -23,11 +23,10 @@ import {
   type RenewState,
   type WalletOption,
 } from './flow';
-import { requestStore } from './requests';
 
 /**
  * Runs the renew page's state machine (lib/flow.ts): saves the delivery details to the profile,
- * then pays from the wallet, sends the driver to Paystack, or records a request for the team.
+ * then pays from the wallet or sends the driver to Paystack.
  */
 
 export interface RenewFlowInput {
@@ -86,8 +85,7 @@ export function useRenewFlow(input: RenewFlowInput) {
   async function submit(values: DeliveryValues): Promise<void> {
     if (busy.value || state.value.status !== 'editing') return;
     const vehicle = input.vehicle();
-    if (!vehicle || !validate(values)) return;
-    if (input.mode() === 'request') return request(vehicle, values);
+    if (input.mode() !== 'pay' || !vehicle || !validate(values)) return;
 
     const amount = input.price();
     if (amount === null || amount === undefined) return;
@@ -131,31 +129,6 @@ export function useRenewFlow(input: RenewFlowInput) {
         send({ type: 'FAILED', problem: { kind, message: errorMessage(error) } });
       }
     }
-  }
-
-  async function request(vehicle: Vehicle, values: DeliveryValues): Promise<void> {
-    send({ type: 'REQUEST' });
-    try {
-      await saveProfile(values);
-    } catch (error) {
-      if (isUnauthorized(error)) return;
-      send({ type: 'FAILED', problem: { kind: 'request', message: errorMessage(error) } });
-      return;
-    }
-    const user = session.user;
-    if (!user) return;
-    const recorded = {
-      vehicleId: vehicle.id,
-      kind: input.kind,
-      plate: vehicle.plate_number,
-      deliveryAddress: values.address.trim(),
-      phone: user.phone ?? values.phone ?? '',
-      price: input.price() ?? null,
-      requestedAt: new Date().toISOString(),
-      expiryAtRequest: vehicle[input.kind]?.expiry_date ?? null,
-    };
-    requestStore().add(user.id, recorded);
-    send({ type: 'REQUESTED', request: recorded });
   }
 
   function choose(next: 'wallet' | 'card') {

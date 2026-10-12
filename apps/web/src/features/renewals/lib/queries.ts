@@ -2,9 +2,7 @@ import { lagosToday, listRenewals, listVehicleRenewals, type Renewal } from '@mo
 import { useQuery, useQueryClient } from '@tanstack/vue-query';
 import { computed, toValue, watch, type MaybeRefOrGetter } from 'vue';
 import { flags } from '@/env';
-import { queryKeys, vehiclesQuery } from '@/lib/queries';
-import { useSessionStore } from '@/stores/session';
-import { isOpenRequest, requestStore, type RenewalRequest } from './requests';
+import { queryKeys } from '@/lib/queries';
 import { isInProgress, shownRenewals } from './status';
 
 /**
@@ -67,25 +65,4 @@ export function useVehicleRenewals(vehicleId: MaybeRefOrGetter<number | null>) {
 /** The renewals worth showing (in progress, or delivered lately), newest first. */
 export function useShownRenewals(data: () => Renewal[] | undefined) {
   return computed(() => shownRenewals(data() ?? [], lagosToday()));
-}
-
-/**
- * The driver's open "Request renewal" requests (kept in this browser), for cars still on the
- * account whose paper hasn't been renewed since.
- */
-export function useOpenRequests() {
-  const session = useSessionStore();
-  const vehicles = useQuery({
-    ...vehiclesQuery(),
-    enabled: computed(() => session.isSignedIn),
-    meta: { silent: true },
-  });
-  const store = requestStore();
-  return computed<RenewalRequest[]>(() => {
-    const userId = session.user?.id;
-    const cars = vehicles.data.value;
-    if (userId === undefined || !cars) return [];
-    const today = lagosToday();
-    return store.list(userId).filter((r) => isOpenRequest(r, cars, today));
-  });
 }

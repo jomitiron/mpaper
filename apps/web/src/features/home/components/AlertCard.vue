@@ -61,25 +61,13 @@ const view = computed<View>(() => {
     };
   }
   if (alert.kind === 'renewing') {
-    // Phase 4: a renewal under way (or a "Request renewal" the team will call about).
+    // Phase 4: a renewal under way.
     const { vehicle, paper, progress } = alert;
     const noun = PAPER_NOUN[paper.kind];
-    const common = {
-      tone: 'start' as const,
+    return {
+      tone: 'start',
       to: { name: 'car', params: { id: String(vehicle.id) } },
       plate: vehicle.plate_number,
-    };
-    if (progress.status === 'requested') {
-      return {
-        ...common,
-        chip: 'Renewal requested',
-        title: `We're arranging your ${carName(vehicle)} ${noun} renewal`,
-        text: `${vehicle.plate_number} · Our team will call you to take payment and arrange delivery.`,
-        action: 'See request',
-      };
-    }
-    return {
-      ...common,
       chip: 'Renewal in progress',
       title:
         progress.status === 'out_for_delivery'
