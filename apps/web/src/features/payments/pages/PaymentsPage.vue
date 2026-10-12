@@ -71,6 +71,9 @@ const stats = computed(() => {
 const filter = computed(() => parseFilter(route.query.filter));
 const serverParams = computed(() => filterQuery(filter.value));
 
+/** "6 payments": how a chip's count reads to screen readers. */
+const countLabel = (n: number | undefined) => (n === undefined ? undefined : plural(n, 'payment'));
+
 function setFilter(key: PaymentFilter) {
   void router.replace({ query: { ...route.query, filter: key === 'all' ? undefined : key } });
 }
@@ -208,6 +211,7 @@ const unfinished = intentStore().unfinishedCars();
         :key="item.key"
         :pressed="filter === item.key"
         :count="counts[item.key]"
+        :count-label="countLabel(counts[item.key])"
         @click="setFilter(item.key)"
       >
         {{ item.label }}

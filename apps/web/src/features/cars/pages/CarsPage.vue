@@ -103,6 +103,7 @@ const carLink = (id: number) => ({ name: 'car', params: { id: String(id) }, quer
           :key="key"
           :pressed="filter === key"
           :count="counts[key]"
+          :count-label="plural(counts[key], 'car')"
           @click="setFilter(key)"
         >
           {{ CAR_FILTER_LABELS[key] }}

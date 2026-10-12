@@ -89,15 +89,62 @@ describe('Chip', () => {
     expect(mount(Chip).get('button').attributes('aria-pressed')).toBeUndefined();
   });
 
-  it('toggles a pressed state and shows a count', async () => {
+  it('asks to toggle, and only changes when the parent says so', async () => {
     const wrapper = mount(Chip, {
-      props: { pressed: false, count: 3 },
+      props: { pressed: false },
       slots: { default: 'Needs attention' },
     });
-    expect(wrapper.get('button').attributes('aria-pressed')).toBe('false');
-    expect(wrapper.get('.cnt').text()).toBe('3');
-    await wrapper.get('button').trigger('click');
+    const button = wrapper.get('button');
+    expect(button.attributes('aria-pressed')).toBe('false');
+    await button.trigger('click');
     expect(wrapper.emitted('update:pressed')).toEqual([[true]]);
+    expect(wrapper.emitted('click')).toHaveLength(1);
+    // Nothing changed it, so it's still off.
+    expect(button.attributes('aria-pressed')).toBe('false');
+    await wrapper.setProps({ pressed: true });
+    expect(button.attributes('aria-pressed')).toBe('true');
+    // A pressed chip clicked again asks to be let go, and stays pressed until it is.
+    await button.trigger('click');
+    expect(wrapper.emitted('update:pressed')).toEqual([[true], [false]]);
+    expect(button.attributes('aria-pressed')).toBe('true');
+  });
+
+  it('works with v-model:pressed', async () => {
+    const on = ref(false);
+    const wrapper = mount(
+      defineComponent(
+        () => () =>
+          h(
+            Chip,
+            { pressed: on.value, 'onUpdate:pressed': (v: boolean) => (on.value = v) },
+            () => '30 days',
+          ),
+      ),
+    );
+    await wrapper.get('button').trigger('click');
+    expect(on.value).toBe(true);
+    expect(wrapper.get('button').attributes('aria-pressed')).toBe('true');
+  });
+
+  it('shows a count and reads it as words, not run into the label', () => {
+    const wrapper = mount(Chip, {
+      props: { pressed: true, count: 6, countLabel: '6 cars' },
+      slots: { default: 'All' },
+    });
+    expect(wrapper.get('.cnt').text()).toBe('6');
+    expect(wrapper.get('.cnt').attributes('aria-hidden')).toBe('true');
+    expect(wrapper.get('.visually-hidden').text()).toBe('(6 cars)');
+    // What a screen reader hears: the text that isn't aria-hidden.
+    const heard = [...wrapper.get('button').element.childNodes]
+      .filter((n) => !(n instanceof Element && n.getAttribute('aria-hidden') === 'true'))
+      .map((n) => n.textContent)
+      .join('');
+    expect(heard.replace(/\s+/g, ' ').trim()).toBe('All (6 cars)');
+  });
+
+  it('reads the bare count when there is no count label', () => {
+    const wrapper = mount(Chip, { props: { count: 2 }, slots: { default: 'Pending' } });
+    expect(wrapper.get('.visually-hidden').text()).toBe('(2)');
   });
 });
 

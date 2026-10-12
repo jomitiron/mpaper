@@ -32,7 +32,11 @@ const chip = (label: string) =>
 const chips = () =>
   [...body().querySelectorAll('[aria-label="Filter payments"] .chip')].map((c) => {
     const count = c.querySelector('.cnt')?.textContent;
-    const label = (c.textContent ?? '').replace(count ?? '', '').trim();
+    const label = [...c.childNodes]
+      .filter((n) => n.nodeType === Node.TEXT_NODE)
+      .map((n) => n.textContent)
+      .join('')
+      .trim();
     return count ? `${label} ${count}` : label;
   });
 const toasts = () => useToast().items.map((t) => t.message);
@@ -85,6 +89,12 @@ describe('Payments', () => {
     expect(statuses).toContain('pending');
     expect(rowTitles()).toEqual(['Licence renewal', 'Wallet top-up']);
     expect(chip('Pending').getAttribute('aria-pressed')).toBe('true');
+    expect(chip('Pending').querySelector('.visually-hidden')?.textContent).toBe(' (2 payments)');
+    // Clicking the chosen chip again leaves it chosen: the page decides, not the chip.
+    chip('Pending').click();
+    await settle();
+    expect(chip('Pending').getAttribute('aria-pressed')).toBe('true');
+    expect(router.currentRoute.value.query.filter).toBe('pending');
 
     await click('Top-ups');
     expect(router.currentRoute.value.query.filter).toBe('topups');
