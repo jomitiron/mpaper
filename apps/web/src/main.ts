@@ -20,12 +20,12 @@ async function start() {
   const pinia = createPinia();
   app.use(pinia);
 
+  // The API is set up before restore(), which refreshes the driver with GET /users/me.
   const session = useSessionStore(pinia);
-  await session.restore();
-
   const router = createAppRouter();
   const queryClient = createQueryClient();
   setupApi({ router, session });
+  session.restore();
 
   // Nothing from one driver's session should be left in the cache for the next.
   watch(

@@ -158,8 +158,10 @@ describe('sign-in and account', () => {
 
   it('handles Google through the mock OAuth code', async () => {
     const url = await getOAuthUrl({ platform: 'google', action: 'signin' });
-    expect(url).toBe(`http://app.test/auth/callback?code=${MOCK_OAUTH_CODE}&state=moto`);
-    const session = await signIn({ oauth_code: MOCK_OAUTH_CODE, oauth_platform: 'google' });
+    expect(url).toBe(
+      `http://app.test/auth/callback?action=signin&code=${MOCK_OAUTH_CODE}&state=moto`,
+    );
+    const session = await signIn({ oauth_code: MOCK_OAUTH_CODE, oauth_type: 'google' });
     expect(session.user.email).toBe(SAMPLE_EMAIL);
   });
 

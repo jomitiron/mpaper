@@ -33,8 +33,9 @@ minutes, like the real ones; an expired or missing token gets a 401.
 | | `999999` | 400 "Expired OTP" (`is_expired: true`) |
 | | any other 6 digits | Works |
 | Sign in | wrong password or unknown email | 401 "Invalid credentials" |
+| | right password, email not verified yet | 500 "Something went wrong" (what ijanla-dev does) |
 | Change password | wrong `old_password` | 400 "Invalid old password" |
-| Google / Facebook | `GET /users/oauth-url` | Returns `<app>/auth/callback?code=mock-oauth-code&state=moto`; that code signs in as Ada |
+| Google / Facebook | `GET /users/oauth-url` | Returns `<app>/auth/callback?action=…&code=mock-oauth-code&state=moto`; that code signs in as Ada |
 | Paystack amount ending in `13` (₦1,013) | | Payment fails |
 | Paystack amount ending in `99` (₦1,099) | | Payment never settles (tests the 2-minute timeout) |
 | Any other amount | | Payment succeeds after 1.5 s |
