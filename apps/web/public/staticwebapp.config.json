@@ -22,6 +22,7 @@
     "X-Frame-Options": "DENY"
   },
   "mimeTypes": {
-    ".webmanifest": "application/manifest+json"
+    ".webmanifest": "application/manifest+json",
+    ".mjs": "text/javascript"
   }
 }
