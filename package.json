@@ -9,6 +9,7 @@
   "scripts": {
     "dev": "pnpm --parallel --filter web --filter site dev",
     "build": "pnpm -r --if-present build",
+    "package:appservice": "node scripts/package-appservice.mjs",
     "e2e": "pnpm --filter e2e e2e",
     "perf": "pnpm --filter e2e budget && pnpm --filter e2e lighthouse",
     "lint": "eslint . --max-warnings=0 && prettier --check .",

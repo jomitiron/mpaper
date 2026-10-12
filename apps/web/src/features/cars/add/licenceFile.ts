@@ -39,7 +39,11 @@ async function pdfToImage(file: File): Promise<Blob> {
   ]);
   pdfjs.GlobalWorkerOptions.workerSrc = worker.default;
 
-  const pdf = await pdfjs.getDocument({ data: new Uint8Array(await file.arrayBuffer()) }).promise;
+  const pdf = await pdfjs.getDocument({
+    data: new Uint8Array(await file.arrayBuffer()),
+    // No `new Function`: the App Service Content-Security-Policy doesn't allow it.
+    isEvalSupported: false,
+  }).promise;
   try {
     const page = await pdf.getPage(1);
     const base = page.getViewport({ scale: 1 });

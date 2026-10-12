@@ -1,3 +1,4 @@
+import './lib/zod';
 import '@motopapers/ui/styles.css';
 import './styles/app.css';
 import { VueQueryPlugin } from '@tanstack/vue-query';
