@@ -1,6 +1,6 @@
 import type { Component } from 'vue';
 import type { CarDraft } from './draft';
-import ReviewStep from './ReviewStep.vue';
+import ReviewAndPay from '../../payments/addCar/ReviewAndPay.vue';
 import type { CarSaver } from './useCarSaver';
 
 /**
@@ -16,7 +16,8 @@ import type { CarSaver } from './useCarSaver';
  * screen. AddCarSuccess.vue and DraftReview.vue can be reused.
  */
 export function onReadyToPay(_draft: CarDraft): Component {
-  return ReviewStep;
+  // Phase 3: Review and pay (features/payments/addCar/ReviewAndPay.vue).
+  return ReviewAndPay;
 }
 
 export interface ReadyToPayProps {

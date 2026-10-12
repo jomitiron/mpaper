@@ -15,6 +15,7 @@ import { createPinia, setActivePinia } from 'pinia';
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 import { createMemoryHistory, type Router } from 'vue-router';
 import App from '@/App.vue';
+import { flags } from '@/env';
 import { createAppRouter } from '@/router';
 import { useSessionStore } from '@/stores/session';
 
@@ -32,6 +33,8 @@ afterEach(() => {
 });
 
 beforeEach(() => {
+  // Step 4 pays the tracking fee from Ada's wallet (phase 3), then saves the car.
+  Object.assign(flags, { walletPay: true });
   db = createMockDb();
   server.use(...createHandlers({ baseUrl: BASE, db, transactionLabels: true }));
   setActivePinia(createPinia());
@@ -132,7 +135,7 @@ describe('Add a car', () => {
     await click('Continue');
     expect(text()).toContain('Insurance and roadworthiness');
     await toReviewFromPapers();
-    await click('Add car');
+    await click('Pay ₦2,500 and start');
     await vi.waitFor(() => expect(text()).toContain('KTU 604 XR is all set'));
 
     const [saved] = ktuCars();
@@ -161,7 +164,7 @@ describe('Add a car', () => {
       }),
     );
 
-    await click('Add car');
+    await click('Pay ₦2,500 and start');
     await vi.waitFor(() =>
       expect(text()).toContain("Your car is added, but we couldn't save its insurance."),
     );
@@ -183,7 +186,7 @@ describe('Add a car', () => {
         HttpResponse.json({ status: 'error', message: 'Nope' }, { status: 400 }),
       ),
     );
-    await click('Add car');
+    await click('Pay ₦2,500 and start');
     await vi.waitFor(() => expect(text()).toContain('Skip, add it later'));
     await click('Skip, add it later');
     expect(text()).toContain('KTU 604 XR is all set');
@@ -199,7 +202,7 @@ describe('Add a car', () => {
       id: 9999,
       plate_number: 'KTU 604 XR',
     });
-    await click('Add car');
+    await click('Pay ₦2,500 and start');
     await vi.waitFor(() => expect(text()).toContain("Check your car's details"));
     await vi.waitFor(() => expect(text()).toContain('KTU 604 XR is already on your account'));
   });

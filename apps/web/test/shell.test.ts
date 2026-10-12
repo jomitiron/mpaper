@@ -56,7 +56,7 @@ describe('app shell', () => {
     ]);
     expect(nav.get('[aria-current="page"]').text()).toBe('Payments');
     expect(wrapper.get('h1').text()).toBe('Payments');
-    expect(wrapper.text()).toContain('Coming in phase 3');
+    expect(wrapper.text()).toContain('Top up wallet');
   });
 
   it('marks My cars while adding a car', async () => {
