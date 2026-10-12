@@ -16,6 +16,7 @@
     "@motopapers/api": "workspace:*",
     "@motopapers/tokens": "workspace:*",
     "@motopapers/ui": "workspace:*",
+    "@sentry/vue": "~10.75.3",
     "@tanstack/vue-query": "^5.104.1",
     "pdfjs-dist": "~5.6.205",
     "pinia": "^3.0.4",

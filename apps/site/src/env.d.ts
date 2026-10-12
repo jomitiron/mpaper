@@ -9,6 +9,12 @@ interface ImportMetaEnv {
   readonly PUBLIC_ANALYTICS_DOMAIN?: string;
   /** "true" adds noindex and a blocking robots.txt (staging and previews). */
   readonly PUBLIC_NOINDEX?: string;
+  /** Sentry DSN. Error reporting is off when it's unset. */
+  readonly PUBLIC_SENTRY_DSN?: string;
+  /** Sentry's environment tag: preview, staging or production. */
+  readonly PUBLIC_SENTRY_ENVIRONMENT?: string;
+  /** The commit being built (the deploy workflow passes github.sha), for Sentry's release tag. */
+  readonly PUBLIC_RELEASE?: string;
 }
 
 interface ImportMeta {

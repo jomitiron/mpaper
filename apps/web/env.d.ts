@@ -11,8 +11,12 @@ interface ImportMetaEnv {
   readonly VITE_SITE_URL?: string;
   /** `true` serves every API call from the MSW mocks in packages/api. */
   readonly VITE_USE_MOCKS?: string;
-  /** Error reporting (phase 6). */
+  /** Sentry DSN. Error reporting is off when it's unset. */
   readonly VITE_SENTRY_DSN?: string;
+  /** Sentry's environment tag: preview, staging or production. Defaults to the Vite mode. */
+  readonly VITE_SENTRY_ENVIRONMENT?: string;
+  /** The commit being built (the deploy workflow passes github.sha), for Sentry's release tag. */
+  readonly VITE_RELEASE?: string;
   /** Feature flags for UI that needs an endpoint the backend hasn't shipped (api-gaps.md). */
   readonly VITE_FLAG_RENEWALS?: string;
   readonly VITE_FLAG_REMINDER_SETTINGS?: string;

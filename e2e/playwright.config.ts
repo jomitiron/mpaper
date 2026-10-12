@@ -45,7 +45,7 @@ export default defineConfig({
   webServer: [
     {
       command:
-        'pnpm --filter web exec vite build --outDir dist/e2e --logLevel warn && pnpm --filter web exec vite preview --outDir dist/e2e --port 5176 --strictPort',
+        'pnpm --filter web exec vite build --outDir dist-e2e --logLevel warn && pnpm --filter web exec vite preview --outDir dist-e2e --port 5176 --strictPort',
       cwd: '..',
       url: APP_URL,
       reuseExistingServer: !ci,
@@ -59,7 +59,12 @@ export default defineConfig({
         VITE_FLAG_TX_LABELS: 'true',
         VITE_FLAG_WALLET_PAY: 'true',
         VITE_FLAG_VERIFY_PAYMENT: 'true',
-        VITE_SENTRY_DSN: '',
+        // Errors go to this server, where tests/fixtures.ts catches them. (Not a host that never
+        // resolves, as the site uses: in WebKit the mock API's service worker passes the request
+        // on, out of Playwright's reach, and it would fail.)
+        VITE_SENTRY_DSN: `http://e2e@localhost:${new URL(APP_URL).port}/1`,
+        VITE_SENTRY_ENVIRONMENT: 'e2e',
+        VITE_RELEASE: 'e2e',
       },
     },
     {
@@ -72,6 +77,9 @@ export default defineConfig({
       env: {
         PUBLIC_APP_URL: APP_URL,
         PUBLIC_SITE_URL: SITE_URL,
+        PUBLIC_SENTRY_DSN: 'https://e2e@sentry.invalid/1',
+        PUBLIC_SENTRY_ENVIRONMENT: 'e2e',
+        PUBLIC_RELEASE: 'e2e',
       },
     },
   ],

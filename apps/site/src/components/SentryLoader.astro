@@ -1,0 +1,18 @@
+---
+// Error reporting. Base.astro renders this only when PUBLIC_SENTRY_DSN is set, so without it the
+// pages carry no script at all.
+---
+
+<script>
+  // Loads after the page has, so it never slows the page down.
+  const start = () =>
+    import('../lib/sentry').then(({ startSentry }) =>
+      startSentry({
+        dsn: import.meta.env.PUBLIC_SENTRY_DSN ?? '',
+        release: import.meta.env.PUBLIC_RELEASE ?? '',
+        environment: import.meta.env.PUBLIC_SENTRY_ENVIRONMENT || 'production',
+      }),
+    );
+  if (document.readyState === 'complete') void start();
+  else addEventListener('load', () => void start(), { once: true });
+</script>

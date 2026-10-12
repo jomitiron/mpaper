@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from './fixtures';
 import { daysFromToday, freshMocks, main, newEmail, SAMPLE_LICENCE, signUp } from './support';
 
 /**

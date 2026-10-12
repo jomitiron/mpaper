@@ -3,7 +3,8 @@ import '../styles/site.css';
 import gabaritoLatin from '../fonts/gabarito-latin.woff2?url';
 import figtreeLatin from '../fonts/figtree-latin.woff2?url';
 import IconSprite from '../components/IconSprite.astro';
-import { ANALYTICS_DOMAIN, DEFAULT_DESCRIPTION, NOINDEX } from '../config';
+import SentryLoader from '../components/SentryLoader.astro';
+import { ANALYTICS_DOMAIN, DEFAULT_DESCRIPTION, NOINDEX, SENTRY_DSN } from '../config';
 
 interface Props {
   title: string;
@@ -84,5 +85,6 @@ const ogImageAlt =
     <a class="skip-link" href="#content">Skip to content</a>
     <IconSprite />
     <slot />
+    {SENTRY_DSN && <SentryLoader />}
   </body>
 </html>

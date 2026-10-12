@@ -9,6 +9,9 @@ export const appLink = (path: string) => `${APP_URL}${path.startsWith('/') ? pat
 /** Plausible analytics domain, e.g. motopapers.ng. Analytics are off when it's unset. */
 export const ANALYTICS_DOMAIN = (import.meta.env.PUBLIC_ANALYTICS_DOMAIN || '').trim();
 
+/** Sentry DSN for error reports. Off (no script at all) when it's unset. */
+export const SENTRY_DSN = (import.meta.env.PUBLIC_SENTRY_DSN || '').trim();
+
 /** Set PUBLIC_NOINDEX=true on staging and previews so search engines skip them. */
 export const NOINDEX = import.meta.env.PUBLIC_NOINDEX === 'true';
 

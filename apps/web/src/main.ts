@@ -11,6 +11,11 @@ import { createAppRouter } from './router';
 import { useSessionStore } from './stores/session';
 
 async function start() {
+  // Error reporting (only when it's configured) loads alongside everything else, but the app
+  // doesn't wait for it: on a slow connection its 35 KB would hold up the first page. It starts
+  // as soon as it arrives, so an error in the very first render can go unreported.
+  const sentry = env.sentryDsn ? import('./lib/sentry').catch(() => null) : null;
+
   if (env.useMocks) {
     const { startMocks } = await import('./mocks/browser');
     await startMocks();
@@ -23,6 +28,15 @@ async function start() {
   // The API is set up before restore(), which refreshes the driver with GET /users/me.
   const session = useSessionStore(pinia);
   const router = createAppRouter();
+  void sentry?.then((module) =>
+    module?.startSentry(app, {
+      dsn: env.sentryDsn,
+      release: env.release,
+      environment: env.sentryEnvironment,
+      router,
+      userId: () => session.user?.id,
+    }),
+  );
   const queryClient = createQueryClient();
   setupApi({ router, session });
   session.restore();
