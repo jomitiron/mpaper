@@ -180,6 +180,7 @@ describe('payment return', () => {
     await mountAt('/payments/callback');
     expect(heading()).toBe("We couldn't find that payment");
     expect(wait).not.toHaveBeenCalled();
+    expect(document.title).toBe('Payment not found · MotoPapers');
   });
 });
 

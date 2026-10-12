@@ -10,7 +10,7 @@ import { queryKeys } from '@/lib/queries';
 import FinishAddingCar from '../addCar/FinishAddingCar.vue';
 import PaymentReceipt from '../components/PaymentReceipt.vue';
 import { payOnPaystack } from '../lib/checkout';
-import { referenceFrom, usePaymentConfirmation } from '../lib/confirm';
+import { referenceFrom, usePaymentConfirmation, type ConfirmState } from '../lib/confirm';
 import { intentStore } from '../lib/intent';
 import { paymentTitle } from '../lib/rows';
 import { SUPPORT_PHONE } from '../lib/support';
@@ -34,9 +34,21 @@ const carIntent = intent?.kind === 'add-car' ? intent : null;
 const { state, check } = usePaymentConfirmation(reference);
 onMounted(() => void check());
 
+const TITLES: Record<ConfirmState['status'], string> = {
+  missing: 'Payment not found',
+  confirming: 'Confirming your payment',
+  paid: 'Payment received',
+  failed: "Payment didn't go through",
+  timeout: 'Still confirming',
+  error: 'Confirming your payment',
+};
+
 watch(
   () => state.value.status,
-  async (status) => {
+  async (status, before) => {
+    document.title = `${TITLES[status]} · MotoPapers`;
+    // On first render the page has only just loaded: focus moves only when the answer changes.
+    if (before === undefined) return;
     if (status === 'paid') {
       // The wallet, the payments list and (for a car) the car list have all changed.
       void queryClient.invalidateQueries({ queryKey: queryKeys.wallet });
@@ -45,20 +57,11 @@ watch(
     } else if (status === 'failed' && reference && carIntent) {
       store.update(reference, (i) => ({ ...i, failed: true }));
     }
-    document.title = `${TITLES[status]} · MotoPapers`;
     await nextTick();
     document.querySelector<HTMLElement>('[data-result-heading]')?.focus();
   },
+  { immediate: true },
 );
-
-const TITLES: Record<typeof state.value.status, string> = {
-  missing: 'Payment not found',
-  confirming: 'Confirming your payment',
-  paid: 'Payment received',
-  failed: "Payment didn't go through",
-  timeout: 'Still confirming',
-  error: 'Confirming your payment',
-};
 
 /** "a wallet top-up", "tracking and reminders for KTU 604 XR". */
 const forWords = computed(() => {
