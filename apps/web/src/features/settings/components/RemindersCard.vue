@@ -109,7 +109,7 @@ const allOff = computed(() => {
             v-for="day in LEAD_DAY_OPTIONS"
             :key="day"
             :pressed="prefs.data.value.lead_days.includes(day)"
-            @click="toggleDay(day)"
+            @update:pressed="toggleDay(day)"
           >
             {{ day }} {{ day === 1 ? 'day' : 'days' }}
           </Chip>
