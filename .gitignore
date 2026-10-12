@@ -1,6 +1,8 @@
 node_modules/
 dist/
 dist-e2e/
+dist-appservice/
+dist-appservice.zip
 .astro/
 coverage/
 playwright-report/

@@ -1,0 +1,21 @@
+{
+  "name": "server",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Zero-dependency Node server for the App Service package (docs/deploy/app-service.md).",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node server.mjs",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.43",
+    "typescript": "~5.9.3",
+    "vitest": "^3.2.7"
+  }
+}
