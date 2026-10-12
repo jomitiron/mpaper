@@ -200,6 +200,18 @@ importers:
         specifier: ^8.71.1
         version: 8.71.1(eslint@10.12.0(supports-color@5.5.0))(supports-color@5.5.0)(typescript@5.9.3)
 
+  apps/server:
+    devDependencies:
+      '@types/node':
+        specifier: ^20.19.43
+        version: 20.19.43
+      typescript:
+        specifier: ~5.9.3
+        version: 5.9.3
+      vitest:
+        specifier: ^3.2.7
+        version: 3.2.7(@types/debug@4.1.13)(@types/node@20.19.43)(jsdom@26.1.0(supports-color@5.5.0))(msw@2.15.0(@types/node@20.19.43)(typescript@5.9.3))(supports-color@5.5.0)(yaml@2.9.1)
+
   apps/site:
     dependencies:
       '@motopapers/tokens':

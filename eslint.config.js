@@ -21,6 +21,7 @@ export default [
     ignores: [
       '**/dist/**',
       '**/dist-e2e/**',
+      'dist-appservice/**',
       '**/.astro/**',
       '**/coverage/**',
       '**/node_modules/**',
@@ -59,9 +60,14 @@ export default [
   // Astro (the marketing site)
   ...astro.configs.recommended,
 
-  // Node scripts, config files and the Playwright suite
+  // Node scripts, config files, the App Service server and the Playwright suite
   {
-    files: ['**/*.config.{js,mjs,ts}', '**/scripts/**/*.{js,mjs}', 'e2e/**/*.{js,mjs,ts}'],
+    files: [
+      '**/*.config.{js,mjs,ts}',
+      '**/scripts/**/*.{js,mjs}',
+      'apps/server/**/*.{js,mjs,ts}',
+      'e2e/**/*.{js,mjs,ts}',
+    ],
     languageOptions: { globals: globals.node },
   },
   {
