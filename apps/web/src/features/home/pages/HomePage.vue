@@ -9,6 +9,7 @@ import PageHeader from '@/components/PageHeader.vue';
 import { vehiclesQuery } from '@/lib/queries';
 import { useSessionStore } from '@/stores/session';
 import { dueWords, PAPER_NOUN, shortExpiry } from '@/features/cars/lib/papers';
+import { useRenewalProgress } from '@/features/renewals/lib/progress';
 import AlertCard from '../components/AlertCard.vue';
 import MiniCar from '../components/MiniCar.vue';
 import RecentActivity from '../components/RecentActivity.vue';
@@ -22,7 +23,11 @@ const toast = useToast();
 const title = computed(() => (session.user?.first_name ? `Hi ${session.user.first_name}` : 'Hi'));
 
 const vehicles = useQuery({ ...vehiclesQuery(), meta: { silent: true } });
-const summary = computed(() => (vehicles.data.value ? homeSummary(vehicles.data.value) : null));
+// Phase 4: papers being renewed lead the alert card as "Renewal in progress".
+const renewing = useRenewalProgress();
+const summary = computed(() =>
+  vehicles.data.value ? homeSummary(vehicles.data.value, new Date(), renewing.value) : null,
+);
 
 const sub = computed(() => {
   const s = summary.value;

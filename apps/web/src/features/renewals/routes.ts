@@ -1,12 +1,13 @@
 import type { RouteRecordRaw } from 'vue-router';
 
-// Phase 4 owns this file and everything in features/renewals. The Renew flow may end up as a
-// sheet opened from Home, My cars and the car panel; change or remove this route as needed.
+// Phase 4 owns this file and everything in features/renewals.
 export default [
   {
-    path: '/renewals',
-    name: 'renewals',
-    component: () => import('./pages/RenewalsPage.vue'),
-    meta: { title: 'Renewals' },
+    // Every Renew button comes here (cars/lib/renew.ts), and so can the reminder emails' renew_url.
+    // `paper` is licence, insurance or roadworthiness.
+    path: '/cars/:id(\\d+)/renew/:paper',
+    name: 'renew',
+    component: () => import('./pages/RenewPage.vue'),
+    meta: { title: 'Renew a paper' },
   },
 ] satisfies RouteRecordRaw[];

@@ -5,6 +5,7 @@ import { Button, Plate, Sheet, useToast } from '@motopapers/ui';
 import { useQuery } from '@tanstack/vue-query';
 import { computed, ref, watch } from 'vue';
 import { vehiclesQuery } from '@/lib/queries';
+import CarRenewals from '@/features/renewals/components/CarRenewals.vue'; // Phase 4: renewal tracker
 import { carName, summariseCar } from '../lib/papers';
 import ColourEditor from './ColourEditor.vue';
 import DeleteCar from './DeleteCar.vue';
@@ -103,6 +104,7 @@ function onDeleted(plate: string) {
     </div>
 
     <div v-if="vehicle && summary" class="dr-body">
+      <CarRenewals :vehicle="vehicle" />
       <h3 class="dr-l">Papers</h3>
       <template v-for="paper in summary.papers" :key="paper.kind">
         <PaperDoc

@@ -1,15 +1,14 @@
 import type { PaperKind } from '@motopapers/api';
 import type { RouteLocationRaw } from 'vue-router';
+import { PAPER_SLUGS } from '@/features/renewals/lib/papers';
 
 /**
- * PHASE 4 SEAM · where Renew buttons go (Home's alert card, My cars, the car panel).
- *
- * Phase 4 builds the Renew flow: change `renewTarget` to open it with the car and paper chosen,
- * and set `RENEW_FLOW_READY` to true so the car panel shows its Renew buttons too. Until then a
- * Renew button opens the car's panel, where the driver can update the paper's date.
+ * Where Renew buttons go (Home's alert card, My cars, the car panel): phase 4's renew page,
+ * `/cars/:id/renew/:paper`, with the car and paper chosen. It pays for the renewal, or asks the
+ * team for one while the renewals API is off (VITE_FLAG_RENEWALS).
  */
-export const RENEW_FLOW_READY = false;
+export const RENEW_FLOW_READY = true;
 
-export function renewTarget(vehicleId: number, _paper: PaperKind): RouteLocationRaw {
-  return { name: 'car', params: { id: String(vehicleId) } };
+export function renewTarget(vehicleId: number, paper: PaperKind): RouteLocationRaw {
+  return { name: 'renew', params: { id: String(vehicleId), paper: PAPER_SLUGS[paper] } };
 }
