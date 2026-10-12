@@ -11,3 +11,7 @@ docs/
 emails/
 progress/
 *.md
+
+# Local tool config (editor and Claude Code) and the build sessions' git worktrees
+.claude/
+.worktrees/

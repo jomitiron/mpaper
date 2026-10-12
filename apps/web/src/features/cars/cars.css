@@ -80,7 +80,8 @@
 }
 .cars {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+  /* 360px keeps the three paper labels on one line: four cards a row on a wide screen, three on a laptop. */
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 360px), 1fr));
   gap: 16px;
 }
 .car {
@@ -420,7 +421,6 @@
   border-radius: 30px;
   border: 1px solid var(--line);
   padding: 30px;
-  max-width: 980px;
 }
 .wz-title {
   font-weight: 900;

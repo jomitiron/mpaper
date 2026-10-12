@@ -22,6 +22,8 @@ export default [
       '**/dist/**',
       '**/dist-e2e/**',
       'dist-appservice/**',
+      // Git worktrees the build sessions use (git-ignored); each is a full copy of the repo.
+      '.worktrees/**',
       '**/.astro/**',
       '**/coverage/**',
       '**/node_modules/**',

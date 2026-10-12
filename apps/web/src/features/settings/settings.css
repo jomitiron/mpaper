@@ -1,9 +1,16 @@
 /* Settings, from design/motopapers-site.html. Cards, switches and chips are in @motopapers/ui. */
 
+/* One column on narrow screens; cards sit side by side when there's room, so the page uses the full width. */
 .settings {
   display: grid;
   gap: 18px;
-  max-width: 860px;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 560px), 1fr));
+  align-items: start;
+}
+/* With three cards (profile, reminders, security), reminders spans both rows of the right-hand
+   column so security sits straight under the profile. In one column the span is invisible. */
+.settings > :nth-child(2):nth-last-child(2) {
+  grid-row: span 2;
 }
 
 /* ---------------------------------------------------------------- profile */
