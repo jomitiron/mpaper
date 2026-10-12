@@ -10,6 +10,7 @@
     "dev": "pnpm --parallel --filter web --filter site dev",
     "build": "pnpm -r --if-present build",
     "e2e": "pnpm --filter e2e e2e",
+    "perf": "pnpm --filter e2e budget && pnpm --filter e2e lighthouse",
     "lint": "eslint . --max-warnings=0 && prettier --check .",
     "typecheck": "pnpm -r --if-present typecheck",
     "test": "pnpm -r --if-present test",
