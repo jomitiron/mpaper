@@ -51,6 +51,16 @@ describe('profile form', () => {
     expect(validateProfile(values, { ...ADA, phone: null })).toEqual({});
   });
 
+  it("leaves an unchanged phone number alone, even one the app wouldn't take", () => {
+    const odd = { ...ADA, phone: '2340721063042' };
+    const values = { ...profileValues(odd), first_name: 'Adaeze' };
+    expect(validateProfile(values, odd)).toEqual({});
+    expect(profileBody(odd, values)).toEqual({ first_name: 'Adaeze' });
+    expect(validateProfile({ ...values, phone: '0721' }, odd)).toEqual({
+      phone: 'Enter a Nigerian mobile number, like 803 555 0142.',
+    });
+  });
+
   it('sends only what changed, with the phone in international form', () => {
     expect(profileBody(ADA, profileValues(ADA))).toBeNull();
     expect(

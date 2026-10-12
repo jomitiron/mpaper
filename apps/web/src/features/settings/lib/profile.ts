@@ -28,9 +28,16 @@ export function profileValues(user: User | null): ProfileValues {
   };
 }
 
+/** The phone box as it was filled in. An unchanged number is left alone, even an odd one. */
+function phoneChanged(values: ProfileValues, user: User | null): boolean {
+  return values.phone.trim() !== profileValues(user).phone.trim();
+}
+
 /**
  * What's wrong with the form, by field. The phone can stay empty only if the account never had
- * one (some Google sign-ups); the address is optional here, but must be whole if given.
+ * one (some Google sign-ups), and is only checked when it's changed: an older account can have a
+ * number the API took that the app wouldn't, and that shouldn't stop a name change. The address
+ * is optional here, but must be whole if given.
  */
 export function validateProfile(
   values: ProfileValues,
@@ -39,7 +46,7 @@ export function validateProfile(
   const errors: FormErrors<ProfileField> = {};
   if (!values.first_name.trim()) errors.first_name = 'Enter your first name.';
   if (!values.last_name.trim()) errors.last_name = 'Enter your last name.';
-  if (values.phone.trim() || user?.phone) {
+  if (phoneChanged(values, user) && (values.phone.trim() || user?.phone)) {
     const phone = checkPhone(values.phone);
     if (phone) errors.phone = phone;
   }
@@ -59,7 +66,9 @@ export function profileBody(user: User | null, values: ProfileValues): UpdateUse
   const phone = values.phone.trim() ? normalisePhone(values.phone) : '';
   if (first !== (user?.first_name ?? '')) body.first_name = first;
   if (last !== (user?.last_name ?? '')) body.last_name = last;
-  if (phone !== null && phone !== (user?.phone ?? '')) body.phone = phone;
+  if (phoneChanged(values, user) && phone !== null && phone !== (user?.phone ?? '')) {
+    body.phone = phone;
+  }
   if (address !== (user?.address ?? '').trim()) body.address = address;
   return Object.keys(body).length ? body : null;
 }
