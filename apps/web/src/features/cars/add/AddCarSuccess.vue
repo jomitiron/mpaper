@@ -33,6 +33,10 @@ const skippedLine = computed(() => {
   const names = props.skipped.map((kind) => PAPER_LABELS[kind].name.toLowerCase());
   return `Add its ${names.join(' and ')} from the car panel when you're ready.`;
 });
+// Joined here: Vue drops the spaces between the parts when they're written in the template.
+const line = computed(() =>
+  [props.paidLine, reminder.value, skippedLine.value].filter(Boolean).join(' '),
+);
 </script>
 
 <template>
@@ -41,10 +45,7 @@ const skippedLine = computed(() => {
     <h2 ref="heading" tabindex="-1">
       <span class="num">{{ vehicle.plate_number }}</span> is all set
     </h2>
-    <p>
-      <template v-if="paidLine">{{ paidLine }} </template>{{ reminder }}
-      <template v-if="skippedLine"> {{ skippedLine }}</template>
-    </p>
+    <p>{{ line }}</p>
     <div class="acts">
       <Button to="/cars">See my cars</Button>
       <Button variant="white" @click="emit('restart')">Add another car</Button>
