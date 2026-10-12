@@ -178,7 +178,6 @@
 .mini .d {
   font-size: 11.5px;
   font-weight: 600;
-  opacity: 0.85;
 }
 .mini.exp {
   background: var(--rose);
@@ -244,7 +243,6 @@
   letter-spacing: -0.03em;
 }
 .dr-head p {
-  opacity: 0.92;
   font-size: 14px;
 }
 .dr-body {
@@ -298,7 +296,6 @@
 .dr-doc .s {
   font-size: 13px;
   font-weight: 600;
-  opacity: 0.88;
 }
 .dr-acts {
   grid-row: 1 / 4;
@@ -476,6 +473,7 @@
 }
 .drop-note {
   font-size: 13.5px;
+  color: var(--ink-2); /* --muted is 4.49:1 on lilac, just short of AA */
 }
 .drop .acts {
   display: flex;

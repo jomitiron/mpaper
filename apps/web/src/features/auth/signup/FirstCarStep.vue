@@ -53,6 +53,7 @@ withDefaults(defineProps<{ skipTo?: string }>(), { skipTo: '/' });
 }
 .small {
   font-size: 13.5px;
+  color: var(--ink-2); /* --muted is 4.49:1 on lilac, just short of AA */
 }
 .acts {
   display: flex;
