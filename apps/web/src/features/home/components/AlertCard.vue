@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { formatNaira, getPricing, type PaperKind, type Pricing } from '@motopapers/api';
+import { formatNaira, getPricing } from '@motopapers/api';
 import { Button } from '@motopapers/ui';
 import { useQuery } from '@tanstack/vue-query';
 import { computed } from 'vue';
@@ -7,11 +7,13 @@ import type { RouteLocationRaw } from 'vue-router';
 import { queryKeys } from '@/lib/queries';
 import { carName, dueWords, PAPER_NOUN } from '@/features/cars/lib/papers';
 import { renewTarget } from '@/features/cars/lib/renew';
+import { renewalPrice } from '@/features/renewals/lib/papers';
+import { RENEWAL_STATUS_LABELS } from '@/features/renewals/lib/status';
 import type { HomeAlert } from '../summary';
 
 /**
- * The card that leads Home: an expired paper (coral, "Needs action"), a paper due soon (coral,
- * "Coming up"), papers to add or no cars yet (sky), or all good (mint).
+ * The card that leads Home: an expired paper (coral, "Needs action"), a renewal in progress (sky),
+ * a paper due soon (coral, "Coming up"), papers to add or no cars yet (sky), or all good (mint).
  */
 
 const props = defineProps<{ alert: HomeAlert }>();
@@ -22,14 +24,6 @@ const pricing = useQuery({
   staleTime: Infinity,
   meta: { silent: true },
 });
-
-function renewalPrice(prices: Pricing | undefined, kind: PaperKind, cover: string | null) {
-  if (!prices) return undefined;
-  if (kind === 'vehicle_license') return prices.renewal.vehicle_license;
-  if (kind === 'roadworthiness') return prices.renewal.roadworthiness;
-  // Only third-party cover has a set price; comprehensive depends on the car's value.
-  return cover === 'third_party' ? prices.renewal.insurance_third_party : undefined;
-}
 
 interface View {
   tone: '' | 'calm' | 'start';
@@ -64,6 +58,35 @@ const view = computed<View>(() => {
       action: `Renew ${noun}${price ? ` · ${formatNaira(price)}` : ''}`,
       to: renewTarget(vehicle.id, paper.kind),
       plate: vehicle.plate_number,
+    };
+  }
+  if (alert.kind === 'renewing') {
+    // Phase 4: a renewal under way (or a "Request renewal" the team will call about).
+    const { vehicle, paper, progress } = alert;
+    const noun = PAPER_NOUN[paper.kind];
+    const common = {
+      tone: 'start' as const,
+      to: { name: 'car', params: { id: String(vehicle.id) } },
+      plate: vehicle.plate_number,
+    };
+    if (progress.status === 'requested') {
+      return {
+        ...common,
+        chip: 'Renewal requested',
+        title: `We're arranging your ${carName(vehicle)} ${noun} renewal`,
+        text: `${vehicle.plate_number} · Our team will call you to take payment and arrange delivery.`,
+        action: 'See request',
+      };
+    }
+    return {
+      ...common,
+      chip: 'Renewal in progress',
+      title:
+        progress.status === 'out_for_delivery'
+          ? `Your new ${carName(vehicle)} ${noun} is on its way`
+          : `Your ${carName(vehicle)} ${noun} is being renewed`,
+      text: `${vehicle.plate_number} · ${RENEWAL_STATUS_LABELS[progress.status]}. We'll email you at each step.`,
+      action: 'Track renewal',
     };
   }
   if (alert.kind === 'missing') {

@@ -41,6 +41,12 @@ export const createdRenewalSchema = z.object({
   renewal: renewalSchema,
   /** Present when paying by card: send the driver to Paystack. */
   auth_url: z.string().optional(),
+  /**
+   * Paystack's reference for that payment, as `POST /transactions/initialize` returns it. Not in
+   * api-gaps.md's first draft: the app needs it to know what the payment was for when Paystack
+   * sends the driver back (phase 4).
+   */
+  reference: z.string().optional(),
 });
 export type CreatedRenewal = z.infer<typeof createdRenewalSchema>;
 

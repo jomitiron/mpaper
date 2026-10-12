@@ -1,0 +1,225 @@
+/*
+ * The renew page, renewal cards and the tracker. The tracker follows the renewal-update email
+ * (emails/README.md): done is mint with a tick, the current step coral, steps to come grey.
+ * The form reuses Add a car's review boxes (cars.css) and Payments' pay-with cards (payments.css).
+ */
+
+/* ---------------------------------------------------------------- tracker */
+.rn-steps {
+  list-style: none;
+  margin: 0;
+  padding: 16px 6px 14px;
+  border-radius: 20px;
+  background: var(--bg);
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.rn-step {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  text-align: center;
+  padding: 0 4px;
+}
+/* The line joining each step to the one before it. */
+.rn-step + .rn-step::before {
+  content: '';
+  position: absolute;
+  top: 16px;
+  right: 50%;
+  width: 100%;
+  height: 3px;
+  margin-right: 17px;
+  border-radius: 2px;
+  background: var(--line);
+}
+/* The line into a step turns green once that step has started. */
+.rn-step.rn-done::before,
+.rn-step.rn-current::before {
+  background: var(--mint-b);
+}
+.rn-mark {
+  position: relative;
+  z-index: 1;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: #fff;
+  border: 3px solid var(--line);
+}
+.rn-done .rn-mark {
+  background: var(--mint-i);
+  border-color: var(--mint-i);
+  color: #fff;
+}
+.rn-done .rn-mark .ic {
+  stroke-width: 3;
+}
+.rn-current .rn-mark {
+  background: var(--coral);
+  border-color: var(--coral);
+  box-shadow: var(--ring-coral);
+}
+.rn-current .rn-mark::after {
+  content: '';
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #fff;
+}
+.rn-label {
+  font-size: 12.5px;
+  line-height: 1.25;
+  font-weight: 700;
+  color: var(--ink);
+}
+.rn-todo .rn-label {
+  color: var(--muted);
+}
+
+/* ---------------------------------------------------------------- a renewal */
+.rn-card {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  padding: 16px;
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+}
+.rn-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.rn-kicker {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 800;
+}
+.rn-ic {
+  width: 30px;
+  height: 30px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+}
+.rn-title {
+  font-weight: 800;
+  font-size: 20px;
+  letter-spacing: -0.02em;
+}
+h2.rn-title {
+  font-weight: 900;
+  font-size: 28px;
+  letter-spacing: -0.03em;
+}
+.rn-title:focus {
+  outline: none;
+}
+.rn-next {
+  color: var(--ink-2);
+  font-size: 14px;
+}
+.rn-dl {
+  margin: 4px 0 0;
+  display: grid;
+}
+.rn-dl > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 10px 0;
+  border-top: 1px solid var(--line);
+  font-size: 14px;
+}
+.rn-dl dt {
+  color: var(--muted);
+  flex: none;
+}
+.rn-dl dd {
+  margin: 0;
+  font-weight: 700;
+  text-align: right;
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+
+/* ---------------------------------------------------------------- the renew page */
+.rn-page {
+  max-width: 640px;
+  display: grid;
+  gap: 16px;
+}
+.rn-page .rn-card {
+  border-radius: 30px;
+  padding: 26px;
+  gap: 12px;
+}
+.rn-acts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.rn-loading {
+  display: grid;
+  gap: 14px;
+}
+.rn-loading .skeleton {
+  height: 90px;
+}
+.rn-paper {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 14px 16px;
+  border-radius: 18px;
+}
+.rn-paper b {
+  display: block;
+  font-size: 15px;
+}
+.rn-paper small {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  opacity: 0.9;
+}
+.rn-address {
+  min-height: 74px;
+  resize: vertical;
+  line-height: 1.4;
+  font: inherit;
+}
+.rn-how {
+  font-size: 14px;
+  color: var(--ink-2);
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: var(--bg);
+}
+.rn-problem {
+  margin-top: 16px;
+}
+.rn-form .warn-line {
+  margin-top: 16px;
+}
+
+@media (max-width: 560px) {
+  .rn-page .rn-card {
+    padding: 20px 18px;
+  }
+  .rn-label {
+    font-size: 11.5px;
+  }
+  .rn-step + .rn-step::before {
+    margin-right: 15px;
+  }
+}

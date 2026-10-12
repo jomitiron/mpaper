@@ -412,13 +412,14 @@ describe('renewals and reminders', () => {
   });
 
   it('renews by card through Paystack', async () => {
-    const { renewal, auth_url } = await createRenewal(101, {
+    const { renewal, auth_url, reference } = await createRenewal(101, {
       document_type: 'insurance',
       pay_with: 'card',
       delivery_address: '14 Admiralty Way',
     });
     expect(renewal.status).toBe('awaiting_payment');
-    expect(auth_url).toContain('/payments/callback?reference=MOT-');
+    expect(reference).toMatch(/^MOT-/);
+    expect(auth_url).toContain(`/payments/callback?reference=${reference}`);
     clock += PAYMENT_SETTLE_MS;
     expect((await listVehicleRenewals(101))[0]!.status).toBe('paid');
   });

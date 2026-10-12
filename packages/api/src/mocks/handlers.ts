@@ -611,6 +611,7 @@ export function createHandlers(options: MockHandlerOptions): HttpHandler[] {
           renewalId: renewal.id,
         };
         let authUrl: string | undefined;
+        let reference: string | undefined;
         if (body.pay_with === 'wallet') {
           account.walletBalance -= amount;
           renewal.paidAt = db.now();
@@ -627,12 +628,15 @@ export function createHandlers(options: MockHandlerOptions): HttpHandler[] {
             transaction_type: 'debit',
             ...labels,
           });
-          const reference = tx.payment?.reference ?? tx.reference;
+          reference = tx.payment?.reference ?? tx.reference;
           authUrl = `${appOrigin}/payments/callback?reference=${encodeURIComponent(reference)}&trxref=${encodeURIComponent(reference)}`;
         }
         db.save();
         return ok(
-          { renewal: renewalView(renewal), ...(authUrl ? { auth_url: authUrl } : {}) },
+          {
+            renewal: renewalView(renewal),
+            ...(authUrl ? { auth_url: authUrl, reference } : {}),
+          },
           'Renewal created',
           201,
         );

@@ -21,7 +21,9 @@ Without the flag, label by `transaction_type` (credit → "Wallet top-up", debit
 
 ## Renewals — flag: `VITE_FLAG_RENEWALS`
 `POST /vehicles/:id/renewals` body `{ document_type, pay_with: "wallet" | "card", delivery_address }` →
-`data: { renewal, auth_url? }` (auth_url when paying by card).
+`data: { renewal, auth_url?, reference? }` (auth_url and Paystack's reference when paying by card, as
+`POST /transactions/initialize` returns them; phase 4 added `reference` so the app knows what a payment was for
+when Paystack sends the driver back).
 `GET /renewals` and `GET /vehicles/:id/renewals` → `data: renewal[]`.
 `renewal`: `{ id, vehicle_id, document_type, status: "awaiting_payment" | "paid" | "processing" | "out_for_delivery" | "delivered" | "cancelled", amount, delivery_address, new_expiry_date | null, created_at, updated_at }`.
 
