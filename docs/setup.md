@@ -54,8 +54,11 @@ Run from the repo root. Each also runs in a single package with `pnpm --filter <
 | `pnpm typecheck` | `vue-tsc`, `tsc` and `astro check` in every package |
 | `pnpm test` | Vitest in every package |
 | `pnpm build` | Production builds of the app (`apps/web/dist`) and site (`apps/site/dist`) |
+| `pnpm e2e` | Playwright: the driver's journey, keyboard-only checks and axe on every page, in Chromium and WebKit (phone). Builds and serves the app (mocks on) on 5176 and the site on 4326. First time: `pnpm --filter e2e exec playwright install chromium webkit` |
+| `pnpm perf` | The app's first-load budget (build it first), then Lighthouse on the built site (needs Chrome) |
 
-All four of `lint`, `typecheck`, `test` and `build` must pass before a pull request; CI runs them.
+All four of `lint`, `typecheck`, `test` and `build` must pass before a pull request; CI runs them,
+and the end-to-end and performance checks as well (`e2e/README.md`).
 
 ### Dev server ports
 
@@ -108,7 +111,9 @@ Nothing in the front ends is secret: Paystack and Google keys stay on the API.
 | `VITE_APP_URL` | `http://localhost:5170` | | `https://app-staging.<domain>` | `https://app.<domain>` |
 | `VITE_SITE_URL` | `http://localhost:4320` | | `https://staging.<domain>` | `https://<domain>` |
 | `VITE_USE_MOCKS` | `true` | `false` | `false` | always `false` |
-| `VITE_SENTRY_DSN` | empty | | set in phase 6 | set in phase 6 |
+| `VITE_SENTRY_DSN` | empty (off) | the app's Sentry DSN | same | same |
+| `VITE_SENTRY_ENVIRONMENT` | the Vite mode | `preview` (set by the workflow) | `staging` (set) | `production` (set) |
+| `VITE_RELEASE` | empty | the commit (set by the workflow) | same | same |
 | `VITE_FLAG_RENEWALS` | `true` | `false` | `false` | `false` |
 | `VITE_FLAG_REMINDER_SETTINGS` | `true` | `false` | `false` | `false` |
 | `VITE_FLAG_TX_LABELS` | `true` | `false` | `false` | `false` |
@@ -127,6 +132,9 @@ Turn a flag on in an environment once the backend ships its endpoint (see
 | `PUBLIC_SITE_URL` | `http://localhost:4320` | `https://staging.<domain>` | `https://<domain>` |
 | `PUBLIC_ANALYTICS_DOMAIN` | unset (no analytics) | unset | your Plausible site domain, e.g. `<domain>` |
 | `PUBLIC_NOINDEX` | unset | `true` (set by the workflow) | unset |
+| `PUBLIC_SENTRY_DSN` | unset (off) | the site's Sentry DSN | same |
+| `PUBLIC_SENTRY_ENVIRONMENT` | `production` | `staging` (set by the workflow) | `production` (set) |
+| `PUBLIC_RELEASE` | unset | the commit (set by the workflow) | same |
 
 ## Azure and GitHub setup
 
@@ -188,12 +196,15 @@ gh variable set VITE_FLAG_RENEWALS --env staging --body "true"   # once the rene
 
 ### 5. Protect `main`
 
-Require the CI check and one review:
+Require the CI checks and one review:
 
 ```sh
 gh api -X PUT repos/jomitiron/mpaper/branches/main/protection --input - <<'JSON'
 {
-  "required_status_checks": { "strict": true, "contexts": ["Lint, typecheck, test, build"] },
+  "required_status_checks": {
+    "strict": true,
+    "contexts": ["Lint, typecheck, test, build", "E2E and accessibility", "Performance budgets"]
+  },
   "enforce_admins": false,
   "required_pull_request_reviews": { "required_approving_review_count": 1 },
   "restrictions": null
