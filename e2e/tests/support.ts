@@ -15,9 +15,19 @@ export function newEmail(prefix = 'driver'): string {
   return `${prefix}.${Date.now()}.${Math.floor(Math.random() * 1e6)}@example.com`;
 }
 
+/**
+ * Waits until the app has started and drawn the page: the mock API's worker is running and the
+ * page's code and styles have loaded. Leaving a page before then cancels those loads, which
+ * WebKit reports as errors ("Unable to preload CSS").
+ */
+export async function pageReady(page: Page): Promise<void> {
+  await expect(page.locator('h1').first()).toBeVisible();
+}
+
 /** The mock data lives in sessionStorage: start every test from the sample data. */
 export async function freshMocks(page: Page): Promise<void> {
   await page.goto('/sign-in');
+  await pageReady(page);
   await page.evaluate(() => sessionStorage.clear());
 }
 
@@ -27,6 +37,7 @@ export async function signIn(page: Page, who = ADA, next = '/'): Promise<void> {
   await page.getByLabel('Password', { exact: true }).fill(who.password);
   await page.getByRole('button', { name: 'Sign in', exact: true }).click();
   await expect(page).not.toHaveURL(/\/sign-in/);
+  await pageReady(page);
 }
 
 /** Sign up and verify the email (any 6 digits but 000000 and 999999 work on the mocks). */

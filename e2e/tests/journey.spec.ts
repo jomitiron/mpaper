@@ -112,6 +112,7 @@ test('a new driver signs up, tops up, adds a car, renews a paper and signs out',
     await page.goto('/settings');
     await main(page).getByRole('button', { name: 'Sign out' }).click();
     await expect(page).toHaveURL(/\/sign-in/);
+    await expect(page.getByRole('heading', { name: 'Sign in', level: 1 })).toBeVisible();
     // Signed out means signed out: the app sends the driver back to sign in.
     await page.goto('/payments');
     await expect(page).toHaveURL(/\/sign-in\?next=\/payments$/);
