@@ -157,7 +157,8 @@
 
 .tiles {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  /* auto-fit: up to four tiles share the whole row instead of leaving empty tracks. */
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 14px;
 }
 

@@ -154,7 +154,6 @@ h2.rn-title {
 
 /* ---------------------------------------------------------------- the renew page */
 .rn-page {
-  max-width: 640px;
   display: grid;
   gap: 16px;
 }
