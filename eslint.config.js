@@ -23,6 +23,8 @@ export default [
       '**/.astro/**',
       '**/coverage/**',
       '**/node_modules/**',
+      '**/playwright-report/**',
+      '**/test-results/**',
       'apps/web/public/mockServiceWorker.js',
       'design/**',
       'docs/**',
