@@ -43,20 +43,27 @@ describe('app shell', () => {
     useSessionStore().setSession({ token: tokenExpiringIn(600), user: ADA });
   });
 
-  it('shows the four sections in the sidebar, with the current one marked', async () => {
-    const { wrapper } = await mountApp('/payments');
+  it('shows the sections in the sidebar, with the current one marked', async () => {
+    const { wrapper } = await mountApp('/settings');
     const nav = wrapper.get('.side nav[aria-label="Main"]');
     const links = nav.findAll('a');
-    expect(links.map((a) => a.text())).toEqual(['Home', 'My cars', 'Payments', 'Settings']);
-    expect(links.map((a) => a.attributes('href'))).toEqual([
-      '/',
-      '/cars',
-      '/payments',
-      '/settings',
-    ]);
-    expect(nav.get('[aria-current="page"]').text()).toBe('Payments');
+    expect(links.map((a) => a.text())).toEqual(['Home', 'My cars', 'Settings']);
+    expect(links.map((a) => a.attributes('href'))).toEqual(['/', '/cars', '/settings']);
+    expect(nav.get('[aria-current="page"]').text()).toBe('Settings');
+  });
+
+  it('keeps Payments out of the menu but still opens it at its address', async () => {
+    const { wrapper } = await mountApp('/payments');
+    expect(wrapper.find('.side a[href="/payments"]').exists()).toBe(false);
+    expect(wrapper.find('.tabbar a[href="/payments"]').exists()).toBe(false);
+    expect(wrapper.find('.side [aria-current="page"]').exists()).toBe(false);
     expect(wrapper.get('h1').text()).toBe('Payments');
     expect(wrapper.text()).toContain('Top up wallet');
+  });
+
+  it('has no chat card in the sidebar', async () => {
+    const { wrapper } = await mountApp('/');
+    expect(wrapper.get('.side').text()).not.toContain('Chat with us');
   });
 
   it('marks My cars while adding a car', async () => {
@@ -72,7 +79,6 @@ describe('app shell', () => {
       'Home',
       'My cars',
       'Add a car',
-      'Payments',
       'Settings',
     ]);
     expect(wrapper.get('.tab-add').attributes('href')).toBe('/cars/new');

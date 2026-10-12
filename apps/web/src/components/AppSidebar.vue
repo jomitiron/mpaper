@@ -1,19 +1,18 @@
 <script setup lang="ts">
 import { LogOut } from '@lucide/vue';
 import { needsAttention } from '@motopapers/api';
-import { Logo, useToast } from '@motopapers/ui';
+import { Logo } from '@motopapers/ui';
 import { useQuery } from '@tanstack/vue-query';
 import { computed } from 'vue';
 import { RouterLink, useRoute, useRouter } from 'vue-router';
 import { vehiclesQuery } from '@/lib/queries';
 import { preloadRoute } from '@/router/preload';
 import { useSessionStore } from '@/stores/session';
-import { NAV_ITEMS } from './navigation';
+import { SHOWN_NAV_ITEMS } from './navigation';
 
 const route = useRoute();
 const router = useRouter();
 const session = useSessionStore();
-const toast = useToast();
 
 const vehicles = useQuery({
   ...vehiclesQuery(),
@@ -34,11 +33,6 @@ const initials = computed(() =>
     .toUpperCase(),
 );
 
-function chat() {
-  // TODO(manager): pick a live chat provider (the old app used Tidio).
-  toast.info('Live chat is on its way. For help now, call +234 802 959 5069.');
-}
-
 async function signOut() {
   await session.signOut();
   await router.push('/sign-in');
@@ -50,7 +44,7 @@ async function signOut() {
     <Logo to="/" />
     <nav class="side-nav" aria-label="Main">
       <RouterLink
-        v-for="item in NAV_ITEMS"
+        v-for="item in SHOWN_NAV_ITEMS"
         :key="item.to"
         :to="item.to"
         class="nav"
@@ -69,12 +63,6 @@ async function signOut() {
         </span>
       </RouterLink>
     </nav>
-
-    <div class="side-help">
-      <b>Need a hand?</b>
-      Our team can renew any paper for you.
-      <button type="button" @click="chat">Chat with us</button>
-    </div>
 
     <div class="side-user">
       <span class="avatar" aria-hidden="true">{{ initials }}</span>
