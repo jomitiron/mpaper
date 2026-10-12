@@ -4,7 +4,7 @@
   "type": "module",
   "packageManager": "pnpm@12.11.2",
   "engines": {
-    "node": ">=20.19"
+    "node": ">=22.12"
   },
   "scripts": {
     "dev": "pnpm --parallel --filter web --filter site dev",

@@ -67,6 +67,8 @@ jobs:
         env:
           PUBLIC_APP_URL: ${{ vars.PUBLIC_APP_URL }}
           PUBLIC_SITE_URL: ${{ vars.PUBLIC_SITE_URL }}
+          PUBLIC_ANALYTICS_DOMAIN: ${{ vars.PUBLIC_ANALYTICS_DOMAIN }}
+          PUBLIC_NOINDEX: 'true'
       - name: Deploy preview
         id: deploy
         uses: Azure/static-web-apps-deploy@v1
@@ -110,6 +112,8 @@ jobs:
         env:
           PUBLIC_APP_URL: ${{ vars.PUBLIC_APP_URL }}
           PUBLIC_SITE_URL: ${{ vars.PUBLIC_SITE_URL }}
+          PUBLIC_ANALYTICS_DOMAIN: ${{ vars.PUBLIC_ANALYTICS_DOMAIN }}
+          PUBLIC_NOINDEX: 'true'
       - name: Deploy to staging
         id: deploy
         uses: Azure/static-web-apps-deploy@v1
@@ -142,6 +146,7 @@ jobs:
         env:
           PUBLIC_APP_URL: ${{ vars.PUBLIC_APP_URL }}
           PUBLIC_SITE_URL: ${{ vars.PUBLIC_SITE_URL }}
+          PUBLIC_ANALYTICS_DOMAIN: ${{ vars.PUBLIC_ANALYTICS_DOMAIN }}
       - name: Deploy to production
         id: deploy
         uses: Azure/static-web-apps-deploy@v1
