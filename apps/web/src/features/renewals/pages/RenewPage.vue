@@ -386,13 +386,6 @@ watch(view, async (now, before) => {
             </span>
           </label>
         </fieldset>
-        <p v-if="walletChoice.short" class="hint">
-          Or
-          <RouterLink class="link" :to="{ path: '/payments', query: { topup: '1' } }"
-            >top up your wallet</RouterLink
-          >
-          first.
-        </p>
       </div>
     </div>
 

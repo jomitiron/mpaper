@@ -129,11 +129,6 @@
   letter-spacing: -0.03em;
   line-height: 1.05;
 }
-.wallet .btn {
-  justify-self: start;
-  margin-top: 8px;
-}
-.wallet .btn:focus-visible,
 .wallet .auto a:focus-visible {
   outline-color: #fff;
 }
