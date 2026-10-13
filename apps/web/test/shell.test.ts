@@ -61,9 +61,11 @@ describe('app shell', () => {
     expect(wrapper.text()).toContain('Top up wallet');
   });
 
-  it('has no chat card in the sidebar', async () => {
+  it('has no chat card in the sidebar and no Top up on the wallet card', async () => {
     const { wrapper } = await mountApp('/');
     expect(wrapper.get('.side').text()).not.toContain('Chat with us');
+    expect(wrapper.get('.wallet').text()).toContain('Wallet balance');
+    expect(wrapper.get('.wallet').text()).not.toContain('Top up');
   });
 
   it('marks My cars while adding a car', async () => {
