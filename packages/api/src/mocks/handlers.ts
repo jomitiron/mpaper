@@ -113,8 +113,8 @@ export function createHandlers(options: MockHandlerOptions): HttpHandler[] {
       open(async ({ request }) => {
         const body = await readJson(request);
         if (typeof body.oauth_code === 'string') {
-          const typeError = checkOAuthType(body);
-          if (typeError) return typeError;
+          const platformError = checkOAuthPlatform(body);
+          if (platformError) return platformError;
           const account = db.accountByEmail(SAMPLE_EMAIL);
           if (body.oauth_code !== MOCK_OAUTH_CODE || !account) {
             return error(401, 'Invalid credentials');
@@ -160,8 +160,8 @@ export function createHandlers(options: MockHandlerOptions): HttpHandler[] {
       open(async ({ request }) => {
         const body = await readJson(request);
         if (typeof body.oauth_code === 'string') {
-          const typeError = checkOAuthType(body);
-          if (typeError) return typeError;
+          const platformError = checkOAuthPlatform(body);
+          if (platformError) return platformError;
           const account = db.accountByEmail(SAMPLE_EMAIL);
           if (body.oauth_code !== MOCK_OAUTH_CODE || !account) {
             return error(401, 'Invalid credentials');
@@ -195,17 +195,19 @@ export function createHandlers(options: MockHandlerOptions): HttpHandler[] {
       'get',
       '/users/oauth-url',
       open(({ request }) => {
+        // Like the live API: `platform`, as the docs say (ijanla-dev has renamed it `type`).
         const url = new URL(request.url);
-        const type = url.searchParams.get('type');
+        const platform = url.searchParams.get('platform');
         const action = url.searchParams.get('action');
-        if (
-          !['google', 'facebook'].includes(type ?? '') ||
-          !['signin', 'signup'].includes(action ?? '')
-        ) {
-          return failFields({
-            type: 'type must be google or facebook, action signin or signup',
-          });
+        const fields: Record<string, string> = {};
+        if (!['signin', 'signup'].includes(action ?? '')) {
+          fields.action = 'action must be one of [signup, signin]';
         }
+        if (!platform) fields.platform = 'platform is required';
+        else if (!['google', 'facebook'].includes(platform)) {
+          fields.platform = 'platform must be one of [google, facebook]';
+        }
+        if (Object.keys(fields).length) return failFields(fields);
         // The real URL goes to Google or Facebook, which comes back with `action` and `code`; the
         // mock comes straight back to the app.
         return ok(
@@ -855,9 +857,11 @@ function missing(body: Record<string, unknown>, keys: string[]): Record<string, 
   return fields;
 }
 
-function checkOAuthType(body: Record<string, unknown>): Response | null {
-  if (body.oauth_type === 'google' || body.oauth_type === 'facebook') return null;
-  return failFields({ oauth_type: 'oauth_type must be one of [facebook, google]' });
+/** Like the live API: the provider goes in `oauth_platform`, and `oauth_type` is refused. */
+function checkOAuthPlatform(body: Record<string, unknown>): Response | null {
+  if ('oauth_type' in body) return failFields({ oauth_type: 'oauth_type is not allowed' });
+  if (body.oauth_platform === 'google' || body.oauth_platform === 'facebook') return null;
+  return failFields({ oauth_platform: 'oauth_platform is required' });
 }
 
 function checkOtp(otp: unknown): Response | null {

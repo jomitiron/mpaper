@@ -1,11 +1,12 @@
 import { z } from 'zod';
-import { request } from '../client';
+import { isHttpError, request } from '../client';
 import { envelope, messageEnvelope } from '../schemas/common';
 import {
   sessionSchema,
   userSchema,
   type OAuthAction,
   type OAuthBody,
+  type OAuthField,
   type OAuthPlatform,
   type ResetPasswordBody,
   type Session,
@@ -81,20 +82,36 @@ export async function signOut(options: Options = {}): Promise<void> {
 }
 
 /**
- * `GET /users/oauth-url`. Returns the provider URL to send the driver to. The docs call the query
- * parameter `platform`, but the API asks for `type` (checked on ijanla-dev).
+ * `GET /users/oauth-url`. Returns the provider URL to send the driver to, and the API's name for
+ * the provider (see `OAuthField`) so the code that comes back goes in the right field. Asks with
+ * the documented `platform` first; an API that answers "type is required" is asked again with `type`.
  */
 export async function getOAuthUrl(
   params: { platform: OAuthPlatform; action: OAuthAction },
   options: Options = {},
-): Promise<string> {
-  const res = await request('/users/oauth-url', {
-    query: { type: params.platform, action: params.action },
-    auth: false,
-    schema: envelope(z.string()),
-    ...options,
-  });
-  return res.data;
+): Promise<{ url: string; field: OAuthField }> {
+  const ask = async (field: OAuthField) => {
+    const res = await request('/users/oauth-url', {
+      query: { [field]: params.platform, action: params.action },
+      auth: false,
+      schema: envelope(z.string()),
+      ...options,
+    });
+    return { url: res.data, field };
+  };
+  try {
+    return await ask('platform');
+  } catch (error) {
+    if (isHttpError(error, 400) && 'type' in error.fields) return ask('type');
+    throw error;
+  }
+}
+
+/** The sign-in or sign-up body for an OAuth code, with the provider under the API's name for it. */
+export function oauthBody(code: string, platform: OAuthPlatform, field: OAuthField): OAuthBody {
+  return field === 'type'
+    ? { oauth_code: code, oauth_type: platform }
+    : { oauth_code: code, oauth_platform: platform };
 }
 
 /** `POST /users/forgot-password`. Emails a reset code. */

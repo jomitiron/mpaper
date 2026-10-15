@@ -1,5 +1,12 @@
 <script setup lang="ts">
-import { errorMessage, isHttpError, signIn, signUp, type OAuthAction } from '@motopapers/api';
+import {
+  errorMessage,
+  isHttpError,
+  oauthBody,
+  signIn,
+  signUp,
+  type OAuthAction,
+} from '@motopapers/api';
 import { Button, Stepper } from '@motopapers/ui';
 import { computed, onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
@@ -39,6 +46,8 @@ const saved = ref<OAuthState | null>(null);
 
 const next = computed(() => safeNext(saved.value?.next));
 const signupState = (): OAuthState => ({ action: 'signup', next: next.value, remember: false });
+/** The code under the API's name for the provider; the documented `platform` if nothing was saved. */
+const googleBody = (code: string) => oauthBody(code, 'google', saved.value?.field ?? 'platform');
 
 function queryValue(key: string): string {
   const value = route.query[key];
@@ -53,7 +62,7 @@ function fail(text: string, options: { offerSignUp?: boolean } = {}) {
 
 async function signInWith(code: string) {
   try {
-    const result = await signIn({ oauth_code: code, oauth_type: 'google' });
+    const result = await signIn(googleBody(code));
     session.setSession(result, { remember: saved.value?.remember ?? false });
     if (saved.value?.newAccount) status.value = 'new-account';
     else await router.replace(next.value);
@@ -72,7 +81,7 @@ async function signUpWith(code: string) {
   message.value = 'Creating your account…';
   let newAccount = true;
   try {
-    await signUp({ oauth_code: code, oauth_type: 'google' });
+    await signUp(googleBody(code));
   } catch (error) {
     if (!isDuplicateEmail(error)) return fail(errorMessage(error));
     newAccount = false; // Already signed up with this Google account: just sign in.
