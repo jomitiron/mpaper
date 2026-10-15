@@ -42,6 +42,7 @@ what blocks launch.
 
 | Item | Why it matters | App side |
 | --- | --- | --- |
+| **Google sign-in is down: the OAuth client was deleted** (checked 15 Oct 2026). Google answers `Error 401: deleted_client` for the client ID all three `ijanla` slots share. Create a new Web OAuth client in the Google Cloud project (`GOOGLE_OAUTH_PROJECT_ID`), add the redirect addresses below, then set `GOOGLE_OAUTH_CLIENT_ID` and `GOOGLE_OAUTH_CLIENT_SECRET` on each slot. Also: production's `GOOGLE_OAUTH_REDIRECT_URLS` points at `www.motorpapers.com`, which isn't registered, so use `https://memininode.azurewebsites.net/complete-onboard` until the domain is back (stage and dev already use their `memininode-*` addresses). The live and stage APIs also put `action=[object Object]` in the redirect. | Nobody can sign up or sign in with Google, on the old app or the new one | Ready. Works with the live API's `platform` / `oauth_platform` and ijanla-dev's `type` / `oauth_type`, and with the broken `action` (it remembers what it asked for) |
 | **New domains**: CORS, Google redirect, Paystack callback | Nothing works on `app.<domain>` without it | Ready. Steps in `runbook.md` §5–7 |
 | **Paystack webhook is the source of truth** (signature check, safe twice) | The payment page waits for it before showing "Payment received" | Ready |
 | **Reminder job and emails** | The reason drivers sign up | Templates ready in `emails/`; events and values in `docs/backend-handoff.md` |

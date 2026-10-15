@@ -118,6 +118,7 @@ describe('sign in', () => {
       next: '/cars',
       remember: false,
       newAccount: false,
+      field: 'platform',
     });
   });
 });
@@ -277,6 +278,16 @@ describe('Google callback', () => {
     await waitForPath(router, '/cars');
     expect(useSessionStore().user?.email).toBe(SAMPLE_EMAIL);
     expect(useSessionStore().remember).toBe(true);
+    const body = await api.requests.find((r) => r.url.endsWith('/users/sign-in'))!.json();
+    expect(body).toEqual({ oauth_code: 'mock-oauth-code', oauth_platform: 'google' });
+  });
+
+  it('sends oauth_type to an API that asked for `type` on the way out (ijanla-dev)', async () => {
+    oauthState.save({ action: 'signin', next: '/', remember: false, field: 'type' });
+    await mountApp(api, '/auth/callback?action=signin&code=mock-oauth-code');
+    await vi.waitFor(() =>
+      expect(api.requests.some((r) => r.url.endsWith('/users/sign-in'))).toBe(true),
+    );
     const body = await api.requests.find((r) => r.url.endsWith('/users/sign-in'))!.json();
     expect(body).toEqual({ oauth_code: 'mock-oauth-code', oauth_type: 'google' });
   });

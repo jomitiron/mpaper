@@ -16,6 +16,7 @@ import {
   getMe,
   getNotificationPreferences,
   getOAuthUrl,
+  oauthBody,
   getPricing,
   getTransaction,
   getValidInsurance,
@@ -157,12 +158,51 @@ describe('sign-in and account', () => {
   });
 
   it('handles Google through the mock OAuth code', async () => {
-    const url = await getOAuthUrl({ platform: 'google', action: 'signin' });
-    expect(url).toBe(
-      `http://app.test/auth/callback?action=signin&code=${MOCK_OAUTH_CODE}&state=moto`,
-    );
-    const session = await signIn({ oauth_code: MOCK_OAUTH_CODE, oauth_type: 'google' });
+    const found = await getOAuthUrl({ platform: 'google', action: 'signin' });
+    expect(found).toEqual({
+      url: `http://app.test/auth/callback?action=signin&code=${MOCK_OAUTH_CODE}&state=moto`,
+      field: 'platform',
+    });
+    const session = await signIn(oauthBody(MOCK_OAUTH_CODE, 'google', 'platform'));
     expect(session.user.email).toBe(SAMPLE_EMAIL);
+  });
+
+  it('refuses oauth_type, like the live API', async () => {
+    const error = await httpError(signIn(oauthBody(MOCK_OAUTH_CODE, 'google', 'type')));
+    expect(error.fields).toEqual({ oauth_type: 'oauth_type is not allowed' });
+  });
+
+  it('asks again with `type` when the API has renamed `platform` (ijanla-dev)', async () => {
+    const asked: string[] = [];
+    server.use(
+      http.get(`${BASE}/users/oauth-url`, ({ request }) => {
+        const query = new URL(request.url).searchParams;
+        asked.push(query.toString());
+        if (query.get('type') !== 'google') {
+          return HttpResponse.json(
+            { status: 'fail', message: 'type is required', data: { type: 'type is required' } },
+            { status: 400 },
+          );
+        }
+        return HttpResponse.json({
+          status: 'success',
+          message: 'ok',
+          data: 'https://google.test/',
+        });
+      }),
+    );
+    const found = await getOAuthUrl({ platform: 'google', action: 'signup' });
+    expect(found).toEqual({ url: 'https://google.test/', field: 'type' });
+    expect(asked).toEqual(['platform=google&action=signup', 'type=google&action=signup']);
+    expect(oauthBody('abc', 'google', found.field)).toEqual({
+      oauth_code: 'abc',
+      oauth_type: 'google',
+    });
+  });
+
+  it("doesn't retry other oauth-url errors", async () => {
+    const error = await httpError(getOAuthUrl({ platform: 'google', action: 'nope' as 'signin' }));
+    expect(error.fields).toEqual({ action: 'action must be one of [signup, signin]' });
   });
 
   it('resets a password with a code, and knows an expired one', async () => {

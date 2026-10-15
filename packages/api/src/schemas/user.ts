@@ -40,13 +40,16 @@ export const signUpBodySchema = z.object({
 export type SignUpBody = z.infer<typeof signUpBodySchema>;
 
 /**
- * Sign in or sign up with the code Google (or Facebook) sent back. The docs call the platform
- * `oauth_platform`, but the API rejects that and asks for `oauth_type` (checked on ijanla-dev).
+ * The API's name for the provider. The docs and the live and stage APIs say `platform`
+ * (`?platform=` and `oauth_platform`); ijanla-dev has renamed it `type` (`?type=` and
+ * `oauth_type`). Each API rejects the other's name in a request body.
  */
-export interface OAuthBody {
-  oauth_code: string;
-  oauth_type: OAuthPlatform;
-}
+export type OAuthField = 'platform' | 'type';
+
+/** Sign in or sign up with the code Google (or Facebook) sent back. Build it with `oauthBody`. */
+export type OAuthBody =
+  | { oauth_code: string; oauth_platform: OAuthPlatform }
+  | { oauth_code: string; oauth_type: OAuthPlatform };
 
 export interface SignInBody {
   email: string;

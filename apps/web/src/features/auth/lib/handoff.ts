@@ -1,4 +1,4 @@
-import type { OAuthAction } from '@motopapers/api';
+import type { OAuthAction, OAuthField } from '@motopapers/api';
 
 /**
  * Small bits of state the auth pages hand to each other through sessionStorage (this tab only),
@@ -49,6 +49,8 @@ export interface OAuthState {
   remember: boolean;
   /** Set when a Google sign-up is finishing with a sign-in: show "Add your first car". */
   newAccount?: boolean;
+  /** The API's name for the provider, from the oauth-url call. Set by `continueWithGoogle`. */
+  field?: OAuthField;
 }
 
 export const oauthState = {
@@ -68,6 +70,7 @@ export const oauthState = {
         next: typeof value.next === 'string' ? value.next : '/',
         remember: value.remember === true,
         newAccount: value.newAccount === true,
+        field: value.field === 'type' ? 'type' : 'platform',
       };
     } catch {
       return null;
